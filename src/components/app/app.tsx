@@ -8,7 +8,14 @@ import mockData from '../../utils/data';
 
 function App() {
   const [current, setCurrent] = React.useState('bun');
-  const {main__content, main__tabs, main__block, main__ingredients, ingredients__container, ingredients__header, order__container, order__footer} = styles;
+  const {main__content, 
+          main__tabs, 
+          main__block, 
+          main__ingredients, 
+          ingredients__container, 
+          ingredients__header, 
+          order__container, 
+          order__footer} = styles;
 
   return (
     <>
@@ -50,7 +57,11 @@ function App() {
         <ul className={order__container}>
           {mockData.map((ingredient, index) => (
             <li className="text text_type_main-default pb-2" key={ingredient._id + index}>
-              <BurgerIngredients {...ingredient} type={index === 0 ? 'top' : (index === mockData.length -1 ? 'bottom' : null)} isLocked={index === 0 || index === mockData.length -1} />
+              <BurgerIngredients 
+                {...ingredient} 
+                type={index === 0 ? 'top' : (index === mockData.length -1 ? 'bottom' : null)} 
+                isLocked={index === 0 || index === mockData.length -1} 
+              />
             </li>
           ))}
         </ul>

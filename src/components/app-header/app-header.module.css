@@ -45,7 +45,7 @@ nav {
   justify-content: center;  
 }
 
-a {
+span {
   display: inline-block;
   vertical-align: top;
   height: 24px;
@@ -54,7 +54,7 @@ a {
   color: #8585AD;
 }
 
-a.active {
+span.active {
   color: white;
 }
 

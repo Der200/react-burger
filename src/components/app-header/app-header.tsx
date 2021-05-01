@@ -11,11 +11,21 @@ function AppHeader () {
       <nav className="text text_type_main-default">
         <ul className={navlist}>
           <ul className={navlist__menu}>
-            <li className={navlist__buttonitem}><BurgerIcon type="primary"/> <a className={active}>Конструктор</a></li>
-            <li className={navlist__buttonitem}><ListIcon type="secondary"/> <a>Лента заказов</a></li>
+            <li className={navlist__buttonitem}><BurgerIcon type="primary"/> 
+              <span className={active}>Конструктор</span>
+            </li>
+            <li className={navlist__buttonitem}>
+              <ListIcon type="secondary"/> 
+              <span>Лента заказов</span>
+            </li>
           </ul>
-          <li className={navlist__logo}><Logo/></li>
-          <li className={[navlist__buttonitem, navlist__kabinet].join(' ')}><ProfileIcon type="secondary"/> <a>Личный кабинет</a></li>
+          <li className={navlist__logo}>
+            <Logo/>
+          </li>
+          <li className={[navlist__buttonitem, navlist__kabinet].join(' ')}>
+            <ProfileIcon type="secondary"/> 
+            <span>Личный кабинет</span>
+          </li>
         </ul>
       </nav>
     </header>
