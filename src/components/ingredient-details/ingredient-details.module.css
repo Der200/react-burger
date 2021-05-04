@@ -1,0 +1,27 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.image {
+  width: 480px;
+  height: 240px;
+}
+
+.description {
+  max-width: 450px;
+}
+
+.food {
+  color: #8585AD;
+  display: flex;
+  width: 460px;
+  justify-content: space-between;
+}
+
+.number {
+  font-family: 'iceLand', sans-serif;
+}

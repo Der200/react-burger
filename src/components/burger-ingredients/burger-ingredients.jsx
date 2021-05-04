@@ -1,17 +1,17 @@
-import React from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import PropTypes from 'prop-types';
+import styles from './burger-ingredients.module.css';
 
-function BurgerIngredients (props) {
+const BurgerIngredients = ({name, type, image, price, isLocked}) => {
   return (
-    <section>
-      {props.type ? <span className="pl-3"></span> : <DragIcon type="primary" />}
+    <section className={styles.section}>
+      {type ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}
       <ConstructorElement 
-        text={props.name} 
-        type={props.type} 
-        thumbnail={props.image} 
-        price={props.price} 
-        isLocked={props.isLocked} 
+        text={name} 
+        type={type} 
+        thumbnail={image} 
+        price={price} 
+        isLocked={isLocked} 
       />
     </section>
   )

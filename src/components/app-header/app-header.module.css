@@ -61,3 +61,7 @@ span.active {
 .nav__images {
   vertical-align: middle;
 }
+
+svg {
+  padding-right: 8px;
+}

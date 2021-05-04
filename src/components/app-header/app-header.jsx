@@ -1,8 +1,7 @@
-import React from 'react';
 import {Logo, ProfileIcon, BurgerIcon, ListIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
-import styles from './app-header.module.css'
+import styles from './app-header.module.css';
 
-function AppHeader () {
+const AppHeader = () => {
 
   const {navlist, navlist__menu, navlist__buttonitem, active, navlist__logo, navlist__kabinet} = styles;
 

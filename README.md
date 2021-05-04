@@ -1,5 +1,7 @@
 # STELLAR BURGERS
 
+LANG: `RU`
+
 Get a cosmic sensation from our burgers before taking over the galaxy
 
 This project was created as part of the ["React Developer" intensive](https://praktikum.yandex.ru/react/) from Yandex Praktikum
