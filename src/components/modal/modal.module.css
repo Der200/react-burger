@@ -1,6 +1,5 @@
 .modal {
   width: 720px;
-  min-height: 720px;
   background: #1c1c21;
   border: 1px solid rgba(76, 76, 255, 0.2);
   box-sizing: border-box;
@@ -15,6 +14,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.modal__close {
+  cursor: pointer;
 }
 
 .modal__close svg {

@@ -10,8 +10,8 @@ const BurgerConstructor = ({handleClickIngredient, image, price, name, ingredien
   return (
     <section className={styles.section} onClick={handleClick}>
       <img src={image} alt=""/>
-      <div>
-        <span className="text text_type_digits-default mt-1 mb-1">
+      <div className='mt-1 mb-1'>
+        <span className="text text_type_digits-default">
           {price} <CurrencyIcon type="primary" />
         </span>
       </div>

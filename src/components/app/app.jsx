@@ -20,7 +20,9 @@ const App = () => {
   const {main__content, 
           main__tabs, 
           main__block, 
-          main__ingredients, 
+          main__ingredients,
+          top__ingredient,
+          bottom__ingredient, 
           ingredients__container, 
           order__container,
           assembly__box, 
@@ -32,23 +34,33 @@ const App = () => {
     try {
       const res = await fetch(apiURL);
       
-      if(!res.ok) throw new Error('Сервер работает в штатном режиме')
-          const data = await res.json();
-          setstate({data: data.data, isLoading: false});
+      if(!res.ok) {
+        throw new Error('Сервер работает в штатном режиме')
+      }
+
+      const data = await res.json();
+      setstate({data: data.data, isLoading: false});
           
-      } catch(e){
+    } catch(e) {
         throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
       }
   }
     
-  React.useEffect(() => {
+  React.useEffect((show) => {
     getIngredientData();
+
+    const handleDownEsc = (e) => {
+      if (e.key !== 'Escape') {
+        return
+      }
+      setShow({...show, isShowIngredient: false, isShowOrder: false})
+    }
+
     window.addEventListener('keydown', handleDownEsc);
     
     return () => {
       window.removeEventListener('keydown', handleDownEsc);
     }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickIngredient = ingredient => {
@@ -59,15 +71,9 @@ const App = () => {
   const handleClickButton = () => setShow({...show, isShowOrder: true})
   
   const handleClickModal = target => {  
-    if (target.classList.contains('closed') || target.classList.contains('overlay__closed'))
-    setShow({...show, isShowIngredient: false, isShowOrder: false})
-  }
-
-  const handleDownEsc = (e) => {
-    if (e.key !== 'Escape') {
-      return
+    if (target.classList.contains('closed') || target.classList.contains('overlay__closed')) {
+      setShow({...show, isShowIngredient: false, isShowOrder: false})
     }
-    setShow({...show, isShowIngredient: false, isShowOrder: false})
   }
 
   if (state.isLoading) {
@@ -139,7 +145,7 @@ const App = () => {
           </section>
         </section>
         <section className={[main__block, set__box].join(" ")}>
-          <ul className="mt-25 pl-5">
+          <ul className={`${top__ingredient} mt-25 pl-5`}>
             {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
                 <BurgerIngredients 
@@ -160,7 +166,7 @@ const App = () => {
               </li>
             ))}
           </ul>
-          <ul className="pl-5">
+          <ul className={`${bottom__ingredient} pl-5`}>
             {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 26).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
                 <BurgerIngredients 

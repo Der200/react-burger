@@ -30,6 +30,10 @@
   flex-direction: column;
 }
 
+.status span:last-child {
+  color: #8585AD;
+}
+
 .active {
   color: #F2F2F3;
 }

@@ -45,7 +45,7 @@ nav {
   justify-content: center;  
 }
 
-span {
+.nav__item {
   display: inline-block;
   vertical-align: top;
   height: 24px;

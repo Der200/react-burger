@@ -25,3 +25,8 @@
 .number {
   font-family: 'iceLand', sans-serif;
 }
+
+.food__composition {
+  display: flex;
+  flex-direction: column;
+}

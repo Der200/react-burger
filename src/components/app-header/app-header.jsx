@@ -3,7 +3,7 @@ import styles from './app-header.module.css';
 
 const AppHeader = () => {
 
-  const {navlist, navlist__menu, navlist__buttonitem, active, navlist__logo, navlist__kabinet} = styles;
+  const {navlist, navlist__menu, navlist__buttonitem, active, nav__item, navlist__logo, navlist__kabinet} = styles;
 
   return (
     <header className="pt-2 pb-2">
@@ -11,11 +11,11 @@ const AppHeader = () => {
         <ul className={navlist}>
           <ul className={navlist__menu}>
             <li className={navlist__buttonitem}><BurgerIcon type="primary"/> 
-              <span className={active}>Конструктор</span>
+              <span className={`${active} ${nav__item}`}>Конструктор</span>
             </li>
             <li className={navlist__buttonitem}>
               <ListIcon type="secondary"/> 
-              <span>Лента заказов</span>
+              <span className={nav__item}>Лента заказов</span>
             </li>
           </ul>
           <li className={navlist__logo}>
@@ -23,7 +23,7 @@ const AppHeader = () => {
           </li>
           <li className={[navlist__buttonitem, navlist__kabinet].join(' ')}>
             <ProfileIcon type="secondary"/> 
-            <span>Личный кабинет</span>
+            <span className={nav__item}>Личный кабинет</span>
           </li>
         </ul>
       </nav>
