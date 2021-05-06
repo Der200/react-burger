@@ -15,7 +15,7 @@ const IngredientDetails = ({ ingredient, handleClickIngredient }) => {
         <div className={styles.image}>
           <img src={image_large} alt={name} />
         </div>
-        <h3 className={`${styles.name} text text_type_main-medium`}>{name}</h3>
+        <h3 className="text text_type_main-medium mt-4">{name}</h3>
         <p className={`${styles.description} mt-8 mb-8 text text_type_main-default`}>
           Тут должно быть описание
         </p>
@@ -51,7 +51,14 @@ const IngredientDetails = ({ ingredient, handleClickIngredient }) => {
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
+  ingredient: PropTypes.shape({
+    image_large: PropTypes.string.isRequired, 
+    name: PropTypes.string.isRequired, 
+    calories: PropTypes.number.isRequired, 
+    proteins: PropTypes.number.isRequired, 
+    fat: PropTypes.number.isRequired, 
+    carbohydrates: PropTypes.number.isRequired
+  }),  
   handleClickIngredient: PropTypes.func.isRequired
 }
 

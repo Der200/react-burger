@@ -23,7 +23,7 @@ const OrderDetails = ({ handleClickOrder, orderNumber }) => {
           <span className={`${active} text text_type_main-default`}>
             Ваш заказ начали готовить
           </span>
-          <span className='text text_type_main-default mt-2 mb-30'>
+          <span className="text text_type_main-default mt-2 mb-30">
             Дождитесь готовности на орбитальной станции
           </span>
         </div>
