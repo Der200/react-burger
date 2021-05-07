@@ -45,7 +45,7 @@ nav {
   justify-content: center;  
 }
 
-a {
+.nav__item {
   display: inline-block;
   vertical-align: top;
   height: 24px;
@@ -54,10 +54,14 @@ a {
   color: #8585AD;
 }
 
-a.active {
+span.active {
   color: white;
 }
 
 .nav__images {
   vertical-align: middle;
+}
+
+svg {
+  padding-right: 8px;
 }

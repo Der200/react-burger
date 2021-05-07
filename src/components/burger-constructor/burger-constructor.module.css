@@ -2,4 +2,9 @@
   width: 272px;
   text-align: center;
   margin-bottom: 32px;
+  cursor: pointer;
+}
+
+.section svg {
+  vertical-align: top;
 }

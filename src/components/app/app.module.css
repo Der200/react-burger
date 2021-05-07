@@ -9,7 +9,6 @@ ul {
 }
 
 .main__tabs {
-  margin-top: 20px;
   display: flex;
 }
 
@@ -23,14 +22,29 @@ ul {
 .main__ingredients {
   display: flex;
   flex-wrap: wrap;
-  width: 568px;
   justify-content: space-around;
-  padding-top: 20px;
 }
 
-.ingredients__header {
-  height: 164px;
-  margin-top: 40px;
+.top__ingredient {
+  margin-bottom: 0;
+}
+
+.top__ingredient li {
+  padding-bottom: 0;
+}
+
+.bottom__ingredient {
+  margin-top: 16px;
+  margin-bottom: 24px;
+  position: relative
+}
+
+.bottom__ingredient section {
+  display: flex;
+}
+
+.bottom__ingredient div {
+  margin-left: 0;
 }
 
 .ingredients__container {
@@ -39,16 +53,34 @@ ul {
   overflow-x: hidden;
 }
 
+.assembly__box {
+  margin-top: 40px;
+}
+
+.set__box span {
+  color: #F2F2F3; 
+}
+
+.assembly__box span {
+  margin-top: 40px;
+  color: #F2F2F3;
+}
+
 .order__container {
-  margin-top: 100px;
-  height: 656px;
+  margin-bottom: 0;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 464px;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
+.order__container li:last-child {
+  padding-bottom: 0;
+}
+
 .order__footer {
-  height: 164px;
-  padding-top: 40px;
+  height: 64px;
   padding-right: 20px;
   display: flex;
   justify-content: flex-end;

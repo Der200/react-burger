@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.constructor-element {
+  display: block !important;
+  margin-left: auto;
+}
+
+.constructor-element__price {
+  margin-left: auto;
+}
+
+.constructor-element_pos_bottom {
+  margin: 0;
+  margin-left: 20px;
+}
+
+.constructor-element_pos_top {
+  margin: 0;
+  margin-left: 20px;
+}
