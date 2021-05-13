@@ -1,8 +1,17 @@
+import React from 'react';
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
+import OrderContext from '../../services/order-context'
 
-const BurgerIngredients = ({name, type, image, price, isLocked}) => {
+const BurgerIngredients = ({name, type, image, price, _id, isLocked}) => {
+  const {dispatcherTotalPrice, dispatcherIngredientIds} = React.useContext(OrderContext);
+
+  React.useEffect(() => {
+    dispatcherTotalPrice({data: price});
+    dispatcherIngredientIds({id: _id})
+  }, [dispatcherTotalPrice, dispatcherIngredientIds, price, _id])
+  
   return (
     <section className={styles.section}>
       {type ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}

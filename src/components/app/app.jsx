@@ -6,47 +6,94 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
+import IngredientContext from '../../services/ingredient-context'
+import OrderContext from '../../services/order-context'
 
-const apiURL = 'https://norma.nomoreparties.space/api/ingredients';
+const apiIngredientsURL = 'https://norma.nomoreparties.space/api/ingredients';
+const apiOrderURL = 'https://norma.nomoreparties.space/api/orders';
 
 const App = () => {
+  const {main__content, 
+    main__tabs, 
+    main__block, 
+    main__ingredients,
+    top__ingredient,
+    bottom__ingredient, 
+    ingredients__container, 
+    order__container,
+    assembly__box, 
+    set__box,
+    order__footer
+  } = styles;
+
   const [current, setCurrent] = React.useState('bun');
-  const [state, setstate] = React.useState({
+  const [state, setState] = React.useState({
     data: [],
     isLoading: true
   });
-  const [itemIngredient, setItemIngredient] = React.useState(null)
-  const [show, setShow] = React.useState({isShowIngredient: false, isShowOrder: false})
-  const {main__content, 
-          main__tabs, 
-          main__block, 
-          main__ingredients,
-          top__ingredient,
-          bottom__ingredient, 
-          ingredients__container, 
-          order__container,
-          assembly__box, 
-          set__box,
-          order__footer
-  } = styles;
+  const [order, setOrder] = React.useState({
+    name: '',
+    order: {},
+    isLoading: true
+  });
+  const [itemIngredient, setItemIngredient] = React.useState(null);
+  const [show, setShow] = React.useState({isShowIngredient: false, isShowOrder: false});
+
+
+  const ingredientIdsReducer = (ingredientIds, action) => {
+    return [...ingredientIds, action.id];
+  }
+  const initialIngredientIds = [];
+  const [ingredientIds, dispatcherIngredientIds] = React.useReducer(ingredientIdsReducer, initialIngredientIds);
+
+  const priceReducer = (totalPrice, action) => {
+    return totalPrice + action.data;
+  }
+  const initialTotalPrice = 0;
+  const [totalPrice, dispatcherTotalPrice] = React.useReducer(priceReducer, initialTotalPrice);
+
+  const getOrderData = async () => {
+    try {
+      const res = await fetch(apiOrderURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          "ingredients": ingredientIds
+        })
+      });
+      
+      if(!res.ok) {
+        throw new Error('Сервер работает в штатном режиме')
+      }
+
+      const orderData = await res.json();
+
+      setOrder({name: orderData.name, order: orderData.order, isLoading: false});
+          
+    } catch(e) {
+        throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
+      }
+  }
 
   const getIngredientData = async () => {
     try {
-      const res = await fetch(apiURL);
+      const res = await fetch(apiIngredientsURL);
       
       if(!res.ok) {
         throw new Error('Сервер работает в штатном режиме')
       }
 
       const data = await res.json();
-      setstate({data: data.data, isLoading: false});
+      setState({data: data.data, isLoading: false});
           
     } catch(e) {
         throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
       }
   }
-    
-  React.useEffect((show) => {
+
+  React.useEffect((show, order) => {
     getIngredientData();
 
     const handleDownEsc = (e) => {
@@ -54,9 +101,12 @@ const App = () => {
         return
       }
       setShow({...show, isShowIngredient: false, isShowOrder: false})
+      setOrder({...order, isLoading: true});
     }
 
     window.addEventListener('keydown', handleDownEsc);
+
+
     
     return () => {
       window.removeEventListener('keydown', handleDownEsc);
@@ -68,11 +118,15 @@ const App = () => {
     setShow({...show, isShowIngredient: true})
   }
 
-  const handleClickButton = () => setShow({...show, isShowOrder: true})
+  const handleClickButton = () => {
+    getOrderData();
+    setShow({...show, isShowOrder: true})
+  }
   
   const handleClickModal = target => {  
     if (target.classList.contains('closed') || target.classList.contains('overlay__closed')) {
       setShow({...show, isShowIngredient: false, isShowOrder: false})
+      setOrder({...order, isLoading: true});
     }
   }
 
@@ -91,13 +145,17 @@ const App = () => {
           handleClickIngredient={handleClickModal}
         />
       )}
-      {show.isShowOrder && (
+      
+      {!order.isLoading && show.isShowOrder && (
+        <OrderContext.Provider value={order}>
         <OrderDetails
           handleClickOrder={handleClickModal}
-          orderNumber={'034536'}
         />
+        </OrderContext.Provider>
       )}
+      
       <AppHeader />
+
       <main className={main__content}>
         <section className={main__block}>
           <section className="mt-10">
@@ -112,39 +170,40 @@ const App = () => {
             <h2 className="text text_type_main-medium mb-6 bun">Булки</h2>
             <div className={main__ingredients}>
               {state.data.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
+                <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
                   <BurgerConstructor 
-                    key={ingredient._id} 
-                    {...ingredient} 
-                    handleClickIngredient={handleClickIngredient} 
-                    ingredient={ingredient}
+                    key={ingredient._id}
+                    handleClickIngredient={handleClickIngredient}
                   />
+                </IngredientContext.Provider>
               ))}
             </div>
             <h2 className="text text_type_main-medium mt-10 mb-6 sauce">Соусы</h2>
             <div className={main__ingredients}>
               {state.data.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
+                <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
                   <BurgerConstructor 
-                    key={ingredient._id} 
-                    {...ingredient} 
-                    handleClickIngredient={handleClickIngredient} 
-                    ingredient={ingredient}
+                    key={ingredient._id}
+                    handleClickIngredient={handleClickIngredient}
                   />
+                </IngredientContext.Provider>
               ))}
             </div>
             <h2 className="text text_type_main-medium mt-10 mb-6 main">Начинки</h2>
             <div className={main__ingredients}>
               {state.data.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
+                <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
                   <BurgerConstructor 
-                    key={ingredient._id} 
-                    {...ingredient} 
-                    handleClickIngredient={handleClickIngredient} 
-                    ingredient={ingredient}
+                    key={ingredient._id}
+                    handleClickIngredient={handleClickIngredient}
                   />
+                </IngredientContext.Provider>
               ))}
             </div>
           </section>
         </section>
         <section className={[main__block, set__box].join(" ")}>
+          <OrderContext.Provider value={{dispatcherTotalPrice, dispatcherIngredientIds}} >
           <ul className={`${top__ingredient} mt-25 pl-5`}>
             {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
@@ -167,7 +226,7 @@ const App = () => {
             ))}
           </ul>
           <ul className={`${bottom__ingredient} pl-5`}>
-            {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 26).map((ingredient) => (
+            {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
                 <BurgerIngredients 
                   {...ingredient} 
@@ -179,13 +238,14 @@ const App = () => {
           </ul>
           <section className={order__footer}>
             <span className="text text_type_digits-default">
-              {state.data.reduce((total, ingredient) => (total + ingredient.price), 0)}
+              {totalPrice}
               <CurrencyIcon type="primary" />
             </span>
             <div onClick={handleClickButton}>
               <Button>Оформить заказ</Button>
             </div>
           </section>
+          </OrderContext.Provider>
         </section>
       </main>
     </>
