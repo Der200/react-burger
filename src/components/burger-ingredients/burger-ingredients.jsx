@@ -1,36 +1,34 @@
 import React from 'react';
-import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
-import PropTypes from 'prop-types';
+import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-ingredients.module.css';
-import OrderContext from '../../services/order-context'
+import PropTypes from 'prop-types';
+import IngredientContext from '../../contexts/ingredient-context'
 
-const BurgerIngredients = ({name, type, image, price, _id, isLocked}) => {
-  const {dispatcherTotalPrice, dispatcherIngredientIds} = React.useContext(OrderContext);
+const BurgerIngredients = ({handleClickIngredient}) => {
+  const ingredient = React.useContext(IngredientContext);
+  //console.log(ingredient)
+  const {image, price, name} = ingredient;
 
-  React.useEffect(() => {
-    dispatcherTotalPrice({data: price});
-    dispatcherIngredientIds({id: _id})
-  }, [dispatcherTotalPrice, dispatcherIngredientIds, price, _id])
-  
+  const handleClick = () => {
+    handleClickIngredient && handleClickIngredient(ingredient)
+  }
+
   return (
-    <section className={styles.section}>
-      {type ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}
-      <ConstructorElement 
-        text={name} 
-        type={type} 
-        thumbnail={image} 
-        price={price} 
-        isLocked={isLocked} 
-      />
+    <section className={styles.section} onClick={handleClick}>
+      <img src={image} alt=""/>
+      <div className='mt-1 mb-1'>
+        <span className="text text_type_digits-default">
+          {price} <CurrencyIcon type="primary" />
+        </span>
+      </div>
+      <div className="text text_type_main-default">{name}</div>
     </section>
   )
 }
 
 BurgerIngredients.propTypes = {
   name: PropTypes.string,
-  type: PropTypes.string,
   image: PropTypes.string,
-  isLocked: PropTypes.bool,
   price: PropTypes.number
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import successImage from '../../images/success.gif';
 import styles from './order-details.module.css';
-import OrderContext from '../../services/order-context'
+import OrderContext from '../../contexts/order-context'
 
 const {box, title, image, status, active} = styles;
 

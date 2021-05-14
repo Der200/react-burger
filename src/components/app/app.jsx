@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tab, Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header'; 
@@ -6,8 +6,8 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
-import IngredientContext from '../../services/ingredient-context'
-import OrderContext from '../../services/order-context'
+import IngredientContext from '../../contexts/ingredient-context'
+import OrderContext from '../../contexts/order-context'
 
 const apiIngredientsURL = 'https://norma.nomoreparties.space/api/ingredients';
 const apiOrderURL = 'https://norma.nomoreparties.space/api/orders';
@@ -26,18 +26,18 @@ const App = () => {
     order__footer
   } = styles;
 
-  const [current, setCurrent] = React.useState('bun');
-  const [state, setState] = React.useState({
+  const [currentTab, setCurrentTab] = useState('bun');
+  const [ingredients, setIngredients] = useState({
     data: [],
     isLoading: true
   });
-  const [order, setOrder] = React.useState({
+  const [order, setOrder] = useState({
     name: '',
     order: {},
     isLoading: true
   });
-  const [itemIngredient, setItemIngredient] = React.useState(null);
-  const [show, setShow] = React.useState({isShowIngredient: false, isShowOrder: false});
+  const [itemIngredient, setItemIngredient] = useState(null);
+  const [modalWindows, setModalWindows] = useState({isShowIngredient: false, isShowOrder: false});
 
 
   const ingredientIdsReducer = (ingredientIds, action) => {
@@ -86,21 +86,21 @@ const App = () => {
       }
 
       const data = await res.json();
-      setState({data: data.data, isLoading: false});
+      setIngredients({data: data.data, isLoading: false});
           
     } catch(e) {
         throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
       }
   }
 
-  React.useEffect((show, order) => {
+  React.useEffect((modalWindows, order) => {
     getIngredientData();
 
     const handleDownEsc = (e) => {
       if (e.key !== 'Escape') {
         return
       }
-      setShow({...show, isShowIngredient: false, isShowOrder: false})
+      setModalWindows({...modalWindows, isShowIngredient: false, isShowOrder: false})
       setOrder({...order, isLoading: true});
     }
 
@@ -115,22 +115,22 @@ const App = () => {
 
   const handleClickIngredient = ingredient => {
     setItemIngredient(ingredient)
-    setShow({...show, isShowIngredient: true})
+    setModalWindows({...modalWindows, isShowIngredient: true})
   }
 
   const handleClickButton = () => {
     getOrderData();
-    setShow({...show, isShowOrder: true})
+    setModalWindows({...modalWindows, isShowOrder: true})
   }
   
   const handleClickModal = target => {  
     if (target.classList.contains('closed') || target.classList.contains('overlay__closed')) {
-      setShow({...show, isShowIngredient: false, isShowOrder: false})
+      setModalWindows({...modalWindows, isShowIngredient: false, isShowOrder: false})
       setOrder({...order, isLoading: true});
     }
   }
 
-  if (state.isLoading) {
+  if (ingredients.isLoading) {
     return (
       <div>Загрузка...</div>
     )
@@ -139,14 +139,14 @@ const App = () => {
   return (
     <>
       <div id='app-modals'></div>
-      {show.isShowIngredient && (
+      {modalWindows.isShowIngredient && (
         <IngredientDetails
           ingredient={itemIngredient}
           handleClickIngredient={handleClickModal}
         />
       )}
       
-      {!order.isLoading && show.isShowOrder && (
+      {!order.isLoading && modalWindows.isShowOrder && (
         <OrderContext.Provider value={order}>
         <OrderDetails
           handleClickOrder={handleClickModal}
@@ -161,17 +161,17 @@ const App = () => {
           <section className="mt-10">
             <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
             <div className={[main__tabs, 'tabs'].join(' ')}>
-              <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>Булки</Tab>
-              <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>Соусы</Tab>
-              <Tab value="main" active={current === 'main'} onClick={setCurrent}>Начинки</Tab>
+              <Tab value="bun" active={currentTab === 'bun'} onClick={setCurrentTab}>Булки</Tab>
+              <Tab value="sauce" active={currentTab === 'sauce'} onClick={setCurrentTab}>Соусы</Tab>
+              <Tab value="main" active={currentTab === 'main'} onClick={setCurrentTab}>Начинки</Tab>
             </div>
           </section>
           <section className={[ingredients__container, assembly__box].join(" ")}>
             <h2 className="text text_type_main-medium mb-6 bun">Булки</h2>
             <div className={main__ingredients}>
-              {state.data.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
+              {ingredients.data.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
                 <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
-                  <BurgerConstructor 
+                  <BurgerIngredients 
                     key={ingredient._id}
                     handleClickIngredient={handleClickIngredient}
                   />
@@ -180,9 +180,9 @@ const App = () => {
             </div>
             <h2 className="text text_type_main-medium mt-10 mb-6 sauce">Соусы</h2>
             <div className={main__ingredients}>
-              {state.data.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
+              {ingredients.data.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
                 <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
-                  <BurgerConstructor 
+                  <BurgerIngredients 
                     key={ingredient._id}
                     handleClickIngredient={handleClickIngredient}
                   />
@@ -191,9 +191,9 @@ const App = () => {
             </div>
             <h2 className="text text_type_main-medium mt-10 mb-6 main">Начинки</h2>
             <div className={main__ingredients}>
-              {state.data.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
+              {ingredients.data.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
                 <IngredientContext.Provider value={ingredient} key={ingredient._id + 'k'}>
-                  <BurgerConstructor 
+                  <BurgerIngredients 
                     key={ingredient._id}
                     handleClickIngredient={handleClickIngredient}
                   />
@@ -205,9 +205,9 @@ const App = () => {
         <section className={[main__block, set__box].join(" ")}>
           <OrderContext.Provider value={{dispatcherTotalPrice, dispatcherIngredientIds}} >
           <ul className={`${top__ingredient} mt-25 pl-5`}>
-            {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
+            {ingredients.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
-                <BurgerIngredients 
+                <BurgerConstructor 
                   {...ingredient} 
                   type={'top'} 
                   isLocked={true} 
@@ -216,9 +216,9 @@ const App = () => {
             ))}
           </ul>
           <ul className={order__container}>
-            {state.data.filter(ingredient => ingredient.type === 'main' || ingredient.type === 'sauce').map((ingredient) => (
+            {ingredients.data.filter(ingredient => ingredient.type !== 'bun').map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
-                <BurgerIngredients 
+                <BurgerConstructor 
                   {...ingredient} 
                   type={null} 
                 />
@@ -226,9 +226,9 @@ const App = () => {
             ))}
           </ul>
           <ul className={`${bottom__ingredient} pl-5`}>
-            {state.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
+            {ingredients.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => (
               <li className="text text_type_main-default pb-4" key={ingredient._id}>
-                <BurgerIngredients 
+                <BurgerConstructor 
                   {...ingredient} 
                   type={'bottom'} 
                   isLocked={true} 
