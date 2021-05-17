@@ -1,19 +1,20 @@
 import React from 'react';
 import {ConstructorElement, DragIcon, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-constructor.module.css';
-import OrderContext from '../../contexts/order-context'
+import OrderContext from '../../contexts/order-context';
+import ModalContext from '../../contexts/modal-context';
 
 const BurgerConstructor = () => {
   const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer, section, dragicon} = styles;
+  const {setModalWindows, modalWindows} = React.useContext(ModalContext);
   const {
         setIngredientsID,
+        ingredientsID,
         totalPrice, 
-        getOrderData, 
-        setModalWindows, 
-        modalWindows, 
-        ingredients, 
+        getOrderData,
+        ingredients,
         setTotalPrice} = React.useContext(OrderContext);
-
+  
   const handleClickButton = () => {
     getOrderData();
     setModalWindows({...modalWindows, isShowOrder: true})
@@ -22,17 +23,22 @@ const BurgerConstructor = () => {
   const priceArr = [];
   const idArr = [];
 
+  const addIngredient = (ingredient) => {
+    setIngredientsID([...ingredientsID].push(ingredient));
+  }
+
   React.useEffect(() => {
     setTotalPrice(priceArr.reduce((accumulate, currentItem) => accumulate + currentItem));
     setIngredientsID(idArr);
-  }, [setTotalPrice, setIngredientsID])
+    
+  }, [])
   
   return (
     <section className={[main__block, set__box].join(" ")}>
       <ul className={`${top__ingredient} mt-25 pl-5`}>
         {ingredients.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => {
           priceArr.push(ingredient.price);
-          idArr.push(ingredient._id);
+          idArr.push(ingredient._id);            
 
           return (
           <li className="text text_type_main-default pb-4" key={ingredient._id}>
@@ -44,6 +50,7 @@ const BurgerConstructor = () => {
                 thumbnail={ingredient.image} 
                 price={ingredient.price} 
                 isLocked={true} 
+                addIngredient={addIngredient}
               />
             </section>
           </li>
@@ -52,7 +59,7 @@ const BurgerConstructor = () => {
       <ul className={order__container}>
         {ingredients.data.filter(ingredient => ingredient.type !== 'bun').map((ingredient) => {
           priceArr.push(ingredient.price);
-          idArr.push(ingredient._id);
+          idArr.push(ingredient._id);         
 
           return (
           <li className="text text_type_main-default pb-4" key={ingredient._id}>

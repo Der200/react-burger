@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-ingredients.module.css';
-import IngredientContext from '../../contexts/ingredient-context';
-import IngredientsContext from '../../contexts/ingredients-context';
-import Ingredient from '../ingredient/ingredient'
+import BurgerIngredientsContext from '../../contexts/burger-ingredients-context';
+import Ingredient from '../ingredient/ingredient';
+import ModalContext from '../../contexts/modal-context';
 
 const BurgerIngredients = () => {
   const {main__tabs, 
@@ -13,7 +13,8 @@ const BurgerIngredients = () => {
         assembly__box
   } = styles;
 
-  const {ingredients, setItemIngredient, setModalWindows, modalWindows} = useContext(IngredientsContext);
+  const {setModalWindows, modalWindows} = useContext(ModalContext);
+  const {ingredients, setItemIngredient} = useContext(BurgerIngredientsContext);
   const [currentTab, setCurrentTab] = useState('bun');
 
   const handleClickIngredient = ingredient => {
@@ -35,32 +36,31 @@ const BurgerIngredients = () => {
         <h2 className="text text_type_main-medium mb-6 bun">Булки</h2>
         <div className={main__ingredients}>
           {ingredients.data.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
-            <IngredientContext.Provider value={{ingredient, handleClickIngredient}} key={ingredient._id + 'k'}>
               <Ingredient
-                key={ingredient._id}
-                
+                ingredient={ingredient}
+                handleClickIngredient={handleClickIngredient}
+                key={ingredient._id}                
               />
-            </IngredientContext.Provider>
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 sauce">Соусы</h2>
         <div className={main__ingredients}>
           {ingredients.data.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
-            <IngredientContext.Provider value={{ingredient, handleClickIngredient}} key={ingredient._id + 'k'}>
               <Ingredient
+                ingredient={ingredient}
+                handleClickIngredient={handleClickIngredient}
                 key={ingredient._id}
               />
-            </IngredientContext.Provider>
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 main">Начинки</h2>
         <div className={main__ingredients}>
           {ingredients.data.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
-            <IngredientContext.Provider value={{ingredient, handleClickIngredient}} key={ingredient._id + 'k'}>
               <Ingredient
+                ingredient={ingredient}
+                handleClickIngredient={handleClickIngredient}
                 key={ingredient._id}
               />
-            </IngredientContext.Provider>
           ))}
         </div>
       </section>

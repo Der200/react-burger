@@ -2,10 +2,8 @@ import React from 'react';
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './ingredient.module.css';
 import PropTypes from 'prop-types';
-import IngredientContext from '../../contexts/ingredient-context'
 
-const Ingredient = () => {
-  const {ingredient, handleClickIngredient} = React.useContext(IngredientContext);
+const Ingredient = ({ingredient, handleClickIngredient}) => {
   const {image, price, name} = ingredient;
 
   const handleClick = () => {
