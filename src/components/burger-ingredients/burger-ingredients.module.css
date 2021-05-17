@@ -1,8 +1,31 @@
-.section {
-  position: relative;
+.main__block {
+  width: 600px;
+  height: 912px;
+  text-align: left;
+  float: left;
 }
 
-.dragicon {
-  position: absolute;
-  top: 26px;
+.main__tabs {
+  display: flex;
+}
+
+.ingredients__container {
+  height: 716px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.main__ingredients {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.assembly__box {
+  margin-top: 40px;
+}
+
+.assembly__box span {
+  margin-top: 40px;
+  color: #F2F2F3;
 }

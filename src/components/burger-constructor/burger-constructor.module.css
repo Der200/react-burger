@@ -1,10 +1,82 @@
 .section {
-  width: 272px;
-  text-align: center;
-  margin-bottom: 32px;
-  cursor: pointer;
+  position: relative;
 }
 
-.section svg {
-  vertical-align: top;
+.dragicon {
+  position: absolute;
+  top: 26px;
+}
+
+/* ИЗ АПП */
+
+.main__block {
+  width: 600px;
+  height: 912px;
+  text-align: left;
+  float: left;
+}
+
+.set__box span {
+  color: #F2F2F3; 
+}
+
+.order__container {
+  margin-bottom: 0;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 464px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.order__container li:last-child {
+  padding-bottom: 0;
+}
+
+.order__footer {
+  height: 64px;
+  padding-right: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.order__footer span {
+  position: relative;
+  padding-right: 84px;
+  padding-top: 10px;
+  font-size: 48px;
+  vertical-align: middle;
+}
+
+.order__footer svg {
+  position: absolute;
+  right: 41.5px;
+  top: 18px;
+}
+
+.order__footer button {
+  float: right;
+  height: 64px;
+}
+
+.top__ingredient {
+  margin-bottom: 0;
+}
+
+.top__ingredient li {
+  padding-bottom: 0;
+}
+
+.bottom__ingredient {
+  margin-top: 16px;
+  margin-bottom: 24px;
+  position: relative
+}
+
+.bottom__ingredient section {
+  display: flex;
+}
+
+.bottom__ingredient div {
+  margin-left: 0;
 }

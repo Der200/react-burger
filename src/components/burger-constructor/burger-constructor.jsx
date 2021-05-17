@@ -1,30 +1,112 @@
-import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
+import React from 'react';
+import {ConstructorElement, DragIcon, Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
+import OrderContext from '../../contexts/order-context';
+import ModalContext from '../../contexts/modal-context';
 
-const BurgerConstructor = ({handleClickIngredient, image, price, name, ingredient}) => {
-  const handleClick = () => {
-    handleClickIngredient && handleClickIngredient(ingredient)
+const BurgerConstructor = () => {
+  const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer, section, dragicon} = styles;
+  const {setModalWindows, modalWindows} = React.useContext(ModalContext);
+  const {
+        setIngredientsID,
+        ingredientsID,
+        totalPrice, 
+        getOrderData,
+        ingredients,
+        setTotalPrice} = React.useContext(OrderContext);
+  
+  const handleClickButton = () => {
+    getOrderData();
+    setModalWindows({...modalWindows, isShowOrder: true})
   }
 
+  const priceArr = [];
+  const idArr = [];
+
+  const addIngredient = (ingredient) => {
+    setIngredientsID([...ingredientsID].push(ingredient));
+  }
+
+  React.useEffect(() => {
+    setTotalPrice(priceArr.reduce((accumulate, currentItem) => accumulate + currentItem));
+    setIngredientsID(idArr);
+    
+  }, [])
+  
   return (
-    <section className={styles.section} onClick={handleClick}>
-      <img src={image} alt=""/>
-      <div className='mt-1 mb-1'>
+    <section className={[main__block, set__box].join(" ")}>
+      <ul className={`${top__ingredient} mt-25 pl-5`}>
+        {ingredients.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => {
+          priceArr.push(ingredient.price);
+          idArr.push(ingredient._id);            
+
+          return (
+          <li className="text text_type_main-default pb-4" key={ingredient._id}>
+            <section className={section}>
+            <span className="pl-6"></span>
+              <ConstructorElement 
+                text={ingredient.name} 
+                type={'top'} 
+                thumbnail={ingredient.image} 
+                price={ingredient.price} 
+                isLocked={true} 
+                addIngredient={addIngredient}
+              />
+            </section>
+          </li>
+        )})}
+      </ul>
+      <ul className={order__container}>
+        {ingredients.data.filter(ingredient => ingredient.type !== 'bun').map((ingredient) => {
+          priceArr.push(ingredient.price);
+          idArr.push(ingredient._id);         
+
+          return (
+          <li className="text text_type_main-default pb-4" key={ingredient._id}>
+            <section className={section}>
+            <div className={dragicon}><DragIcon type="primary"/></div>
+              <ConstructorElement 
+                text={ingredient.name} 
+                type={null} 
+                thumbnail={ingredient.image} 
+                price={ingredient.price} 
+                isLocked={false} 
+              />
+            </section>
+          </li>
+        )})}
+      </ul>
+      <ul className={`${bottom__ingredient} pl-5`}>
+        {ingredients.data.filter(ingredient => ingredient.type === 'bun' && ingredient.fat === 24).map((ingredient) => {
+          priceArr.push(ingredient.price);
+          idArr.push(ingredient._id);
+
+          return (          
+          <li className="text text_type_main-default pb-4" key={ingredient._id}>
+            <section className={section}>
+              <span className="pl-6"></span>
+              <ConstructorElement 
+                text={ingredient.name} 
+                type={'bottom'} 
+                thumbnail={ingredient.image}
+                price={ingredient.price} 
+                isLocked={true} 
+              />
+            </section>
+          </li>
+        )})}
+      </ul>
+      <section className={order__footer}>
         <span className="text text_type_digits-default">
-          {price} <CurrencyIcon type="primary" />
+          {totalPrice}
+          <CurrencyIcon type="primary" />
         </span>
-      </div>
-      <div className="text text_type_main-default">{name}</div>
+        <div onClick={handleClickButton}>
+          <Button>Оформить заказ</Button>
+        </div>
+      </section>
     </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  name: PropTypes.string,
-  image: PropTypes.string,
-  price: PropTypes.number,
-  ingredient: PropTypes.object.isRequired
 }
 
 export default BurgerConstructor;
