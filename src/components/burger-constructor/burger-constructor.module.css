@@ -24,7 +24,8 @@
   margin-bottom: 0;
   padding-left: 16px;
   padding-right: 16px;
-  height: 464px;
+  min-height: 120px;
+  max-height: 464px;
   overflow-y: auto;
   overflow-x: hidden;
 }

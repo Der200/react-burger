@@ -1,14 +1,14 @@
-import React from 'react'
 import PropTypes from 'prop-types';
 import Modal from '../modal/modal';
 import successImage from '../../images/success.gif';
 import styles from './order-details.module.css';
-import OrderContext from '../../contexts/order-context'
+import { useSelector } from 'react-redux';
+import { orderDetails } from '../../services/reducers/order-slice';
 
 const {box, title, image, status, active} = styles;
 
 const OrderDetails = ({ handleClickOrder }) => {
-  const {order} = React.useContext(OrderContext);
+  const order = useSelector(orderDetails)
   const handleClick = target => {
     handleClickOrder && handleClickOrder(target)
   }

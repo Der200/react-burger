@@ -1,11 +1,15 @@
 import Modal from '../modal/modal';
 import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
+import { selectedIngredient } from '../../services/reducers/ingredients-slice';
+import { useSelector } from 'react-redux';
 
-const IngredientDetails = ({ ingredient, handleClickIngredient }) => {
+const IngredientDetails = ({handleClickIngredient }) => {
+  const ingredient = useSelector(selectedIngredient);
   const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient;
   
   const handleClick = (target) => {
+    console.log(target);
     handleClickIngredient && handleClickIngredient(target)
   }
 

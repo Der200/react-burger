@@ -1,11 +1,14 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-ingredients.module.css';
-import BurgerIngredientsContext from '../../contexts/burger-ingredients-context';
 import Ingredient from '../ingredient/ingredient';
-import ModalContext from '../../contexts/modal-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { showIngredient } from '../../services/reducers/modal-slice';
+import { fetchedIngredients, setIngredientDetails } from '../../services/reducers/ingredients-slice';
+import { useInView } from 'react-intersection-observer';
 
 const BurgerIngredients = () => {
+  const ingredients = useSelector(fetchedIngredients);
   const {main__tabs, 
         main__block, 
         main__ingredients,
@@ -13,13 +16,25 @@ const BurgerIngredients = () => {
         assembly__box
   } = styles;
 
-  const {setModalWindows, modalWindows} = useContext(ModalContext);
-  const {ingredients, setItemIngredient} = useContext(BurgerIngredientsContext);
+  const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState('bun');
 
-  const handleClickIngredient = ingredient => {
-    setItemIngredient(ingredient)
-    setModalWindows({...modalWindows, isShowIngredient: true})
+  const [buns, inViewBuns] = useInView({threshold:0.3})
+  const [sauces, inViewSauces] = useInView({threshold:1})
+  const [mains, inViewMain] = useInView({threshold:0.4})
+
+  const handleScrollIngredients = () => {
+    inViewBuns && setCurrentTab('bun')
+    inViewSauces && setCurrentTab('sauce')
+    inViewMain && setCurrentTab('main')
+  }
+
+
+
+
+  const handleClickIngredient = ingredient => {    
+    dispatch(setIngredientDetails(ingredient))
+    dispatch(showIngredient())
   }
 
   return (
@@ -32,20 +47,20 @@ const BurgerIngredients = () => {
           <Tab value="main" active={currentTab === 'main'} onClick={setCurrentTab}>Начинки</Tab>
         </div>
       </section>
-      <section className={[ingredients__container, assembly__box].join(" ")}>
+      <section className={[ingredients__container, assembly__box].join(" ")} onScroll = {handleScrollIngredients} >
         <h2 className="text text_type_main-medium mb-6 bun">Булки</h2>
-        <div className={main__ingredients}>
-          {ingredients.data.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
+        <div className={main__ingredients} ref={buns}>
+          {ingredients.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
-                key={ingredient._id}                
+                key={ingredient._id}        
               />
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 sauce">Соусы</h2>
-        <div className={main__ingredients}>
-          {ingredients.data.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
+        <div className={main__ingredients} ref={sauces}>
+          {ingredients.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
@@ -54,8 +69,8 @@ const BurgerIngredients = () => {
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 main">Начинки</h2>
-        <div className={main__ingredients}>
-          {ingredients.data.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
+        <div className={main__ingredients} ref={mains}>
+          {ingredients.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
