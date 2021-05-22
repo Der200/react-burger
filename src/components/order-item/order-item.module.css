@@ -1,0 +1,10 @@
+.section {
+  position: relative;
+}
+
+.dragicon {
+  position: absolute;
+  top: 26px;
+  cursor: move;
+}
+

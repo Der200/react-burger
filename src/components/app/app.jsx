@@ -9,9 +9,9 @@ import Preloader from '../preloader/preloader';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from 'react-redux';
-import { closeWindows, modalViewIngredient, modalViewOrder } from '../../services/reducers/modal-slice';
-import { ingredientsFetchStatus, fetchedIngredients, fetchIngredients } from '../../services/reducers/ingredients-slice';
-import { addIngredient, orderFetchStatus } from '../../services/reducers/order-slice';
+import { closeWindows, modalViewIngredient, modalViewOrder } from '../../services/redux/modal-slice';
+import { ingredientsFetchStatus, fetchedIngredients, fetchIngredients } from '../../services/redux/ingredients-slice';
+import { addIngredient, orderFetchStatus } from '../../services/redux/order-slice';
 
 const App = () => {
 

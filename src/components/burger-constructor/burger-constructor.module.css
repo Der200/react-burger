@@ -1,14 +1,3 @@
-.section {
-  position: relative;
-}
-
-.dragicon {
-  position: absolute;
-  top: 26px;
-}
-
-/* ИЗ АПП */
-
 .main__block {
   width: 600px;
   height: 912px;
@@ -81,3 +70,5 @@
 .bottom__ingredient div {
   margin-left: 0;
 }
+
+

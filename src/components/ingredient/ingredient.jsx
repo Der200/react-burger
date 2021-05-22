@@ -4,7 +4,7 @@ import styles from './ingredient.module.css';
 import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
-import { orderIngredients } from '../../services/reducers/order-slice';
+import { orderIngredients } from '../../services/redux/order-slice';
 
 const Ingredient = ({ingredient, handleClickIngredient}) => {
   const {image, price, name, _id} = ingredient;
@@ -18,7 +18,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
     )
   }, [selectedIngredients])
 
-  const [, dragRef] = useDrag({
+  const [, drag] = useDrag({
     type: 'ingredient',
     item: {_id}
   });
@@ -28,7 +28,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   }
 
   return (
-    <section className={styles.section} onClick={handleClick} ref={dragRef}>
+    <section className={styles.section} onClick={handleClick} ref={drag}>
       {count > 0 && <Counter count={count}/>}
       <img src={image} alt=""/>
       <div className='mt-1 mb-1'>
@@ -42,9 +42,16 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
 }
 
 Ingredient.propTypes = {
-  name: PropTypes.string,
-  image: PropTypes.string,
-  price: PropTypes.number
+  ingredient: PropTypes.shape({
+    image_large: PropTypes.string.isRequired, 
+    name: PropTypes.string.isRequired, 
+    calories: PropTypes.number.isRequired, 
+    proteins: PropTypes.number.isRequired, 
+    fat: PropTypes.number.isRequired, 
+    carbohydrates: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+  }),  
 }
 
 export default Ingredient;

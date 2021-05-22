@@ -71,7 +71,10 @@ export const orderSlice = createSlice({
       state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id)
     },
     sortingIngredients: (state, action) => {
-
+      const {indexFrom, indexTo} = action.payload;
+      const newArray = [...state.orderIngredients];
+      newArray.splice(indexTo, 0, newArray.splice(indexFrom, 1)[0]);
+      state.orderIngredients = newArray;
     }
   },
   extraReducers: {
