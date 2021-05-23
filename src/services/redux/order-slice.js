@@ -15,17 +15,16 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
     });
     
     if(!res.ok) {
-      throw new Error('Сервер работает в штатном режиме')
+      throw new Error('сервер не смог обработать наш запрос')
     }
 
     const orderData = await res.json();
     console.log(orderData)
     return orderData
-    //setOrder({name: orderData.name, order: orderData.order, isLoading: false});
         
   } catch(e) {
-      throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
-    }
+    alert(`Что-то пошло не так. Ошибка: ${e}`)
+  }
 })
 
 const initialState = {

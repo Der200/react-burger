@@ -21,6 +21,10 @@ code {
   margin-left: auto;
 }
 
+.constructor-element__text {
+  margin-right: 17px !important;
+}
+
 .constructor-element_pos_bottom {
   margin: 0;
   margin-left: 20px;

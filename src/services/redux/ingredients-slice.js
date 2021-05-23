@@ -7,15 +7,15 @@ export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients',
     const res = await fetch(ingredientsApiUrl);
     
     if(!res.ok) {
-      throw new Error('Сервер работает в штатном режиме')
+      throw new Error('сервер не смог обработать наш запрос')
     }
     const ingredients = await res.json();
 
     return ingredients.data
             
   } catch(e) {
-      throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
-    }
+      alert(`Что-то пошло не так. Ошибка: ${e}`)
+  }
 })
 
 const initialState = {
