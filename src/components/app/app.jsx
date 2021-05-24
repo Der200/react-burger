@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header'; 
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -9,9 +9,8 @@ import Preloader from '../preloader/preloader';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from 'react-redux';
-import { closeWindows, modalViewIngredient, modalViewOrder } from '../../services/redux/modal-slice';
-import { ingredientsFetchStatus, fetchedIngredients, fetchIngredients } from '../../services/redux/ingredients-slice';
-import { addIngredient, orderFetchStatus } from '../../services/redux/order-slice';
+import { ingredientsFetchStatus, fetchedIngredients, fetchIngredients, closeIngredientDetails, modalViewIngredient } from '../../services/redux/ingredients-slice';
+import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder } from '../../services/redux/order-slice';
 
 const App = () => {
 
@@ -19,14 +18,24 @@ const App = () => {
 
   const ingredientWindow = useSelector(modalViewIngredient);
   const orderWindow = useSelector(modalViewOrder);
+
   const ingredientsStatus = useSelector(ingredientsFetchStatus);
   const orderStatus = useSelector(orderFetchStatus);
+  
   const ingredients = useSelector(fetchedIngredients);
 
   const dropHandler = (itemId) => {
     const selectedIngredient = ingredients.filter(ingredient => ingredient._id === itemId._id);
     dispatch(addIngredient(selectedIngredient));
   }
+
+  const closeModalWindow =  useCallback(() => {
+    if (ingredientWindow) {
+      return dispatch(closeIngredientDetails());
+    } else if(orderWindow) {
+      return dispatch(closeOrder());
+    }
+  }, [ingredientWindow, orderWindow, dispatch])
 
   React.useEffect(() => {
     if (ingredientsStatus === 'idle') {
@@ -37,7 +46,7 @@ const App = () => {
       if (e.key !== 'Escape') {
         return 
       }
-      dispatch(closeWindows());
+      closeModalWindow();
     }
 
     window.addEventListener('keydown', handleDownEsc);
@@ -45,11 +54,11 @@ const App = () => {
     return () => {
       window.removeEventListener('keydown', handleDownEsc);
     }
-  }, [dispatch, orderWindow, ingredientWindow, ingredientsStatus, orderStatus])
+  }, [dispatch, ingredientsStatus, orderStatus, closeModalWindow])
 
   const handleClickModal = target => {  
     if (target.classList.contains('closed') || target.classList.contains('overlay__closed')) {
-      dispatch(closeWindows());
+      closeModalWindow();
     }
   }
 

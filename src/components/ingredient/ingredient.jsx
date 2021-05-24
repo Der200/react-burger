@@ -11,12 +11,11 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
 
-
   useEffect(() => {
     setCount(
       selectedIngredients.filter(orderIngredient => orderIngredient === ingredient).length
     )
-  }, [selectedIngredients])
+  }, [selectedIngredients, ingredient])
 
   const [, drag] = useDrag({
     type: 'ingredient',

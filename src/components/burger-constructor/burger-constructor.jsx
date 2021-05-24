@@ -1,8 +1,7 @@
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { showOrder } from '../../services/redux/modal-slice';
-import { orderIngredients, orderCost, placeAnOrder, orderIngredientsId, deleteIngredient } from '../../services/redux/order-slice';
+import { orderIngredients, orderCost, placeAnOrder, orderIngredientsId, deleteIngredient, showOrder } from '../../services/redux/order-slice';
 import { useDrop } from "react-dnd";
 import OrderItem from '../order-item/order-item'
 

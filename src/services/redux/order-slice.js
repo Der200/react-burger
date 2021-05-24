@@ -36,7 +36,8 @@ const initialState = {
   orderDetails: {
     name: '',
     number: '',
-  }
+  },
+  isShowOrder: false,
 }
 
 export const orderSlice = createSlice({
@@ -45,35 +46,45 @@ export const orderSlice = createSlice({
   reducers: {
     addIngredient: (state, action) => {
       if (action.payload[0].type === 'bun' && state.orderIngredients.find(ingredient => ingredient.type === 'bun') ) {
-        state.orderCost = state.orderCost - (state.orderIngredients.find(ingredient => ingredient.type === 'bun').price * 2)
-        state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== state.orderIngredients.find(ingredient => ingredient.type === 'bun')._id)
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id]
-        state.orderIngredients = state.orderIngredients.filter(ingredient => ingredient.type !== 'bun')
-        state.orderIngredients = state.orderIngredients.concat(action.payload)
-        state.orderCost = state.orderCost + (action.payload[0].price * 2)
+        state.orderCost = state.orderCost - (state.orderIngredients.find(ingredient => ingredient.type === 'bun').price * 2);
+        state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== state.orderIngredients.find(ingredient => ingredient.type === 'bun')._id);
+        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+        state.orderIngredients = state.orderIngredients.filter(ingredient => ingredient.type !== 'bun');
+        state.orderIngredients = state.orderIngredients.concat(action.payload);
+        state.orderCost = state.orderCost + (action.payload[0].price * 2);
 
       } else if (action.payload[0].type === 'bun') {
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id]
-        state.orderIngredients = state.orderIngredients.concat(action.payload)
-        state.orderCost = state.orderCost + (action.payload[0].price * 2)
+        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+        state.orderIngredients = state.orderIngredients.concat(action.payload);
+        state.orderCost = state.orderCost + (action.payload[0].price * 2);
 
       } else {
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id]
-        state.orderIngredients = state.orderIngredients.concat(action.payload)
-        state.orderCost = state.orderCost + action.payload[0].price
+        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+        state.orderIngredients = state.orderIngredients.concat(action.payload);
+        state.orderCost = state.orderCost + action.payload[0].price;
       }
     },
     deleteIngredient: (state, action) => {
       const indexSelectingIngredient = state.orderIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
-      state.orderIngredients.splice(indexSelectingIngredient, 1)
+      state.orderIngredients.splice(indexSelectingIngredient, 1);
       state.orderCost = state.orderCost - action.payload.price;
-      state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id)
+      state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id);
     },
     sortingIngredients: (state, action) => {
       const {indexFrom, indexTo} = action.payload;
       const newArray = [...state.orderIngredients];
       newArray.splice(indexTo, 0, newArray.splice(indexFrom, 1)[0]);
       state.orderIngredients = newArray;
+    },
+    showOrder: state => {
+      state.isShowOrder = true;
+    },
+    closeOrder: state => {
+      state.isShowOrder = false;
+      state.orderDetails = {
+        name: '',
+        number: '',
+      };
     }
   },
   extraReducers: {
@@ -99,5 +110,6 @@ export const orderDetails = state => state.orderSlice.orderDetails;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
 export const orderCost = state => state.orderSlice.orderCost;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
-export const { addIngredient, deleteIngredient, sortingIngredients } = orderSlice.actions
+export const modalViewOrder = state => state.orderSlice.isShowOrder;
+export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder } = orderSlice.actions
 export default orderSlice.reducer
