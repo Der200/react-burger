@@ -1,11 +1,15 @@
 import Modal from '../modal/modal';
 import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
+import { selectedIngredient } from '../../services/redux/ingredients-slice';
+import { useSelector } from 'react-redux';
 
-const IngredientDetails = ({ ingredient, handleClickIngredient }) => {
+const IngredientDetails = ({handleClickIngredient }) => {
+  const ingredient = useSelector(selectedIngredient);
   const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient;
   
   const handleClick = (target) => {
+    console.log(target);
     handleClickIngredient && handleClickIngredient(target)
   }
 
@@ -51,14 +55,6 @@ const IngredientDetails = ({ ingredient, handleClickIngredient }) => {
 }
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.shape({
-    image_large: PropTypes.string.isRequired, 
-    name: PropTypes.string.isRequired, 
-    calories: PropTypes.number.isRequired, 
-    proteins: PropTypes.number.isRequired, 
-    fat: PropTypes.number.isRequired, 
-    carbohydrates: PropTypes.number.isRequired
-  }),  
   handleClickIngredient: PropTypes.func.isRequired
 }
 

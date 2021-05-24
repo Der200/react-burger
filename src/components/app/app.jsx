@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header'; 
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -6,79 +6,47 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Preloader from '../preloader/preloader';
-import BurgerIngredientsContext from '../../contexts/burger-ingredients-context';
-import ModalContext from '../../contexts/modal-context';
-import OrderContext from '../../contexts/order-context';
-
-const apiIngredientsURL = 'https://norma.nomoreparties.space/api/ingredients';
-const apiOrderURL = 'https://norma.nomoreparties.space/api/orders';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDispatch, useSelector } from 'react-redux';
+import { ingredientsFetchStatus, fetchedIngredients, fetchIngredients, closeIngredientDetails, modalViewIngredient } from '../../services/redux/ingredients-slice';
+import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder } from '../../services/redux/order-slice';
 
 const App = () => {
-  const [ingredients, setIngredients] = useState({
-    data: [],
-    isLoading: true
-  });
-  const [order, setOrder] = useState({
-    name: '',
-    order: {},
-    isLoading: true
-  });
 
-  const [itemIngredient, setItemIngredient] = useState(null);
-  const [modalWindows, setModalWindows] = useState({isShowIngredient: false, isShowOrder: false});
-  const [ingredientsID, setIngredientsID] = React.useState([]);
-  const [totalPrice, setTotalPrice] = React.useState(0);
+  const dispatch = useDispatch();
 
-  const getOrderData = async () => {
-    try {
-      const res = await fetch(apiOrderURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-          "ingredients": ingredientsID
-        })
-      });
-      
-      if(!res.ok) {
-        throw new Error('Сервер работает в штатном режиме')
-      }
+  const ingredientWindow = useSelector(modalViewIngredient);
+  const orderWindow = useSelector(modalViewOrder);
 
-      const orderData = await res.json();
+  const ingredientsStatus = useSelector(ingredientsFetchStatus);
+  const orderStatus = useSelector(orderFetchStatus);
+  
+  const ingredients = useSelector(fetchedIngredients);
 
-      setOrder({name: orderData.name, order: orderData.order, isLoading: false});
-          
-    } catch(e) {
-        throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
-      }
+  const dropHandler = (itemId) => {
+    const selectedIngredient = ingredients.filter(ingredient => ingredient._id === itemId._id);
+    dispatch(addIngredient(selectedIngredient));
   }
 
-  const getIngredientData = async () => {
-    try {
-      const res = await fetch(apiIngredientsURL);
-      
-      if(!res.ok) {
-        throw new Error('Сервер работает в штатном режиме')
-      }
-
-      const {data} = await res.json();
-      setIngredients({data: data, isLoading: false});
-          
-    } catch(e) {
-        throw new Error(`Что-то пошло не так. Ошибка: ${e}`)
-      }
-  }
+  const closeModalWindow =  useCallback(() => {
+    if (ingredientWindow) {
+      return dispatch(closeIngredientDetails());
+    } else if(orderWindow) {
+      return dispatch(closeOrder());
+    }
+  }, [ingredientWindow, orderWindow, dispatch])
 
   React.useEffect(() => {
-    getIngredientData();
-
+    if (ingredientsStatus === 'idle') {
+      dispatch(fetchIngredients())
+    }
+    
     const handleDownEsc = (e) => {
       if (e.key !== 'Escape') {
-        return
+        return 
       }
-      setModalWindows({...modalWindows, isShowIngredient: false, isShowOrder: false})
-      setOrder({...order, isLoading: true});
+      closeModalWindow();
     }
 
     window.addEventListener('keydown', handleDownEsc);
@@ -86,16 +54,15 @@ const App = () => {
     return () => {
       window.removeEventListener('keydown', handleDownEsc);
     }
-  }, [modalWindows, order])
+  }, [dispatch, ingredientsStatus, orderStatus, closeModalWindow])
 
   const handleClickModal = target => {  
     if (target.classList.contains('closed') || target.classList.contains('overlay__closed')) {
-      setModalWindows({...modalWindows, isShowIngredient: false, isShowOrder: false})
-      setOrder({...order, isLoading: true});
+      closeModalWindow();
     }
   }
 
-  if (ingredients.isLoading) {
+  if (ingredientsStatus === 'loading') {
     return (
       <Preloader />
     )
@@ -104,39 +71,25 @@ const App = () => {
   return (
     <>
       <div id='app-modals'></div>
-      {modalWindows.isShowIngredient && (
+      {ingredientWindow && (
         <IngredientDetails
-          ingredient={itemIngredient}
           handleClickIngredient={handleClickModal}
         />
       )}
-      
-      {!order.isLoading && modalWindows.isShowOrder && (
-        <OrderContext.Provider value={order}>
+
+      {orderWindow && orderStatus === 'succeeded' && (
         <OrderDetails
           handleClickOrder={handleClickModal}
         />
-        </OrderContext.Provider>
       )}
       
       <AppHeader />
-      <ModalContext.Provider value={{modalWindows, setModalWindows}}>
+      <DndProvider backend={HTML5Backend}>
       <main className={styles.main__content}>
-        <BurgerIngredientsContext.Provider value={{ingredients, setItemIngredient}}>
           <BurgerIngredients />
-        </BurgerIngredientsContext.Provider>
-
-        <OrderContext.Provider 
-          value={{ingredientsID, 
-                  setIngredientsID,
-                  totalPrice,         
-                  getOrderData, 
-                  ingredients,
-                  setTotalPrice}} >
-          <BurgerConstructor />
-        </OrderContext.Provider>
+          <BurgerConstructor dropHandler={dropHandler} />
       </main>
-      </ModalContext.Provider>
+      </DndProvider>
     </>
   );
 }
