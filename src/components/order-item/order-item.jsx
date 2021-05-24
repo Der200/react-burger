@@ -12,6 +12,7 @@ const OrderItem = ({ingredient, position, index, isLocked, handleClose}) => {
   const handleDrop =(item, monitor) => {
     if(item.ingredient.type === 'bun') return
     if(item.index !== index) {
+      console.log(`'indexFrom:' ${item.index}, 'indexTo:' ${index}`)
       dispatch(sortingIngredients({indexFrom: item.index, indexTo: index}))
     }
   }

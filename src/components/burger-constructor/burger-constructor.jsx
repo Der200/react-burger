@@ -1,7 +1,7 @@
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { orderIngredients, orderCost, placeAnOrder, orderIngredientsId, deleteIngredient, showOrder } from '../../services/redux/order-slice';
+import { orderIngredients, orderCost, placeAnOrder, orderIngredientsId, deleteIngredient, showOrder, mainIngredients } from '../../services/redux/order-slice';
 import { useDrop } from "react-dnd";
 import OrderItem from '../order-item/order-item'
 
@@ -20,6 +20,7 @@ const BurgerConstructor = ({dropHandler}) => {
 
   const totalPrice = useSelector(orderCost);
   const selectedIngredients = useSelector(orderIngredients);
+  const selectedMainIngredients = useSelector(mainIngredients);
   
   const handleClickButton = () => {
     if (selectedIngredients.length === 0) {
@@ -38,7 +39,7 @@ const BurgerConstructor = ({dropHandler}) => {
       })}
       </ul>
       <ul className={order__container}>
-        {selectedIngredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
+        {selectedMainIngredients.filter(ingredient => ingredient.type !== 'bun').map((ingredient, index) => {
           return (<OrderItem 
                   index={index}
                   ingredient={ingredient} 

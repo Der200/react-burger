@@ -29,6 +29,7 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
 
 const initialState = {
   orderIngredients: [],
+  mainIngredients: [],
   ingredientsID: [],
   orderCost: 0,
   status: `idle`,
@@ -61,6 +62,7 @@ export const orderSlice = createSlice({
       } else {
         state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
         state.orderIngredients = state.orderIngredients.concat(action.payload);
+        state.mainIngredients = state.mainIngredients.concat(action.payload);
         state.orderCost = state.orderCost + action.payload[0].price;
       }
     },
@@ -72,9 +74,9 @@ export const orderSlice = createSlice({
     },
     sortingIngredients: (state, action) => {
       const {indexFrom, indexTo} = action.payload;
-      const newArray = [...state.orderIngredients];
+      const newArray = [...state.mainIngredients];
       newArray.splice(indexTo, 0, newArray.splice(indexFrom, 1)[0]);
-      state.orderIngredients = newArray;
+      state.mainIngredients = newArray;
     },
     showOrder: state => {
       state.isShowOrder = true;
@@ -110,6 +112,7 @@ export const orderDetails = state => state.orderSlice.orderDetails;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
 export const orderCost = state => state.orderSlice.orderCost;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
+export const mainIngredients = state => state.orderSlice.mainIngredients;
 export const modalViewOrder = state => state.orderSlice.isShowOrder;
 export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder } = orderSlice.actions
 export default orderSlice.reducer
