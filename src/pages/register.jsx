@@ -17,7 +17,6 @@ const Register = () => {
     <Input type={'email'} placeholder={'Email'} value={''} />
     <PasswordInput value={''} />
     <Button>Зарегистрироваться</Button>
-
   </Form>
   )
 
