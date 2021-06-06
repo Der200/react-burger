@@ -1,0 +1,29 @@
+.container {
+  width: 500px;
+  padding: 0 10px;
+  margin: 108px auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.container button {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 80px;;
+}
+
+.description p {
+  font-size: 16px;
+  text-align: center;
+  color: #8585AD;
+}
+
+.description a {
+  color: #4C4CFF;
+  text-decoration: none;
+}

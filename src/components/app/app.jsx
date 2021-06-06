@@ -19,6 +19,10 @@ import { ingredientsFetchStatus,
          fetchIngredients, 
          closeIngredientDetails, 
          modalViewIngredient } from '../../services/redux/ingredients-slice';
+import Login from '../../pages/login';
+import Register from '../../pages/register';
+import ForgotPassword from '../../pages/forgot-password';
+import ResetPassword from '../../pages/reset-password';
 
 
 const App = () => {
@@ -95,10 +99,16 @@ const App = () => {
       <AppHeader />
       <DndProvider backend={HTML5Backend}>
       <main className={styles.main__content}>
+        <Route exact path="/">
           <BurgerIngredients />
           <BurgerConstructor dropHandler={dropHandler} />
+        </Route>
       </main>
       </DndProvider>
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+      <Route path="/reset-password" component={ResetPassword} />
     </>
   );
 }
