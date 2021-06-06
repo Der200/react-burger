@@ -7,7 +7,7 @@ const ResetPassword = () => {
 
   const description = () => {
     return (
-      <p>Вспомнили пароль? <Link to='login'>Войти</Link></p>
+      <p>Вспомнили пароль? <Link to='/login'>Войти</Link></p>
     )
   };
 

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import styles from './app.module.css';
 
@@ -99,16 +99,18 @@ const App = () => {
       <AppHeader />
       <DndProvider backend={HTML5Backend}>
       <main className={styles.main__content}>
-        <Route exact path="/">
-          <BurgerIngredients />
-          <BurgerConstructor dropHandler={dropHandler} />
-        </Route>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/forgot-password" component={ForgotPassword} />
+          <Route path="/reset-password" component={ResetPassword} />
+          <Route path="/" exact>
+            <BurgerIngredients />
+            <BurgerConstructor dropHandler={dropHandler} />
+          </Route>
+        </Switch>
       </main>
       </DndProvider>
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/reset-password" component={ResetPassword} />
     </>
   );
 }

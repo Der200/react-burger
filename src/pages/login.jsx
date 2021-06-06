@@ -8,8 +8,8 @@ const Login = () => {
   const description = () => {
     return (
       <>
-      <p>Вы - новый пользователь? <Link to={'register'}>Зарегистрироваться</Link></p>
-      <p>Забыли пароль? <Link to={'forgot-password'}>Восстановить пароль</Link></p>
+      <p>Вы - новый пользователь? <Link to={'/register'}>Зарегистрироваться</Link></p>
+      <p>Забыли пароль? <Link to={'/forgot-password'}>Восстановить пароль</Link></p>
       </>
     )
   };

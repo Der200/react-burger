@@ -52,10 +52,22 @@ nav {
   margin: 0;
   padding: 0;
   color: #8585AD;
+  text-decoration: none;
 }
 
-span.active {
+.nav__item span {
+  vertical-align: top;
+}
+
+.active__item {
   color: white;
+
+}
+
+.active__item path{
+  stroke: white;
+  fill: white;
+
 }
 
 .nav__images {

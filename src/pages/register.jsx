@@ -7,7 +7,7 @@ const Register = () => {
 
   const description = () => {
     return (
-      <p>Уже зарегистрированы? <Link to='login'>Войти</Link></p>
+      <p>Уже зарегистрированы? <Link to='/login'>Войти</Link></p>
     )
   };
 
