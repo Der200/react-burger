@@ -30,6 +30,7 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
 const initialState = {
   orderIngredients: [],
   mainIngredients: [],
+  feedOrders: [],
   ingredientsID: [],
   orderCost: 0,
   status: `idle`,
@@ -83,6 +84,9 @@ export const orderSlice = createSlice({
     },
     closeOrder: state => {
       state.isShowOrder = false;
+      state.orderIngredients = [];
+      state.mainIngredients = [];
+      state.orderCost = 0;
       state.orderDetails = {
         name: '',
         number: '',
@@ -91,18 +95,21 @@ export const orderSlice = createSlice({
   },
   extraReducers: {
     [placeAnOrder.pending]: (state, action) => {
-      state.status = 'loading'
+      state.status = 'loading';
     },
     [placeAnOrder.fulfilled]: (state, action) => {
-      state.status = 'succeeded'
-      console.log(action.payload)
-      state.orderDetails.name = action.payload.name
-      state.orderDetails.number = action.payload.order.number
+      state.status = 'succeeded';
+      state.orderDetails.name = action.payload.name;
+      state.orderDetails.number = action.payload.order.number;
+      state.feedOrders = state.feedOrders.concat([{id: action.payload.order.number,
+                                                   name: action.payload.name,
+                                                   cost: state.orderCost, 
+                                                   ingredients: state.orderIngredients}]);
 
     },
     [placeAnOrder.rejected]: (state, action) => {
-      state.status = 'failed'
-      state.error = action.error.message
+      state.status = 'failed';
+      state.error = action.error.message;
     }
   }
 })
@@ -111,6 +118,7 @@ export const orderFetchStatus = state => state.orderSlice.status;
 export const orderDetails = state => state.orderSlice.orderDetails;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
 export const orderCost = state => state.orderSlice.orderCost;
+export const feedOrders = state => state.orderSlice.feedOrders;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
 export const mainIngredients = state => state.orderSlice.mainIngredients;
 export const modalViewOrder = state => state.orderSlice.isShowOrder;

@@ -13,10 +13,9 @@ const ResetPassword = () => {
 
   return (
   <Form title={'Восстановление пароля'} description={description()}>
-    <Input type={'password'} placeholder={'Введите новый пароль'} value={''} icon={'PasswordIcon'} />
-    <Input placeholder={'Введите код из письма'} value={''} />
+    <Input type={'password'} placeholder={'Введите новый пароль'} value={''} onChange={() => {}}/>
+    <Input placeholder={'Введите код из письма'} value={''} onChange={() => {}}/>
     <Button>Сохранить</Button>
-
   </Form>
   )
 

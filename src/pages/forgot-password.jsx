@@ -13,9 +13,8 @@ const ForgotPassword = () => {
 
   return (
   <Form title={'Восстановление пароля'} description={description()}>
-    <Input placeholder={'Укажите e-mail'} value={''} />
+    <Input placeholder={'Укажите e-mail'} value={''} onChange={() => {}}/>
     <Button>Восстановить</Button>
-
   </Form>
   )
 

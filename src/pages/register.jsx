@@ -13,9 +13,9 @@ const Register = () => {
 
   return (
   <Form title={'Регистрация'} description={description()}>
-    <Input placeholder={'Имя'} value={''} />
-    <Input type={'email'} placeholder={'Email'} value={''} />
-    <PasswordInput value={''} />
+    <Input placeholder={'Имя'} value={''} onChange={() => {}}/>
+    <Input type={'email'} placeholder={'Email'} value={''} onChange={() => {}}/>
+    <PasswordInput value={''} onChange={() => {}}/>
     <Button>Зарегистрироваться</Button>
   </Form>
   )

@@ -24,6 +24,9 @@ import Register from '../../pages/register';
 import ForgotPassword from '../../pages/forgot-password';
 import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
+import Orders from '../../pages/orders';
+import Feed from '../../pages/feed';
+import OrderTicket from '../order-ticket/order-ticket';
 
 
 const App = () => {
@@ -105,8 +108,11 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/reset-password" component={ResetPassword} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/" exact>
+          <Route exact path="/profile" component={Profile} />
+          <Route exact path="/profile/orders" component={Orders} />
+          <Route exact path="/feed" component={Feed} />
+          <Route exact path="/feed/:id" component={OrderTicket} />
+          <Route exact path="/">
             <BurgerIngredients />
             <BurgerConstructor dropHandler={dropHandler} />
           </Route>

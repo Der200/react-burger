@@ -16,10 +16,9 @@ const Login = () => {
 
   return (
   <Form title={'Вход'} description={description()}>
-    <EmailInput value={''} />
-    <PasswordInput value={''} />
+    <EmailInput value={''} onChange={() => {}}/>
+    <PasswordInput value={''} onChange={() => {}}/>
     <Button>Войти</Button>
-
   </Form>
   )
 
