@@ -11,11 +11,11 @@ const FeedOrder = ({ order, status }) => {
   const clickHandler = () => {
     history.replace(`${path}/${order.id}`)
   }
-  if (!order) {
+  if (order.length === 0) {
     return (
-      <div className={`${styles.wrapper} p-6 mt-4`}>
+      <div className={`${styles.container} ${styles.empty} p-6 mt-4`}>
         <div className={`${styles.body} mb-6`}>
-          <h2>Наши повара готовы принять твой заказ! <Link exact to='/'>Собрать бургер</Link></h2>
+          <h3>Наш репликатор готов создать твой заказ! <Link to='/'>Собрать бургер</Link></h3>
         </div>
       </div>
     )
@@ -34,8 +34,8 @@ const FeedOrder = ({ order, status }) => {
           ? <span className={`${styles.canceled} text text_type_main-small`}>Отменен</span>
           : status === 'done'
               ? <span className={`${styles.done} text text_type_main-small`}>Выполнен</span>
-              : status === 'preparing'
-                  ? <span className={`${styles.preparing} text text_type_main-small`}>Готовится</span>
+              : status === 'cooking'
+                  ? <span className={`${styles.cooking} text text_type_main-small`}>Готовится</span>
                   : null
       }
       <div className={`${styles.footer} mt-6`}>

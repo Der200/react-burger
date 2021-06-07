@@ -5,7 +5,7 @@ import { feedOrders } from '../../services/redux/order-slice';
 import { useParams } from 'react-router-dom';
 
 
-const OrderTicket = () => {
+const OrderTicket = ({status}) => {
   const orders = useSelector(feedOrders);
   const { id } = useParams();
   const currentOrder = orders.find((order) => order.id.toString() === id);
@@ -15,7 +15,7 @@ const OrderTicket = () => {
         <h2 className='text text_type_digits-default mb-10'>#0{currentOrder && currentOrder.id}</h2>
         <div className={`mb-10`}>
           <h3 className={`text text_type_main-medium mb-3`}>{currentOrder && currentOrder.name}</h3>
-          <span className={`${styles.status} mb-15`}>{'Выполнен'}</span>
+          <span className={`${styles.status} mb-15`}>{status ? status : 'Выполнен'}</span>
           <div>
             <h3 className="text text_type_main-medium mb-6">Состав:</h3>
             <ul className={`${styles.ingredients__list}`}>
