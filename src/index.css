@@ -34,3 +34,11 @@ code {
   margin: 0;
   margin-left: 20px;
 }
+
+.input_size_default {
+  width: 480px!important;
+}
+
+.input__container {
+  margin-bottom: 24px;
+}
