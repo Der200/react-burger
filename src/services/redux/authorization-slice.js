@@ -71,6 +71,7 @@ export const resetPassword = createAsyncThunk('authorization/resetPassword', asy
 })
 
 const initialState = {
+  user: null,
   mockUser: {name: 'James', login: 'Bond', password: 'agent007', email: 'great@britain.com'},
   resetTemplate: {password: '', code: ''},
   status: `idle`,
