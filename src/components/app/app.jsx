@@ -12,6 +12,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Preloader from '../preloader/preloader';
+import ProtectedRoute from '../protected-route/protected-route';
 
 import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder } from '../../services/redux/order-slice';
 import { ingredientsFetchStatus, 
@@ -108,9 +109,15 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/reset-password" component={ResetPassword} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/profile/orders" component={Orders} />
-          <Route exact path="/profile/orders/:id" component={OrderTicket} />
+          <ProtectedRoute exact path="/profile">
+            <Profile/>
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/profile/orders">
+            <Orders/>
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/profile/orders/:id">
+            <OrderTicket/>
+          </ProtectedRoute>
           <Route exact path="/feed" component={Feed} />
           <Route exact path="/feed/:id" component={OrderTicket} />
           <Route exact path="/">

@@ -4,22 +4,23 @@ import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burg
 import { Link } from 'react-router-dom';
 import { user, changeUserData, register } from '../services/redux/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 const Register = () => {
   const currentUser = useSelector(user);
-  const {email, password, name} = currentUser;
+  const [registerData, getRegisterData] = React.useState({});
   const dispatch = useDispatch();
 
   const changeHandler = (e) => {
-    dispatch(changeUserData({
-      name: e.target.name, 
-      value: e.target.value
-    }))
+    getRegisterData({
+      ...registerData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(register({'email': email, 'password': password, 'name': name}))
+    dispatch(register({'email': registerData.email, 'password': registerData.password, 'name': registerData.name}))
   }
 
   const description = () => {
@@ -28,11 +29,15 @@ const Register = () => {
     )
   };
 
+  if (currentUser !== null) {
+    return <Redirect to='/'/>
+  }
+
   return (
   <Form title={'Регистрация'} description={description()}>
-    <Input placeholder={'Имя'} value={currentUser.name} name='name' onChange={changeHandler}/>
-    <Input type={'email'} placeholder={'Email'} value={currentUser.email} name='email' onChange={changeHandler}/>
-    <PasswordInput value={currentUser.password} onChange={changeHandler}  name='password'/>
+    <Input placeholder={'Имя'} value={registerData.name || ''} name='name' onChange={changeHandler}/>
+    <Input type={'email'} placeholder={'Email'} value={registerData.email || ''} name='email' onChange={changeHandler}/>
+    <PasswordInput value={registerData.password || ''} onChange={changeHandler}  name='password'/>
     <Button onClick={submitHandler}>Зарегистрироваться</Button>
   </Form>
   )

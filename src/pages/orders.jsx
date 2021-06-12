@@ -11,7 +11,7 @@ const Orders = () => {
     <section style={{display: 'flex'}}>
       <ProfileNav description={description}/>
       <section style={{marginTop: '40px', marginLeft: `10px`, height: '868px', overflowY: 'auto'}}>
-        {orders.map((order) => <FeedOrder order={order} status={'cooking'}/>)}
+        {orders.map((order) => <FeedOrder order={order} status={'cooking'} key={order.id}/>)}
       </section>
     </section>
   )
