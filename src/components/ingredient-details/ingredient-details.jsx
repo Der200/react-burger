@@ -1,33 +1,29 @@
-import Modal from '../modal/modal';
 import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
-import { selectedIngredient } from '../../services/redux/ingredients-slice';
+import { selectedIngredient, fetchedIngredients, fetchIngredients } from '../../services/redux/ingredients-slice';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import Preloader from '../preloader/preloader';
 
-const IngredientDetails = ({handleClickIngredient }) => {
-  const ingredient = useSelector(selectedIngredient);
-  const { image_large, name, calories, proteins, fat, carbohydrates, _id } = ingredient;
+const IngredientDetails = ({handleClickIngredient, type}) => {
+  let ingredient = useSelector(selectedIngredient);
+  const ingredients = useSelector(fetchedIngredients);
+  const { id } = useParams();
 
-  const history = useHistory()
-  // const { path } = useRouteMatch()
-
-  // const clickBoxHandler = (target) => {
-  //   history.replace(`/ingredients/${target._id}`);
-  // }
+  if (ingredient === null && ingredients !== null) {
+    ingredient = ingredients.find((ingredient) => ingredient._id.toString() === id);
+  }
   
-  const handleClick = (target) => {
-    handleClickIngredient && handleClickIngredient(target);
-    history.replace(`/ingredients/${_id}`);
+  if (ingredient === null) {
+    return <Preloader />
   }
 
   return (
-    <Modal title='Детали ингредиента' handleClickModal = {handleClick}>
-      <div className={styles.box} >
+      <div className={`${styles.box} ${type === 'url' ? styles.urlbox : ''}`}>
         <div className={styles.image}>
-          <img src={image_large} alt={name} />
+          <img src={ingredient && ingredient.image_large} alt={ingredient && ingredient.name} />
         </div>
-        <h3 className="text text_type_main-medium mt-4">{name}</h3>
+        <h3 className="text text_type_main-medium mt-4">{ingredient && ingredient.name}</h3>
         <p className={`${styles.description} mt-8 mb-8 text text_type_main-default`}>
           Тут должно быть описание
         </p>
@@ -35,30 +31,29 @@ const IngredientDetails = ({handleClickIngredient }) => {
           <div className={`${styles.food__composition} mr-5`}>
             <span>Калории,ккал</span>
             <span className={`${styles.number} text text_type_digits-default mt-2`}>
-              {calories}
+              {ingredient && ingredient.calories}
             </span>
           </div>
           <div className={`${styles.food__composition} mr-5`}>
             <span>Белки, г</span>
             <span className={`${styles.number} text text_type_digits-default mt-2`}>
-              {proteins}
+              {ingredient && ingredient.proteins}
             </span>
           </div>
           <div className={`${styles.food__composition} mr-5`}>
             <span>Жиры, г</span>
             <span className={`${styles.number} text text_type_digits-default mt-2`}>
-              {fat}
+              {ingredient && ingredient.fat}
             </span>
           </div>
           <div className={styles.food__composition}>
             <span>Углеводы, г</span>
             <span className={`${styles.number} text text_type_digits-default mt-2`}>
-              {carbohydrates}
+              {ingredient && ingredient.carbohydrates}
             </span>
           </div>
         </div>
       </div>
-    </Modal>
   )
 }
 

@@ -1,25 +1,35 @@
 import styles from './order-ticket.module.css'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from 'react-redux';
-import { feedOrders } from '../../services/redux/order-slice'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentOrder, order } from '../../services/redux/order-slice'; 
 import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import Preloader from '../preloader/preloader';
 
 
-const OrderTicket = ({status}) => {
-  const orders = useSelector(feedOrders);
+const OrderTicket = ({status, type}) => {
+  const dispatch = useDispatch();
   const { id } = useParams();
-  const currentOrder = orders.find((order) => order.id.toString() === id);
+
+  useEffect(() => {
+    dispatch(setCurrentOrder(id));
+  }, [])
+  const currentOrder = useSelector(order);
+
+  if (!currentOrder) {
+    return <Preloader />
+  }
 
   return (
-      <section className={styles.container}>
-        <h2 className='text text_type_digits-default mb-10'>#0{currentOrder && currentOrder.id}</h2>
+      <section className={`${styles.container} ${type === 'modal' ? styles.modal : ''}`}>
+        {type !== 'modal' && <h2 className='text text_type_digits-default mb-10'>#0{currentOrder.id}</h2>}
         <div className={`mb-10`}>
-          <h3 className={`text text_type_main-medium mb-3`}>{currentOrder && currentOrder.name}</h3>
+          <h3 className={`text text_type_main-medium mb-3`}>{currentOrder.name}</h3>
           <span className={`${styles.status} mb-15`}>{status ? status : 'Выполнен'}</span>
           <div>
             <h3 className="text text_type_main-medium mb-6">Состав:</h3>
             <ul className={`${styles.ingredients__list}`}>
-              {currentOrder && currentOrder.ingredients.map((ingredient) => (
+              {currentOrder.ingredients.map((ingredient) => (
               <li className={`${styles.ingredient__item}`} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
                 <div className = {styles.element}>
                   <img src={ingredient.image} alt=""/>
@@ -35,7 +45,7 @@ const OrderTicket = ({status}) => {
         </div>
         <div className={`${styles.general__info}`}>
           <span className="text text_type_main-default text_color_inactive">Сегодня, 00:00 i - GMT+3</span>
-          <span className={styles.total__cost}>{currentOrder && currentOrder.cost} <CurrencyIcon type={"primary"}/></span>
+          <span className={styles.total__cost}>{currentOrder.cost} <CurrencyIcon type={"primary"}/></span>
         </div>
       </section>
   )

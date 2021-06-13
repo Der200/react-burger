@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
 import { orderIngredients } from '../../services/redux/order-slice';
+import { useHistory } from 'react-router-dom';
 
 const Ingredient = ({ingredient, handleClickIngredient}) => {
   const {image, price, name, _id} = ingredient;
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
+  const history = useHistory();
 
   useEffect(() => {
     setCount(
@@ -24,6 +26,8 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
 
   const handleClick = () => {
     handleClickIngredient(ingredient)
+    history.replace(`/ingredient/${_id}`)
+    
   }
 
   return (

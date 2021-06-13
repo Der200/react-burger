@@ -10,7 +10,9 @@ const ProtectedRoute = ({ children, ...rest }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUserData());
+    if (localStorage.getItem('refreshToken') !== null) {
+      dispatch(getUserData());
+    }
   }, [])
 
   if (authorizationStatus !== 'succeeded' && currentUser === null && localStorage.getItem('refreshToken') !== null) {

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 
 const orderApiUrl = 'https://norma.nomoreparties.space/api/orders';
 
@@ -40,6 +40,8 @@ const initialState = {
     number: '',
   },
   isShowOrder: false,
+  isShowOrderDetails: false,
+  currentOrder: null,
 }
 
 export const orderSlice = createSlice({
@@ -91,7 +93,15 @@ export const orderSlice = createSlice({
         name: '',
         number: '',
       };
+    },
+    showOrderDetails: state => {
+      state.isShowOrderDetails = true;
+    },
+    setCurrentOrder: (state, action) => {
+      state.currentOrder = state.feedOrders.find((order) => order.id.toString() === action.payload); 
     }
+
+
   },
   extraReducers: {
     [placeAnOrder.pending]: (state, action) => {
@@ -114,6 +124,7 @@ export const orderSlice = createSlice({
   }
 })
 
+export const order = state => state.orderSlice.currentOrder;
 export const orderFetchStatus = state => state.orderSlice.status;
 export const orderDetails = state => state.orderSlice.orderDetails;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
@@ -122,5 +133,5 @@ export const feedOrders = state => state.orderSlice.feedOrders;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
 export const mainIngredients = state => state.orderSlice.mainIngredients;
 export const modalViewOrder = state => state.orderSlice.isShowOrder;
-export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder } = orderSlice.actions
+export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder, setCurrentOrder } = orderSlice.actions
 export default orderSlice.reducer
