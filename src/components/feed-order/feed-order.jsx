@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 const FeedOrder = ({ order, status }) => {
   const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
   const { ingredients, id, cost, name } = order;
+  
   const history = useHistory()
   const { path } = useRouteMatch()
+
   const clickHandler = () => {
     history.replace(`${path}/${order.id}`)
   }
+
   if (order.length === 0) {
     return (
       <div className={`${styles.container} ${styles.empty} p-6 mt-4`}>

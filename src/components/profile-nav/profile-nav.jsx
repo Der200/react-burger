@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom';
 import styles from './profile-nav.module.css';
-import { refreshToken, logout } from '../../services/redux/authorization-slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../services/redux/authorization-slice';
+import { useDispatch } from 'react-redux';
 
 const ProfileNav = ({description}) => {
   const dispatch = useDispatch();
-  const token = useSelector(refreshToken);
+  const token = localStorage.getItem('refreshToken');
   
   const submitHandler = (e) => {
     e.preventDefault();

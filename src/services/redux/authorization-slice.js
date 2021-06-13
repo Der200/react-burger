@@ -6,6 +6,41 @@ const resetApiUrl = 'https://norma.nomoreparties.space/api/password-reset/reset'
 const loginApiUrl = 'https://norma.nomoreparties.space/api/auth/login';
 const logoutApiUrl = 'https://norma.nomoreparties.space/api/auth/logout';
 const updateTokenApiUrl = 'https://norma.nomoreparties.space/api/auth/token';
+const updateUserDataApiUrl = 'https://norma.nomoreparties.space/api/auth/user';
+
+const checkResponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+}
+
+export const refreshToken = () => {
+  return fetch(updateTokenApiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem('refreshToken')
+    })
+  }).then(checkResponse);
+}
+
+export const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch(err) {
+    if (err.message === 'jwt expired') {
+      const refreshData = await refreshToken();
+      localStorage.setItem('refreshToken', refreshData.refreshToken);
+      setCookie('accessToken', refreshData.accessToken.split('Bearer ')[1]);
+      options.headers.Authorization = refreshData.accessToken;
+      const res = await fetch(url, options);
+      return await checkResponse(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+}
 
 export function setCookie(name, value, props) {
   props = props || {};
@@ -32,7 +67,7 @@ export function setCookie(name, value, props) {
 
 export function getCookie(name) {
   const matches = document.cookie.match(
-    new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+    new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)') //eslint-disable-line
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 } 
@@ -121,17 +156,6 @@ export const login = createAsyncThunk('authorization/login', async (data) => {
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    // let authToken;
-    // res.headers.forEach(header => {
-    //   if (header.indexOf('Bearer') === 0) {
-    //     authToken = header.split('Bearer ')[1];
-    //   }
-    // });
-    // if (authToken) {
-    //   setCookie('accessToken', authToken);
-    //   console.log('КУКА:', authToken);
-    // }
-
     const loginData = await res.json();
     return loginData
         
@@ -162,10 +186,33 @@ export const logout = createAsyncThunk('authorization/logout', async (data) => {
   }
 })
 
+export const updateUserData = createAsyncThunk('authorization/updateUserData', async (data) => {
+  return await fetchWithRefresh(updateUserDataApiUrl, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getCookie('accessToken'),
+    },
+    body: JSON.stringify(data)
+  })
+})
+
+export const getUserData = createAsyncThunk('authorization/getUserData', async () => {
+  return await fetchWithRefresh(updateUserDataApiUrl, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getCookie('accessToken'),
+    }
+  });
+})
+
 const initialState = {
   user: null,
-  status: `idle`,
+  authorizationStatus: `idle`,
+  otherFetchsStatus: 'idle',
   error: null,
+  recoveryCodeSent: false,
 }
 
 export const authorizationSlice = createSlice({
@@ -180,82 +227,95 @@ export const authorizationSlice = createSlice({
     },
   },
   extraReducers: {
-    [register.pending]: (state, action) => {
-      state.status = 'loading';
+    [register.pending]: (state) => {
+      state.authorizationStatus = 'loading';
     },
     [register.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      if (action.payload) {
-        state.user.name = action.payload.user.name;
-        state.user.email = action.payload.user.email;
-        state.user.accessToken = action.payload.accessToken;
-        localStorage.setItem('refreshToken', action.payload.refreshToken)
-        console.log(localStorage.refreshToken);
-        state.user.success = action.payload.success;
-      }
+      state.authorizationStatus = 'succeeded';
+      state.user = action.payload.user;
+      localStorage.setItem('refreshToken', action.payload.refreshToken);
+      setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
     },
     [register.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.authorizationStatus = 'failed';
       state.error = action.error.message;
     },
-    [forgotPassword.pending]: (state, action) => {
-      state.status = 'loading';
+    [forgotPassword.pending]: (state) => {
+      state.otherFetchsStatus = 'loading';
+      state.recoveryCodeSent = true;
     },
-    [forgotPassword.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
+    [forgotPassword.fulfilled]: (state) => {
+      state.otherFetchsStatus = 'succeeded';
     },
     [forgotPassword.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.otherFetchsStatus = 'failed';
       state.error = action.error.message;
     },
-    [resetPassword.pending]: (state, action) => {
-      state.status = 'loading';
+    [resetPassword.pending]: (state) => {
+      state.otherFetchsStatus = 'loading';
     },
-    [resetPassword.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
+    [resetPassword.fulfilled]: (state) => {
+      state.otherFetchsStatus = 'succeeded';
+      state.recoveryCodeSent = false;
     },
     [resetPassword.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.otherFetchsStatus = 'failed';
       state.error = action.error.message;
     },
-    [login.pending]: (state, action) => {
-      state.status = 'loading';
+    [login.pending]: (state) => {
+      state.authorizationStatus = 'loading';
     },
     [login.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      if (action.payload) {
-        state.user = action.payload.user;
-        state.accessToken = action.payload.accessToken.split('Bearer ')[1];
-        state.refreshToken = action.payload.refreshToken;
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
-        setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1])
-      }
+      state.authorizationStatus = 'succeeded';
+      state.user = action.payload.user;
+      localStorage.setItem('refreshToken', action.payload.refreshToken);
+      setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
     },
     [login.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.authorizationStatus = 'failed';
       state.error = action.error.message;
     },
-    [logout.pending]: (state, action) => {
-      state.status = 'loading';
+    [logout.pending]: (state) => {
+      state.otherFetchsStatus = 'loading';
     },
-    [logout.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
+    [logout.fulfilled]: (state) => {
+      state.otherFetchsStatus = 'succeeded';
       state.user = null;
-      state.accessToken = null;
-      state.refreshToken = null;
       localStorage.removeItem('refreshToken');
       deleteCookie('accessToken');
     },
     [logout.rejected]: (state, action) => {
-      state.status = 'failed';
+      state.otherFetchsStatus = 'failed';
+      state.error = action.error.message;
+    },
+    [updateUserData.pending]: (state) => {
+      state.authorizationStatus = 'loading';
+    },
+    [updateUserData.fulfilled]: (state, action) => {
+      state.authorizationStatus = 'succeeded';
+      state.user = action.payload.user;
+    },
+    [updateUserData.rejected]: (state, action) => {
+      state.authorizationStatus = 'failed';
+      state.error = action.error.message;
+    },
+    [getUserData.pending]: (state) => {
+      state.authorizationStatus = 'loading';
+    },
+    [getUserData.fulfilled]: (state, action) => {
+      state.authorizationStatus = 'succeeded';
+      state.user = action.payload.user;
+      // state.updateData = false;
+    },
+    [getUserData.rejected]: (state, action) => {
+      state.authorizationStatus = 'failed';
       state.error = action.error.message;
     },
   }
 })
 
-
-export const resetTemplate = state => state.authorizationSlice.resetTemplate;
+export const recoveryCodeStatus = state => state.authorizationSlice.recoveryCodeSent;
+export const userStatus = state => state.authorizationSlice.authorizationStatus;
 export const user = state => state.authorizationSlice.user;
-export const refreshToken = state => state.authorizationSlice.refreshToken;
 export const { changeUserData, changeResetTemplate } = authorizationSlice.actions
 export default authorizationSlice.reducer

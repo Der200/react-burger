@@ -2,14 +2,16 @@ import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-co
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderIngredients, orderCost, placeAnOrder, orderIngredientsId, deleteIngredient, showOrder, mainIngredients } from '../../services/redux/order-slice';
-import { useDrop } from "react-dnd";
-import OrderItem from '../order-item/order-item'
+import { useDrop } from 'react-dnd';
+import { useHistory } from 'react-router-dom';
+import OrderItem from '../order-item/order-item';
 
 const BurgerConstructor = ({dropHandler}) => {
   const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer} = styles;
 
+  const history = useHistory();
   const dispatch = useDispatch();
-  const orderDetails = useSelector(orderIngredientsId)
+  const orderDetails = useSelector(orderIngredientsId);
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -26,8 +28,12 @@ const BurgerConstructor = ({dropHandler}) => {
     if (selectedIngredients.length === 0) {
       return
     }
-    dispatch(placeAnOrder(orderDetails));
-    dispatch(showOrder());
+    if (localStorage.getItem('refreshToken') === null) {
+      history.replace({ pathname: '/login' });
+    } else {
+      dispatch(placeAnOrder(orderDetails));
+      dispatch(showOrder());
+    }
   }
   
   return (

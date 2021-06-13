@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Form from '../components/form/form';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, useHistory, Redirect } from 'react-router-dom';
-import { login, user } from '../services/redux/authorization-slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { login } from '../services/redux/authorization-slice';
+import { useDispatch } from 'react-redux';
 
 const Login = () => {
-  const [loginData, getLoginData] = React.useState({})
-
-  const dispatch = useDispatch();
+  const [loginData, getLoginData] = useState({});
   const history = useHistory();
-
-  const currentUser = useSelector(user);
+  const dispatch = useDispatch();
 
   const changeHandler = (e) => {
     getLoginData({
@@ -23,7 +20,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
-    history.replace({ pathname: '/' })
+    history.replace({ pathname: '/' });
   }  
 
   const description = () => {
@@ -35,8 +32,8 @@ const Login = () => {
     )
   };
 
-  if (currentUser !== null) {
-    return <Redirect to='/'/>
+  if (localStorage.getItem('refreshToken') !== null) {
+    return <Redirect to='/profile'/>
   }
 
   return (

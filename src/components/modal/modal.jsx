@@ -3,14 +3,17 @@ import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 const {modal, active, modal__header, modal__close} = styles;
 
 const Modal = (props) => {
+  const history = useHistory()
   
   const modalRoot = document.getElementById('app-modals');
   const handleClick = element => {
-    props.handleClickModal && props.handleClickModal(element.target)
+    props.handleClickModal && props.handleClickModal(element.target);
+    history.replace(`/`);
   }
 
   return ReactDOM.createPortal(

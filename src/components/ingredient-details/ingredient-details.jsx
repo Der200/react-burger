@@ -3,19 +3,27 @@ import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
 import { selectedIngredient } from '../../services/redux/ingredients-slice';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const IngredientDetails = ({handleClickIngredient }) => {
   const ingredient = useSelector(selectedIngredient);
-  const { image_large, name, calories, proteins, fat, carbohydrates } = ingredient;
+  const { image_large, name, calories, proteins, fat, carbohydrates, _id } = ingredient;
+
+  const history = useHistory()
+  // const { path } = useRouteMatch()
+
+  // const clickBoxHandler = (target) => {
+  //   history.replace(`/ingredients/${target._id}`);
+  // }
   
   const handleClick = (target) => {
-    console.log(target);
-    handleClickIngredient && handleClickIngredient(target)
+    handleClickIngredient && handleClickIngredient(target);
+    history.replace(`/ingredients/${_id}`);
   }
 
   return (
     <Modal title='Детали ингредиента' handleClickModal = {handleClick}>
-      <div className={styles.box}>
+      <div className={styles.box} >
         <div className={styles.image}>
           <img src={image_large} alt={name} />
         </div>

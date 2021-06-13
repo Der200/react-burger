@@ -2,12 +2,11 @@ import React from 'react';
 import Form from '../components/form/form';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { user, changeUserData, register } from '../services/redux/authorization-slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { register } from '../services/redux/authorization-slice';
+import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 const Register = () => {
-  const currentUser = useSelector(user);
   const [registerData, getRegisterData] = React.useState({});
   const dispatch = useDispatch();
 
@@ -29,8 +28,8 @@ const Register = () => {
     )
   };
 
-  if (currentUser !== null) {
-    return <Redirect to='/'/>
+  if (localStorage.getItem('refreshToken') !== null) {
+    return <Redirect to='/profile'/>
   }
 
   return (

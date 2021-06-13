@@ -1,23 +1,27 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { user } from '../../services/redux/authorization-slice';
+import { user, getUserData, userStatus } from '../../services/redux/authorization-slice';
+import Preloader from '../preloader/preloader';
 
 const ProtectedRoute = ({ children, ...rest }) => {
   const currentUser = useSelector(user);
+  const authorizationStatus = useSelector(userStatus);
+  const dispatch = useDispatch();
 
-  const [isUserLoaded, setUserLoaded] = useState(false);
-  if (isUserLoaded) {
-    return (
-      <Redirect to={{pathname: '/'}}/>
-    );
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [])
+
+  if (authorizationStatus !== 'succeeded' && currentUser === null && localStorage.getItem('refreshToken') !== null) {
+    return <Preloader/>
   }
 
   return (
     <Route
       {...rest}
       render={() => 
-        currentUser !== null ? (children) : (<Redirect to='/login' />)
+        localStorage.getItem('refreshToken') !== null ? (children) : (<Redirect to='/login' />)
       }
     />
   );
