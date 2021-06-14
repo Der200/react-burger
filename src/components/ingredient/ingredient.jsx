@@ -33,7 +33,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   return (
     <section className={styles.section} onClick={handleClick} ref={drag}>
       {count > 0 && <Counter count={count}/>}
-      <img src={image} alt=""/>
+      <img src={image} alt={name}/>
       <div className='mt-1 mb-1'>
         <span className="text text_type_digits-default">
           {price} <CurrencyIcon type="primary" />

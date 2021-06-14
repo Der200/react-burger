@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 const FeedOrder = ({ order, status }) => {
   const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
   const { ingredients, id, cost, name } = order;
+
+  let remainingOrder = ingredients.length - 5;
   
   const history = useHistory()
   const { path } = useRouteMatch()
@@ -55,8 +57,8 @@ const FeedOrder = ({ order, status }) => {
           ))}
           {ingredients.length > 5 && (
             <div className={styles.element} style={{ zIndex: 1, left: `-125px` }} key={(Math.random() * (200 - 10) + 10)}>
-              <img className={styles.bigOrder__image} src={bigOrderImage} alt={`+${ingredients.length - 5}`} />
-              <span className={styles.bigOrder}>{`+${ingredients.length - 5}`}</span>
+              <img className={styles.bigOrder__image} src={bigOrderImage} alt={`+${remainingOrder} дополнительны${remainingOrder === 1 ? 'й' : 'х'} ингредиент${remainingOrder === 1 ? '' : remainingOrder > 4 ? 'ов' : 'а'} в заказе`} />
+              <span className={styles.bigOrder}>{`+${remainingOrder}`}</span>
             </div>
           )}
         </div>

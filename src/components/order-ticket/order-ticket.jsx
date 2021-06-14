@@ -32,7 +32,7 @@ const OrderTicket = ({status, type}) => {
               {currentOrder.ingredients.map((ingredient) => (
               <li className={`${styles.ingredient__item}`} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
                 <div className = {styles.element}>
-                  <img src={ingredient.image} alt=""/>
+                  <img src={ingredient.image} alt={ingredient.name}/>
                 </div>
                 <span className={styles.ingredient__name}>{ingredient.name}</span>
                 <span className={styles.ingredient__price}> 
