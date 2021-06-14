@@ -37,10 +37,10 @@ const Login = () => {
   }
 
   return (
-  <Form title={'Вход'} description={description()}>
+  <Form title={'Вход'} description={description()} submitHandler={submitHandler}>
     <EmailInput value={loginData.email || ''} name='email' onChange={changeHandler}/>
     <PasswordInput value={loginData.password || ''} name='password' onChange={changeHandler}/>
-    <Button onClick={submitHandler}>Войти</Button>
+    <Button>Войти</Button>
   </Form>
   )
 

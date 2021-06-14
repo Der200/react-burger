@@ -33,11 +33,11 @@ const Register = () => {
   }
 
   return (
-  <Form title={'Регистрация'} description={description()}>
+  <Form title={'Регистрация'} description={description()} submitHandler={submitHandler}>
     <Input placeholder={'Имя'} value={registerData.name || ''} name='name' onChange={changeHandler}/>
     <Input type={'email'} placeholder={'Email'} value={registerData.email || ''} name='email' onChange={changeHandler}/>
     <PasswordInput value={registerData.password || ''} onChange={changeHandler}  name='password'/>
-    <Button onClick={submitHandler}>Зарегистрироваться</Button>
+    <Button>Зарегистрироваться</Button>
   </Form>
   )
 

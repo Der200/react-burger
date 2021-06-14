@@ -13,6 +13,17 @@ const Profile = () => {
   const [profileData, getProfileData] = React.useState({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
   const [visible, getVisible] = React.useState(false);
 
+  const cancelButtonStyle = {
+    color: '#4C4CFF',
+    fontSize: '16px',
+    lineHeight: '24px',
+    cursor: 'pointer',
+    width: '58px',
+    height: '24px',
+    marginRight: '28px',
+    marginTop: '13px',
+  }
+
   const changeHandler = (e) => {
     getVisible(true);
     getProfileData({
@@ -42,13 +53,15 @@ const Profile = () => {
   return (
     <section style={{display: 'flex'}}>
       <ProfileNav description={description}/>
-      <Form>
+      <Form submitHandler={submitHandler}>
         <Input placeholder={'Имя'} value={profileData.name} name='name' onChange={changeHandler} icon='EditIcon' />
         <Input placeholder={'Логин'} value={profileData.email} name='email' onChange={changeHandler} icon='EditIcon' />
         <Input placeholder={'Пароль'} value={profileData.password} name='password' onChange={changeHandler} icon='EditIcon' />
-        {visible && <div style={{display: 'flex', marginLeft: 'auto', paddingRight: '70px', width: '251px'}}>
-          <Button type='secondary' size='large' onClick={cancelChangesHandler}>Отмена</Button>
-          <Button type='primary' size='medium' onClick={submitHandler}>Сохранить</Button>
+        {visible && <div style={{display: 'flex', marginLeft: 'auto', paddingRight: '20px', width: '251px'}}>
+          <div type='button' onClick={cancelChangesHandler} style={cancelButtonStyle}>Отмена</div>
+          <div type='submit'>
+            <Button type='primary' size='medium'>Сохранить</Button>
+          </div>
         </div>}
       </Form>
     </section>

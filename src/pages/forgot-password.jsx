@@ -32,9 +32,9 @@ const ForgotPassword = () => {
   }
 
   return (
-  <Form title={'Восстановление пароля'} description={description()}>
+  <Form title={'Восстановление пароля'} description={description()} submitHandler={submitHandler}>
     <Input placeholder={'Укажите e-mail'} value={email} name="email" onChange={changeHandler}/>
-    <Button onClick={submitHandler}>Восстановить</Button>
+    <Button>Восстановить</Button>
   </Form>
   )
 
