@@ -72,6 +72,8 @@ export const orderSlice = createSlice({
     deleteIngredient: (state, action) => {
       const indexSelectingIngredient = state.orderIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
       state.orderIngredients.splice(indexSelectingIngredient, 1);
+      const indexMainIngredient = state.mainIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
+      state.mainIngredients.splice(indexMainIngredient, 1);
       state.orderCost = state.orderCost - action.payload.price;
       state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id);
     },
