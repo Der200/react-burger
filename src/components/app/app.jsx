@@ -126,7 +126,6 @@ const App = () => {
       </main>
       </DndProvider>
 
-      <div id='app-modals'></div>
       {ingredientWindow && (
         <Modal title='Детали ингредиента' handleClickModal={handleClickModal}>
           <IngredientDetails handleClickIngredient={handleClickModal} />
