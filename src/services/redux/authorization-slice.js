@@ -37,7 +37,7 @@ export const fetchWithRefresh = async (url, options) => {
       const res = await fetch(url, options);
       return await checkResponse(res);
     } else {
-      return Promise.reject(err);
+      return console.log(err);
     }
   }
 }
