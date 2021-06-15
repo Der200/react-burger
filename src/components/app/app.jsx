@@ -53,7 +53,7 @@ const App = () => {
 
   const closeModalWindow =  useCallback(() => {
     if (ingredientWindow) {
-      
+      history.replace('/')
       return dispatch(closeIngredientDetails());
     } else if(orderWindow) {
       return dispatch(closeOrder());
@@ -125,11 +125,11 @@ const App = () => {
         </Switch>
       </main>
       </DndProvider>
-
+      
       {ingredientWindow && (
-        <Modal title='Детали ингредиента' handleClickModal={handleClickModal}>
-          <IngredientDetails handleClickIngredient={handleClickModal} />
-        </Modal>
+          <Modal title='Детали ингредиента' handleClickModal={handleClickModal}>
+            <IngredientDetails handleClickIngredient={handleClickModal} />
+          </Modal>
       )}
 
       {orderWindow && orderStatus === 'succeeded' && (

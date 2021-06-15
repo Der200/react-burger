@@ -11,6 +11,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   const {image, price, name, _id} = ingredient;
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
 
   const handleClick = () => {
     handleClickIngredient(ingredient)
+    history.push('/')
     history.replace(`/ingredient/${_id}`)
     
   }

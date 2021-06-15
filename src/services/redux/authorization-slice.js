@@ -220,11 +220,11 @@ export const authorizationSlice = createSlice({
   initialState,
   reducers: {
     changeUserData: (state, action) => {
-        state.user[action.payload.name] = action.payload.value;
+      state.user[action.payload.name] = action.payload.value;
     },
     changeResetTemplate: (state, action) => {
       state.resetTemplate[action.payload.name] = action.payload.value;
-    },
+    }
   },
   extraReducers: {
     [register.pending]: (state) => {
@@ -305,7 +305,6 @@ export const authorizationSlice = createSlice({
     [getUserData.fulfilled]: (state, action) => {
       state.authorizationStatus = 'succeeded';
       state.user = action.payload.user;
-      // state.updateData = false;
     },
     [getUserData.rejected]: (state, action) => {
       state.authorizationStatus = 'failed';
@@ -317,5 +316,5 @@ export const authorizationSlice = createSlice({
 export const recoveryCodeStatus = state => state.authorizationSlice.recoveryCodeSent;
 export const userStatus = state => state.authorizationSlice.authorizationStatus;
 export const user = state => state.authorizationSlice.user;
-export const { changeUserData, changeResetTemplate } = authorizationSlice.actions
+export const { changeUserData, changeResetTemplate, setHistory } = authorizationSlice.actions
 export default authorizationSlice.reducer

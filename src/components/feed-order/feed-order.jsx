@@ -13,6 +13,7 @@ const FeedOrder = ({ order, status }) => {
   const { path } = useRouteMatch()
 
   const clickHandler = () => {
+    history.push(path);
     history.replace(`${path}/${order.id}`)
   }
 

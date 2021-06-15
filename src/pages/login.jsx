@@ -2,13 +2,24 @@ import React, { useState } from 'react';
 import Form from '../components/form/form';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { login } from '../services/redux/authorization-slice';
-import { useDispatch } from 'react-redux';
+import { login, userStatus } from '../services/redux/authorization-slice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
   const [loginData, getLoginData] = useState({});
+
   const history = useHistory();
   const dispatch = useDispatch();
+  
+  const forwardLink = history.location.state ? history.location.state.forward.pathname : '';
+  const hasToken = localStorage.getItem('refreshToken');
+  const status = useSelector(userStatus);
+
+  React.useEffect(() => {
+    if (status === 'succeeded' && hasToken) {
+      history.replace(forwardLink);
+    }
+  }, [status])
 
   const changeHandler = (e) => {
     getLoginData({
@@ -20,7 +31,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
-    history.replace({ pathname: '/' });
+    
   }  
 
   const description = () => {

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 const ProfileNav = ({description}) => {
   const dispatch = useDispatch();
+  
   const token = localStorage.getItem('refreshToken');
   
   const submitHandler = (e) => {
@@ -16,7 +17,7 @@ const ProfileNav = ({description}) => {
     <section className={styles.container}>
       <NavLink exact to='/profile' className={styles.nav__item} activeClassName={styles.active}><span>Профиль</span></NavLink>
       <NavLink exact to='/profile/orders' className={styles.nav__item} activeClassName={styles.active}><span>История заказов</span></NavLink>
-      <NavLink exact to='/' className={styles.nav__item} activeClassName={styles.active} onClick={submitHandler}><span>Выход</span></NavLink>
+      <NavLink exact to='/login' className={styles.nav__item} activeClassName={styles.active} onClick={submitHandler}><span>Выход</span></NavLink>
       {description && <p className={styles.description}>{description}</p>}
     </section>
   )

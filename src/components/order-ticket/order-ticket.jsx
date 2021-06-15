@@ -2,16 +2,18 @@ import styles from './order-ticket.module.css'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentOrder, order } from '../../services/redux/order-slice'; 
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import Preloader from '../preloader/preloader';
 
 
 const OrderTicket = ({status, type}) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
+    console.log(history)
     dispatch(setCurrentOrder(id));
   }, [])
   const currentOrder = useSelector(order);
