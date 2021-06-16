@@ -30,7 +30,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "./node_modules/.bin/cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +50,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cypress": "^7.5.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6"
   }
 }
