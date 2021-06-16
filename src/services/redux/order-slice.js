@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const orderApiUrl = 'https://norma.nomoreparties.space/api/orders';
 
@@ -34,7 +34,6 @@ const initialState = {
   ingredientsID: [],
   orderCost: 0,
   status: `idle`,
-  error: null,
   orderDetails: {
     name: '',
     number: '',
@@ -49,24 +48,24 @@ export const orderSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action) => {
-      if (action.payload[0].type === 'bun' && state.orderIngredients.find(ingredient => ingredient.type === 'bun') ) {
+      if (action.payload.type === 'bun' && state.orderIngredients.find(ingredient => ingredient.type === 'bun') ) {
         state.orderCost = state.orderCost - (state.orderIngredients.find(ingredient => ingredient.type === 'bun').price * 2);
         state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== state.orderIngredients.find(ingredient => ingredient.type === 'bun')._id);
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+        state.ingredientsID = [...state.ingredientsID, action.payload._id];
         state.orderIngredients = state.orderIngredients.filter(ingredient => ingredient.type !== 'bun');
         state.orderIngredients = state.orderIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + (action.payload[0].price * 2);
+        state.orderCost = state.orderCost + (action.payload.price * 2);
 
-      } else if (action.payload[0].type === 'bun') {
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+      } else if (action.payload.type === 'bun') {
+        state.ingredientsID = [...state.ingredientsID, action.payload._id];
         state.orderIngredients = state.orderIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + (action.payload[0].price * 2);
+        state.orderCost = state.orderCost + (action.payload.price * 2);
 
       } else {
-        state.ingredientsID = [...state.ingredientsID, action.payload[0]._id];
+        state.ingredientsID = [...state.ingredientsID, action.payload._id];
         state.orderIngredients = state.orderIngredients.concat(action.payload);
         state.mainIngredients = state.mainIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + action.payload[0].price;
+        state.orderCost = state.orderCost + action.payload.price;
       }
     },
     deleteIngredient: (state, action) => {
@@ -100,7 +99,7 @@ export const orderSlice = createSlice({
       state.isShowOrderDetails = true;
     },
     setCurrentOrder: (state, action) => {
-      state.currentOrder = state.feedOrders.find((order) => order.id.toString() === action.payload); 
+      state.currentOrder = state.feedOrders.find((order) => order.id === action.payload); 
     }
 
 
@@ -121,7 +120,6 @@ export const orderSlice = createSlice({
     },
     [placeAnOrder.rejected]: (state, action) => {
       state.status = 'failed';
-      state.error = action.error.message;
     }
   }
 })

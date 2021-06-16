@@ -14,7 +14,7 @@ const OrderTicket = ({status, type}) => {
 
   useEffect(() => {
     console.log(history)
-    dispatch(setCurrentOrder(id));
+    dispatch(setCurrentOrder(Number(id)));
   }, [])
   const currentOrder = useSelector(order);
 

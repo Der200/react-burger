@@ -48,7 +48,7 @@ const App = () => {
 
   const dropHandler = (itemId) => {
     const selectedIngredient = ingredients.filter(ingredient => ingredient._id === itemId._id);
-    dispatch(addIngredient(selectedIngredient));
+    dispatch(addIngredient(selectedIngredient[0]));
   }
 
   const closeModalWindow =  useCallback(() => {

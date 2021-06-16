@@ -42,8 +42,11 @@ export const fetchWithRefresh = async (url, options) => {
   }
 }
 
-export function setCookie(name, value, props) {
-  props = props || {};
+export function setCookie(name, value, props = {}) {
+  props = {
+    path: '/',
+    ...props
+  };
   let exp = props.expires;
   if (typeof exp == 'number' && exp) {
     const d = new Date();
@@ -211,7 +214,6 @@ const initialState = {
   user: null,
   authorizationStatus: `idle`,
   otherFetchsStatus: 'idle',
-  error: null,
   recoveryCodeSent: false,
 }
 
@@ -219,12 +221,12 @@ export const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
-    changeUserData: (state, action) => {
-      state.user[action.payload.name] = action.payload.value;
-    },
-    changeResetTemplate: (state, action) => {
-      state.resetTemplate[action.payload.name] = action.payload.value;
-    }
+    // changeUserData: (state, action) => {
+    //   state.user[action.payload.name] = action.payload.value;
+    // },
+    // changeResetTemplate: (state, action) => {
+    //   state.resetTemplate[action.payload.name] = action.payload.value;
+    // }
   },
   extraReducers: {
     [register.pending]: (state) => {
@@ -236,20 +238,18 @@ export const authorizationSlice = createSlice({
       localStorage.setItem('refreshToken', action.payload.refreshToken);
       setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
     },
-    [register.rejected]: (state, action) => {
+    [register.rejected]: (state) => {
       state.authorizationStatus = 'failed';
-      state.error = action.error.message;
     },
     [forgotPassword.pending]: (state) => {
       state.otherFetchsStatus = 'loading';
-      state.recoveryCodeSent = true;
     },
     [forgotPassword.fulfilled]: (state) => {
       state.otherFetchsStatus = 'succeeded';
+      state.recoveryCodeSent = true;
     },
-    [forgotPassword.rejected]: (state, action) => {
+    [forgotPassword.rejected]: (state) => {
       state.otherFetchsStatus = 'failed';
-      state.error = action.error.message;
     },
     [resetPassword.pending]: (state) => {
       state.otherFetchsStatus = 'loading';
@@ -260,7 +260,6 @@ export const authorizationSlice = createSlice({
     },
     [resetPassword.rejected]: (state, action) => {
       state.otherFetchsStatus = 'failed';
-      state.error = action.error.message;
     },
     [login.pending]: (state) => {
       state.authorizationStatus = 'loading';
@@ -273,7 +272,6 @@ export const authorizationSlice = createSlice({
     },
     [login.rejected]: (state, action) => {
       state.authorizationStatus = 'failed';
-      state.error = action.error.message;
     },
     [logout.pending]: (state) => {
       state.otherFetchsStatus = 'loading';
@@ -284,9 +282,8 @@ export const authorizationSlice = createSlice({
       localStorage.removeItem('refreshToken');
       deleteCookie('accessToken');
     },
-    [logout.rejected]: (state, action) => {
+    [logout.rejected]: (state) => {
       state.otherFetchsStatus = 'failed';
-      state.error = action.error.message;
     },
     [updateUserData.pending]: (state) => {
       state.authorizationStatus = 'loading';
@@ -297,7 +294,6 @@ export const authorizationSlice = createSlice({
     },
     [updateUserData.rejected]: (state, action) => {
       state.authorizationStatus = 'failed';
-      state.error = action.error.message;
     },
     [getUserData.pending]: (state) => {
       state.authorizationStatus = 'loading';
@@ -308,7 +304,6 @@ export const authorizationSlice = createSlice({
     },
     [getUserData.rejected]: (state, action) => {
       state.authorizationStatus = 'failed';
-      state.error = action.error.message;
     },
   }
 })
@@ -316,5 +311,5 @@ export const authorizationSlice = createSlice({
 export const recoveryCodeStatus = state => state.authorizationSlice.recoveryCodeSent;
 export const userStatus = state => state.authorizationSlice.authorizationStatus;
 export const user = state => state.authorizationSlice.user;
-export const { changeUserData, changeResetTemplate, setHistory } = authorizationSlice.actions
+// export const { changeResetTemplate } = authorizationSlice.actions
 export default authorizationSlice.reducer

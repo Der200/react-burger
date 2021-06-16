@@ -23,7 +23,6 @@ const initialState = {
   selectedIngredientDetails: null,
   isShowIngredient: false,
   status: `idle`,
-  error: null,
 }
 
 export const ingredientsSlice = createSlice({
@@ -54,7 +53,6 @@ export const ingredientsSlice = createSlice({
     },
     [fetchIngredients.rejected]: (state, action) => {
       state.status = 'failed';
-      state.error = action.error.message;
     }
   }
 })
