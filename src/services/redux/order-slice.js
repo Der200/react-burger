@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 
 const orderApiUrl = 'https://norma.nomoreparties.space/api/orders';
 
@@ -40,6 +40,8 @@ const initialState = {
     number: '',
   },
   isShowOrder: false,
+  isShowOrderDetails: false,
+  currentOrder: null,
 }
 
 export const orderSlice = createSlice({
@@ -70,6 +72,8 @@ export const orderSlice = createSlice({
     deleteIngredient: (state, action) => {
       const indexSelectingIngredient = state.orderIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
       state.orderIngredients.splice(indexSelectingIngredient, 1);
+      const indexMainIngredient = state.mainIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
+      state.mainIngredients.splice(indexMainIngredient, 1);
       state.orderCost = state.orderCost - action.payload.price;
       state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id);
     },
@@ -91,7 +95,15 @@ export const orderSlice = createSlice({
         name: '',
         number: '',
       };
+    },
+    showOrderDetails: state => {
+      state.isShowOrderDetails = true;
+    },
+    setCurrentOrder: (state, action) => {
+      state.currentOrder = state.feedOrders.find((order) => order.id.toString() === action.payload); 
     }
+
+
   },
   extraReducers: {
     [placeAnOrder.pending]: (state, action) => {
@@ -114,6 +126,7 @@ export const orderSlice = createSlice({
   }
 })
 
+export const order = state => state.orderSlice.currentOrder;
 export const orderFetchStatus = state => state.orderSlice.status;
 export const orderDetails = state => state.orderSlice.orderDetails;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
@@ -122,5 +135,5 @@ export const feedOrders = state => state.orderSlice.feedOrders;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
 export const mainIngredients = state => state.orderSlice.mainIngredients;
 export const modalViewOrder = state => state.orderSlice.isShowOrder;
-export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder } = orderSlice.actions
+export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder, setCurrentOrder } = orderSlice.actions
 export default orderSlice.reducer

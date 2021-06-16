@@ -5,11 +5,14 @@ import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
 import { orderIngredients } from '../../services/redux/order-slice';
+import { useHistory } from 'react-router-dom';
 
 const Ingredient = ({ingredient, handleClickIngredient}) => {
   const {image, price, name, _id} = ingredient;
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
+
+  const history = useHistory();
 
   useEffect(() => {
     setCount(
@@ -24,12 +27,15 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
 
   const handleClick = () => {
     handleClickIngredient(ingredient)
+    history.push('/')
+    history.replace(`/ingredient/${_id}`)
+    
   }
 
   return (
     <section className={styles.section} onClick={handleClick} ref={drag}>
       {count > 0 && <Counter count={count}/>}
-      <img src={image} alt=""/>
+      <img src={image} alt={name}/>
       <div className='mt-1 mb-1'>
         <span className="text text_type_digits-default">
           {price} <CurrencyIcon type="primary" />

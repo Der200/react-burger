@@ -21,7 +21,7 @@ const OrderDetails = ({ handleClickOrder }) => {
           идентификатор заказа
         </span>
         <div className={`${image} mt-15 mb-15`}>
-          <img src={successImage} alt='success'></img>
+          <img src={successImage} alt='успех'></img>
         </div>
         <div className={`${status}`}>
           <span className={`${active} text text_type_main-default`}>

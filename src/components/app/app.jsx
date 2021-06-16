@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
 
@@ -12,8 +12,10 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Preloader from '../preloader/preloader';
+import ProtectedRoute from '../protected-route/protected-route';
+import Modal from '../modal/modal';
 
-import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder } from '../../services/redux/order-slice';
+import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder, order } from '../../services/redux/order-slice';
 import { ingredientsFetchStatus, 
          fetchedIngredients, 
          fetchIngredients, 
@@ -32,12 +34,15 @@ import OrderTicket from '../order-ticket/order-ticket';
 const App = () => {
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const ingredientWindow = useSelector(modalViewIngredient);
   const orderWindow = useSelector(modalViewOrder);
 
   const ingredientsStatus = useSelector(ingredientsFetchStatus);
   const orderStatus = useSelector(orderFetchStatus);
+
+  const currentOrder = useSelector(order);
   
   const ingredients = useSelector(fetchedIngredients);
 
@@ -48,9 +53,12 @@ const App = () => {
 
   const closeModalWindow =  useCallback(() => {
     if (ingredientWindow) {
+      history.replace('/')
       return dispatch(closeIngredientDetails());
     } else if(orderWindow) {
       return dispatch(closeOrder());
+    } else {
+      return history.goBack();
     }
   }, [ingredientWindow, orderWindow, dispatch])
 
@@ -87,19 +95,6 @@ const App = () => {
   
   return (
     <>
-      <div id='app-modals'></div>
-      {ingredientWindow && (
-        <IngredientDetails
-          handleClickIngredient={handleClickModal}
-        />
-      )}
-
-      {orderWindow && orderStatus === 'succeeded' && (
-        <OrderDetails
-          handleClickOrder={handleClickModal}
-        />
-      )}
-      
       <AppHeader />
       <DndProvider backend={HTML5Backend}>
       <main className={styles.main__content}>
@@ -108,18 +103,50 @@ const App = () => {
           <Route path="/register" component={Register} />
           <Route path="/forgot-password" component={ForgotPassword} />
           <Route path="/reset-password" component={ResetPassword} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/profile/orders" component={Orders} />
-          <Route exact path="/profile/orders/:id" component={OrderTicket} />
+          <ProtectedRoute exact path="/profile">
+            <Profile/>
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/profile/orders">
+            <Orders/>
+          </ProtectedRoute>
+          <ProtectedRoute exact path="/profile/orders/:id">
+            <OrderTicket/>
+          </ProtectedRoute>
           <Route exact path="/feed" component={Feed} />
           <Route exact path="/feed/:id" component={OrderTicket} />
+          <Route exact path="/ingredient/:id">
+            <IngredientDetails type='url' handleClickIngredient={handleClickModal} />
+          </Route>
           <Route exact path="/">
             <BurgerIngredients />
             <BurgerConstructor dropHandler={dropHandler} />
           </Route>
+          
         </Switch>
       </main>
       </DndProvider>
+      
+      {ingredientWindow && (
+          <Modal title='Детали ингредиента' handleClickModal={handleClickModal}>
+            <IngredientDetails handleClickIngredient={handleClickModal} />
+          </Modal>
+      )}
+
+      {orderWindow && orderStatus === 'succeeded' && (
+        <OrderDetails
+          handleClickOrder={handleClickModal}
+        />
+      )}
+      <Route exact path="/feed/:id">
+        <Modal title={`#0${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+          <OrderTicket type='modal'/>
+        </Modal>
+      </Route>
+      <ProtectedRoute exact path="/profile/orders/:id">
+        <Modal title={`#0${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+          <OrderTicket type='modal'/>
+        </Modal>
+      </ProtectedRoute>
     </>
   );
 }
