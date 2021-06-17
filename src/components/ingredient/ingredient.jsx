@@ -33,7 +33,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   }
 
   return (
-    <section className={styles.section} onClick={handleClick} ref={drag}>
+    <section className={styles.section} onClick={handleClick} ref={drag} data-cy={`dnd_${_id}`}>
       {count > 0 && <Counter count={count}/>}
       <img src={image} alt={name}/>
       <div className='mt-1 mb-1'>

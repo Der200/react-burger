@@ -38,7 +38,7 @@ const BurgerConstructor = ({dropHandler}) => {
   
   return (
     <section className={[main__block, set__box].join(" ")}>
-      <section ref={dropTarget}>
+      <section ref={dropTarget} data-cy="dropTarget">
       <ul className={`${top__ingredient} mt-25 pl-5`}>
         {selectedIngredients.filter(ingredient => ingredient.type === 'bun').map((ingredient) => {
           return <OrderItem ingredient={ingredient} position={'top'} isLocked={true} key={ingredient._id}/>
