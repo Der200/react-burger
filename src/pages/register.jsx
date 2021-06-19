@@ -4,11 +4,12 @@ import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burg
 import { Link } from 'react-router-dom';
 import { register } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect,useHistory } from 'react-router-dom';
 
 const Register = () => {
   const [registerData, getRegisterData] = React.useState({});
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const changeHandler = (e) => {
     getRegisterData({
@@ -20,6 +21,7 @@ const Register = () => {
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(register({'email': registerData.email, 'password': registerData.password, 'name': registerData.name}))
+    history.replace({ pathname: '/' })
   }
 
   const description = () => {
