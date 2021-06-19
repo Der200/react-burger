@@ -65,31 +65,34 @@ const BurgerIngredients = () => {
       <section className={[ingredients__container, assembly__box].join(" ")} onScroll = {handleScrollIngredients} >
         <h2 className="text text_type_main-medium mb-6 bun" ref={bunsHeader}>Булки</h2>
         <div className={main__ingredients} ref={buns}>
-          {ingredients.filter(ingredient => ingredient.type === 'bun').map((ingredient) => (
+          {ingredients.filter(ingredient => ingredient.type === 'bun').map((ingredient, index) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
-                key={ingredient._id}        
+                key={ingredient._id}
+                testIndex={`dnd_0${index}`}        
               />
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 sauce" ref={saucesHeader}>Соусы</h2>
         <div className={main__ingredients} ref={sauces}>
-          {ingredients.filter(ingredient => ingredient.type === 'sauce').map((ingredient) => (
+          {ingredients.filter(ingredient => ingredient.type === 'sauce').map((ingredient, index) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
                 key={ingredient._id}
+                testIndex={`dnd_1${index}`} 
               />
           ))}
         </div>
         <h2 className="text text_type_main-medium mt-10 mb-6 main" ref={mainsHeader}>Начинки</h2>
         <div className={main__ingredients} ref={mains}>
-          {ingredients.filter(ingredient => ingredient.type === 'main').map((ingredient) => (
+          {ingredients.filter(ingredient => ingredient.type === 'main').map((ingredient, index) => (
               <Ingredient
                 ingredient={ingredient}
                 handleClickIngredient={handleClickIngredient}
                 key={ingredient._id}
+                testIndex={`dnd_2${index}`} 
               />
           ))}
         </div>

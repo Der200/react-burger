@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { orderIngredients } from '../../services/redux/order-slice/order-slice';
 import { useHistory } from 'react-router-dom';
 
-const Ingredient = ({ingredient, handleClickIngredient}) => {
+const Ingredient = ({ingredient, handleClickIngredient, testIndex}) => {
   const {image, price, name, _id} = ingredient;
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
@@ -33,7 +33,7 @@ const Ingredient = ({ingredient, handleClickIngredient}) => {
   }
 
   return (
-    <section className={styles.section} onClick={handleClick} ref={drag} data-cy={`dnd_${_id}`}>
+    <section className={styles.section} onClick={handleClick} ref={drag} data-cy={testIndex}>
       {count > 0 && <Counter count={count}/>}
       <img src={image} alt={name}/>
       <div className='mt-1 mb-1'>
