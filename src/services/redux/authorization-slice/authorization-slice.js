@@ -146,7 +146,6 @@ export const resetPassword = createAsyncThunk('authorization/resetPassword', asy
 })
 
 export const login = createAsyncThunk('authorization/login', async (data) => {
-  try {
     const res = await fetch(loginApiUrl, {
       method: 'POST',
       headers: {
@@ -156,15 +155,12 @@ export const login = createAsyncThunk('authorization/login', async (data) => {
     });
     
     if(!res.ok) {
+      console.log(`Email or password incorrect`)
       throw new Error('сервер не смог обработать наш запрос')
     }
 
     const loginData = await res.json();
     return loginData
-        
-  } catch(e) {
-    alert(`Что-то пошло не так. Ошибка: ${e}`)
-  }
 })
 
 export const logout = createAsyncThunk('authorization/logout', async (data) => {
