@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Form from '../components/form/form';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { login, userStatus } from '../services/redux/authorization-slice';
+import { login, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {

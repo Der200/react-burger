@@ -4,7 +4,7 @@ import styles from './ingredient.module.css';
 import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
-import { orderIngredients } from '../../services/redux/order-slice';
+import { orderIngredients } from '../../services/redux/order-slice/order-slice';
 import { useHistory } from 'react-router-dom';
 
 const Ingredient = ({ingredient, handleClickIngredient}) => {

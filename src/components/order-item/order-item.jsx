@@ -1,6 +1,6 @@
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/index.js';
 import styles from './order-item.module.css';
-import { sortingIngredients } from '../../services/redux/order-slice';
+import { sortingIngredients } from '../../services/redux/order-slice/order-slice';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop} from 'react-dnd';
 import { useRef } from 'react';

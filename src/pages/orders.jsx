@@ -1,7 +1,7 @@
 import React from 'react';
 import FeedOrder from '../components/feed-order/feed-order';
 import ProfileNav from '../components/profile-nav/profile-nav';
-import { feedOrders } from '../services/redux/order-slice';
+import { feedOrders } from '../services/redux/order-slice/order-slice';
 import { useSelector } from 'react-redux';
 
 const Orders = () => {

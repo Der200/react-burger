@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../components/form/form';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import { register } from '../services/redux/authorization-slice';
+import { register } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 

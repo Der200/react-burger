@@ -1,7 +1,7 @@
 import styles from './order-ticket.module.css'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentOrder, order } from '../../services/redux/order-slice'; 
+import { setCurrentOrder, order } from '../../services/redux/order-slice/order-slice'; 
 import { useParams, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import Preloader from '../preloader/preloader';

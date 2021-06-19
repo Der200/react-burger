@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Form from '../components/form/form';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileNav from '../components/profile-nav/profile-nav';
-import { user, updateUserData, userStatus } from '../services/redux/authorization-slice';
+import { user, updateUserData, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Profile = () => {

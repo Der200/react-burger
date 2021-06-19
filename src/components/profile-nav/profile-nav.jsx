@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styles from './profile-nav.module.css';
-import { logout } from '../../services/redux/authorization-slice';
+import { logout } from '../../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
 
 const ProfileNav = ({description}) => {

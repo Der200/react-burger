@@ -15,12 +15,12 @@ import Preloader from '../preloader/preloader';
 import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 
-import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder, order } from '../../services/redux/order-slice';
+import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder, order } from '../../services/redux/order-slice/order-slice';
 import { ingredientsFetchStatus, 
          fetchedIngredients, 
          fetchIngredients, 
          closeIngredientDetails, 
-         modalViewIngredient } from '../../services/redux/ingredients-slice';
+         modalViewIngredient } from '../../services/redux/ingredients-slice/ingredients-slice';
 import Login from '../../pages/login';
 import Register from '../../pages/register';
 import ForgotPassword from '../../pages/forgot-password';

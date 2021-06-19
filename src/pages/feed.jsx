@@ -1,6 +1,6 @@
 import FeedOrder from "../components/feed-order/feed-order"
 import { useSelector } from 'react-redux';
-import {feedOrders} from '../services/redux/order-slice';
+import {feedOrders} from '../services/redux/order-slice/order-slice';
 import { Link } from 'react-router-dom';
 import styles from './feed.module.css';
 
