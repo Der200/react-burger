@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
-import { selectedIngredient, fetchedIngredients, fetchIngredients } from '../../services/redux/ingredients-slice';
+import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Preloader from '../preloader/preloader';

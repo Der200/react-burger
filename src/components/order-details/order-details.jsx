@@ -3,7 +3,7 @@ import Modal from '../modal/modal';
 import successImage from '../../images/success.gif';
 import styles from './order-details.module.css';
 import { useSelector } from 'react-redux';
-import { orderDetails } from '../../services/redux/order-slice';
+import { orderDetails } from '../../services/redux/order-slice/order-slice';
 
 const {box, title, image, status, active} = styles;
 

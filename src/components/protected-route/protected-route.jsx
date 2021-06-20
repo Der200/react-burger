@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { user, getUserData, userStatus } from '../../services/redux/authorization-slice';
+import { user, getUserData, userStatus } from '../../services/redux/authorization-slice/authorization-slice';
 import Preloader from '../preloader/preloader';
 
 const ProtectedRoute = ({ children, ...rest }) => {

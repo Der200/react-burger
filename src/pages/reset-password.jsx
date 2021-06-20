@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../components/form/form';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { resetPassword, recoveryCodeStatus } from '../services/redux/authorization-slice';
+import { resetPassword, recoveryCodeStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const ResetPassword = () => {
