@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const FeedOrder = ({ order, status }) => {
   const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
-  const { ingredients, id, cost, name } = order;
+  const { ingredients, number, price, name } = order;
 
   let remainingOrder = ingredients.length - 5;
   
@@ -14,7 +14,7 @@ const FeedOrder = ({ order, status }) => {
 
   const clickHandler = () => {
     history.push(path);
-    history.replace(`${path}/${order.id}`)
+    history.replace(`${path}/${order.number}`)
   }
 
   if (order.length === 0) {
@@ -30,7 +30,7 @@ const FeedOrder = ({ order, status }) => {
   return (
     <section className={`${styles.container} p-6 mt-4`} onClick={clickHandler}>
       <div className={`${styles.header} mb-6`}>
-        <span className="text text_type_digits-default">{`#0${id}`}</span>
+        <span className="text text_type_digits-default">{`#${number}`}</span>
         <span className="text text_type_main-default text_color_inactive">Сегодня, 00:00 i-GMT+3</span>
       </div>
       <div className={`mb-6`}>
@@ -47,12 +47,12 @@ const FeedOrder = ({ order, status }) => {
       <div className={`${styles.footer} mt-6`}>
         <div className={styles.images}>
           {ingredients.length < 6 && ingredients.map((ingredient, index) => (
-            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
+            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient + (Math.random() * (200 - 10) + 10)}>
               <img src={ingredient.image} alt={ingredient.name} />
             </div>
           ))}
           {ingredients.length > 5 && ingredients.slice(0, 5).map((ingredient, index) => (
-            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
+            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient + (Math.random() * (200 - 10) + 10)}>
               <img src={ingredient.image} alt={ingredient.name} />
             </div>
           ))}
@@ -64,7 +64,7 @@ const FeedOrder = ({ order, status }) => {
           )}
         </div>
         <span className={`${styles.total__cost} text text_type_digits-default`}>
-          {cost}
+          {price}
           <CurrencyIcon type="primary" />
         </span>
       </div>

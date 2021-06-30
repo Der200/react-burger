@@ -100,9 +100,7 @@ export const orderSlice = createSlice({
     },
     setCurrentOrder: (state, action) => {
       state.currentOrder = state.feedOrders.find((order) => order.id === action.payload); 
-    }
-
-
+    },
   },
   extraReducers: {
     [placeAnOrder.pending]: (state, action) => {
