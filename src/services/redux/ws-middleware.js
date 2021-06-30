@@ -1,41 +1,40 @@
+import { getCookie } from "./authorization-slice/authorization-slice";
 
-export const socketMiddleware = (wsUrl, wsActions) => {
+export const socketMiddleware = (wsUrl, wsActions, authFlag) => {
   return store => {
     let socket = null;
 
     return next => action => {
       const { dispatch } = store;
       const { type, payload } = action;
-      const { onOpen, onClose, onError, onMessage } = wsActions;
- 
-      if (type === 'WS_CONNECTION_START') {
+      const { onInit, onOpen, onClose, onError, onMessage, wsClose } = wsActions;
+      const token = authFlag ? getCookie('accessToken') : null;
+
+      if (type === onInit.toString()) {
             // объект класса WebSocket
-        socket = new WebSocket(wsUrl);
+        socket = token ? new WebSocket(`${wsUrl}?token=${token}`) : new WebSocket(wsUrl);
       }
       
-      if (type === 'WS_CLOSE') {
+      if (type === wsClose.toString()) {
         socket && socket.close()
       }
       if (socket) {
 
-                // функция, которая вызывается при открытии сокета
         socket.onopen = event => {
           dispatch({ type: onOpen, payload: event });
         };
 
-                // функция, которая вызывается при ошибке соединения
         socket.onerror = event => {
           dispatch({ type: onError, payload: event });
         };
 
-                // функция, которая вызывается при получения события от сервера
         socket.onmessage = event => {
           const { data } = event;
           const parsedData = JSON.parse(data);
           const { success, ...restParsedData} = parsedData
           dispatch({ type: onMessage, payload: restParsedData });
         };
-                // функция, которая вызывается при закрытии соединения
+
         socket.onclose = event => {
           dispatch({ type: onClose, payload: event });
           socket.close()
@@ -44,7 +43,7 @@ export const socketMiddleware = (wsUrl, wsActions) => {
 
         if (type === 'WS_SEND_MESSAGE') {
           const message = payload;
-                    // функция для отправки сообщения на сервер
+          
           socket.send(JSON.stringify(message));
         }
 

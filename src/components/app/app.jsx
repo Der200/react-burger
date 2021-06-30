@@ -139,12 +139,12 @@ const App = () => {
         />
       )}
       <Route exact path="/feed/:id">
-        <Modal title={`#${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </Route>
       <ProtectedRoute exact path="/profile/orders/:id">
-        <Modal title={`#${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </ProtectedRoute>
