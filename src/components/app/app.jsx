@@ -29,6 +29,7 @@ import Profile from '../../pages/profile';
 import Orders from '../../pages/orders';
 import Feed from '../../pages/feed';
 import OrderTicket from '../order-ticket/order-ticket';
+import { createAction } from '@reduxjs/toolkit';
 
 
 const App = () => {
@@ -138,12 +139,12 @@ const App = () => {
         />
       )}
       <Route exact path="/feed/:id">
-        <Modal title={`#0${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </Route>
       <ProtectedRoute exact path="/profile/orders/:id">
-        <Modal title={`#0${currentOrder !== null ? currentOrder.id : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </ProtectedRoute>

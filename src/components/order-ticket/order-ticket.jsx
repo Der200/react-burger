@@ -2,18 +2,17 @@ import styles from './order-ticket.module.css'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentOrder, order } from '../../services/redux/order-slice/order-slice'; 
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Preloader from '../preloader/preloader';
 
 
 const OrderTicket = ({status, type}) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  // const history = useHistory();
   const { id } = useParams();
 
   useEffect(() => {
-    console.log(history)
     dispatch(setCurrentOrder(Number(id)));
   }, [])
   const currentOrder = useSelector(order);
@@ -24,7 +23,7 @@ const OrderTicket = ({status, type}) => {
 
   return (
       <section className={`${styles.container} ${type === 'modal' ? styles.modal : ''}`}>
-        {type !== 'modal' && <h2 className='text text_type_digits-default mb-10'>#0{currentOrder.id}</h2>}
+        {type !== 'modal' && <h2 className='text text_type_digits-default mb-10'>#0{currentOrder.number}</h2>}
         <div className={`mb-10`}>
           <h3 className={`text text_type_main-medium mb-3`}>{currentOrder.name}</h3>
           <span className={`${styles.status} mb-15`}>{status ? status : 'Выполнен'}</span>
@@ -38,7 +37,7 @@ const OrderTicket = ({status, type}) => {
                 </div>
                 <span className={styles.ingredient__name}>{ingredient.name}</span>
                 <span className={styles.ingredient__price}> 
-                  {ingredient.type === 'bun' ? `2 x ${ingredient.price}` : ingredient.price} 
+                  {ingredient.type === 'bun' ? `2 x ${ingredient.price}` : `1 x ${ingredient.price}`} 
                   <CurrencyIcon type="primary"/> 
                 </span>
               </li>))}
@@ -47,7 +46,7 @@ const OrderTicket = ({status, type}) => {
         </div>
         <div className={`${styles.general__info}`}>
           <span className="text text_type_main-default text_color_inactive">Сегодня, 00:00 i - GMT+3</span>
-          <span className={styles.total__cost}>{currentOrder.cost} <CurrencyIcon type={"primary"}/></span>
+          <span className={styles.total__cost}>{currentOrder.price} <CurrencyIcon type={"primary"}/></span>
         </div>
       </section>
   )

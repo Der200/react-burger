@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getCookie } from '../authorization-slice/authorization-slice';
 
 const orderApiUrl = 'https://norma.nomoreparties.space/api/orders';
 
@@ -7,7 +8,8 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
     const res = await fetch(orderApiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getCookie('accessToken'),
       },
       body: JSON.stringify({ 
         "ingredients": order
@@ -99,10 +101,11 @@ export const orderSlice = createSlice({
       state.isShowOrderDetails = true;
     },
     setCurrentOrder: (state, action) => {
-      state.currentOrder = state.feedOrders.find((order) => order.id === action.payload); 
+      state.currentOrder = state.feedOrders.find((order) => order.number === action.payload); 
+    },
+    setFeedOrders: (state, action) => {
+      state.feedOrders = action.payload;
     }
-
-
   },
   extraReducers: {
     [placeAnOrder.pending]: (state, action) => {
@@ -112,10 +115,10 @@ export const orderSlice = createSlice({
       state.status = 'succeeded';
       state.orderDetails.name = action.payload.name;
       state.orderDetails.number = action.payload.order.number;
-      state.feedOrders = state.feedOrders.concat([{id: action.payload.order.number,
-                                                   name: action.payload.name,
-                                                   cost: state.orderCost, 
-                                                   ingredients: state.orderIngredients}]);
+      // state.feedOrders = state.feedOrders.concat([{id: action.payload.order.number,
+                                                  //  name: action.payload.name,
+                                                  //  cost: state.orderCost, 
+                                                  //  ingredients: state.orderIngredients}]);
 
     },
     [placeAnOrder.rejected]: (state, action) => {
@@ -133,5 +136,5 @@ export const feedOrders = state => state.orderSlice.feedOrders;
 export const orderIngredients = state => state.orderSlice.orderIngredients;
 export const mainIngredients = state => state.orderSlice.mainIngredients;
 export const modalViewOrder = state => state.orderSlice.isShowOrder;
-export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder, setCurrentOrder } = orderSlice.actions
+export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder, setCurrentOrder, setFeedOrders } = orderSlice.actions
 export default orderSlice.reducer

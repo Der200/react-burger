@@ -55,8 +55,18 @@
 }
 
 .specific ul {
-  max-height: 160px;
+  height: 310px;
+  max-width: 270px;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+
+.specific li {
+  height: 24px;
+  width: 30px;
 }
 
 .orders__list {
