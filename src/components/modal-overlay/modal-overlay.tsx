@@ -1,7 +1,11 @@
+import { FC } from 'react';
 import styles from './modal-overlay.module.css';
-import PropTypes from 'prop-types';
 
-const ModalOverlay = ({handleClickOverlay, children}) => {
+interface IModalOverlay {
+  handleClickOverlay: (target: any) => void;
+}
+
+const ModalOverlay : FC<IModalOverlay> = ({handleClickOverlay, children}) => {
   return (
     <section
       className={`${styles.overlay__section} overlay__closed`}
@@ -10,10 +14,6 @@ const ModalOverlay = ({handleClickOverlay, children}) => {
       {children}
     </section>
   )
-}
-
-ModalOverlay.propTypes = {
-  handleClickOverlay: PropTypes.func.isRequired
 }
 
 export default ModalOverlay;

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FC } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +32,7 @@ import OrderTicket from '../order-ticket/order-ticket';
 import { createAction } from '@reduxjs/toolkit';
 
 
-const App = () => {
+const App : FC = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();

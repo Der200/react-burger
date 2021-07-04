@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
 import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
@@ -5,7 +6,12 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
 
-const IngredientDetails = ({handleClickIngredient, type}) => {
+interface IIngredientDetails {
+  handleClickIngredient: (target: any) => void;
+  type?: string;
+}
+
+const IngredientDetails : FC<IIngredientDetails> = ({handleClickIngredient, type}) => {
   let ingredient = useSelector(selectedIngredient);
   const ingredients = useSelector(fetchedIngredients);
   const { id } = useParams();

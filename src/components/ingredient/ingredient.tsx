@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './ingredient.module.css';
-import PropTypes from 'prop-types';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
 import { orderIngredients } from '../../services/redux/order-slice/order-slice';
 import { useHistory } from 'react-router-dom';
+import TIngredientObject from '../../utils/types';
 
-const Ingredient = ({ingredient, handleClickIngredient, testIndex}) => {
+interface IIngredient {
+  ingredient: TIngredientObject;
+  handleClickIngredient: (ingredient: TIngredientObject) => void;
+  testIndex: string;
+}
+
+const Ingredient : FC<IIngredient> = ({ingredient, handleClickIngredient, testIndex}) => {
   const {image, price, name, _id} = ingredient;
   const selectedIngredients = useSelector(orderIngredients);
   const [count, setCount] = useState(0);
@@ -44,19 +50,6 @@ const Ingredient = ({ingredient, handleClickIngredient, testIndex}) => {
       <div className="text text_type_main-default">{name}</div>
     </section>
   )
-}
-
-Ingredient.propTypes = {
-  ingredient: PropTypes.shape({
-    image_large: PropTypes.string.isRequired, 
-    name: PropTypes.string.isRequired, 
-    calories: PropTypes.number.isRequired, 
-    proteins: PropTypes.number.isRequired, 
-    fat: PropTypes.number.isRequired, 
-    carbohydrates: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired
-  }),  
 }
 
 export default Ingredient;

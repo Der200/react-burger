@@ -1,16 +1,22 @@
+import { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './profile-nav.module.css';
 import { logout } from '../../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
 
-const ProfileNav = ({description}) => {
+interface IProfileNav {
+  description: string;
+}
+
+const ProfileNav : FC<IProfileNav> = ({description}) => {
   const dispatch = useDispatch();
   
   const token = localStorage.getItem('refreshToken');
   
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(logout({token}));
+    // @ts-ignore: Unreachable code error
+    dispatch(logout({token})); 
   }
 
   return (

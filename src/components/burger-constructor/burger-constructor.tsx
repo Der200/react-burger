@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, FC } from "react";
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-constructor.module.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,11 @@ import { useDrop } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
 import OrderItem from '../order-item/order-item';
 
-const BurgerConstructor = ({dropHandler}) => {
+interface IBurgerConstructor {
+  dropHandler: (itemId: unknown) => void;
+}
+
+const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
   const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer} = styles;
 
   const history = useHistory();
@@ -38,6 +42,7 @@ const BurgerConstructor = ({dropHandler}) => {
     if (localStorage.getItem('refreshToken') === null) {
       history.replace({ pathname: '/login' });
     } else {
+      // @ts-ignore
       dispatch(placeAnOrder(orderDetails));
       dispatch(showOrder());
     }
@@ -56,7 +61,7 @@ const BurgerConstructor = ({dropHandler}) => {
           return (<OrderItem 
                   index={index}
                   ingredient={ingredient} 
-                  position={null} 
+                  position={undefined} 
                   isLocked={false}
                   handleClose={() => dispatch(deleteIngredient(ingredient))}
                   key={ingredient._id + (Math.random() * (200 - 10) + 10)}

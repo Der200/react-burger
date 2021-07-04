@@ -3,10 +3,18 @@ import styles from './order-item.module.css';
 import { sortingIngredients } from '../../services/redux/order-slice/order-slice';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop} from 'react-dnd';
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useRef, FC } from 'react';
+import  TIngredientObject  from '../../utils/types'
 
-const OrderItem = ({ingredient, position, index, isLocked, handleClose}) => {
+interface IOrderItem {
+  ingredient: TIngredientObject;
+  position: "top" | "bottom" | undefined;
+  isLocked: boolean;
+  index?: number;
+  handleClose?: () => void;
+}
+
+const OrderItem : FC<IOrderItem> = ({ingredient, position, index, isLocked, handleClose}) => {
   const dispatch = useDispatch();
   
   const handleDrop =(item, monitor) => {
@@ -17,7 +25,7 @@ const OrderItem = ({ingredient, position, index, isLocked, handleClose}) => {
     }
   }
 
-  const ref = useRef();
+  const ref = useRef<HTMLLIElement>(null);
 
   const [, drag] = useDrag({
     type: 'orderElement',
@@ -32,6 +40,7 @@ const OrderItem = ({ingredient, position, index, isLocked, handleClose}) => {
   });
 
   return (
+    // @ts-ignore: Unreachable code error
     <li className="text text_type_main-default pb-4" ref={drag(drop(ref))}>
       <section className={styles.section}>
       {ingredient.type === 'bun' ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}
@@ -46,14 +55,6 @@ const OrderItem = ({ingredient, position, index, isLocked, handleClose}) => {
       </section>
     </li> 
   )
-}
-
-OrderItem.propTypes = {
-  ingredient: PropTypes.object,
-  position: PropTypes.string,
-  index: PropTypes.number,
-  isLocked: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func,
 }
 
 export default OrderItem;

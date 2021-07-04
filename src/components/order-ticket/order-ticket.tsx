@@ -3,11 +3,15 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentOrder, order } from '../../services/redux/order-slice/order-slice'; 
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import Preloader from '../preloader/preloader';
 
+interface IOrderTicket {
+  status?: string;
+  type?: string | undefined;
+}
 
-const OrderTicket = ({status, type}) => {
+const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
   const dispatch = useDispatch();
   // const history = useHistory();
   const { id } = useParams();

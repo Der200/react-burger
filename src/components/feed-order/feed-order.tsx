@@ -1,11 +1,17 @@
+import { FC } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './feed-order.module.css'
 import { Link } from 'react-router-dom';
+import { TOrderObject } from '../../utils/types';
 
-const FeedOrder = ({ order, status }) => {
+interface IFeedOrder {
+  order: TOrderObject;
+}
+
+const FeedOrder : FC<IFeedOrder> = ({ order }) => {
   const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
-  const { ingredients, number, price, name } = order;
+  const { ingredients, number, price, name, status } = order;
 
   let remainingOrder = ingredients.length - 5;
   
@@ -17,7 +23,7 @@ const FeedOrder = ({ order, status }) => {
     history.replace(`${path}/${order.number}`)
   }
 
-  if (order.length === 0) {
+  if (!order) {
     return (
       <div className={`${styles.container} ${styles.empty} p-6 mt-4`}>
         <div className={`${styles.body} mb-6`}>
@@ -47,12 +53,12 @@ const FeedOrder = ({ order, status }) => {
       <div className={`${styles.footer} mt-6`}>
         <div className={styles.images}>
           {ingredients.length < 6 && ingredients.map((ingredient, index) => (
-            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient + (Math.random() * (200 - 10) + 10)}>
+            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
               <img src={ingredient.image} alt={ingredient.name} />
             </div>
           ))}
           {ingredients.length > 5 && ingredients.slice(0, 5).map((ingredient, index) => (
-            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient + (Math.random() * (200 - 10) + 10)}>
+            <div className={styles.element} style={{ zIndex: 6 - index, left: `-${25 * (index)}px` }} key={ingredient._id + (Math.random() * (200 - 10) + 10)}>
               <img src={ingredient.image} alt={ingredient.name} />
             </div>
           ))}

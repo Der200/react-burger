@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, FC } from 'react';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 import styles from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchedIngredients, setIngredientDetails, showIngredientDetails } from '../../services/redux/ingredients-slice/ingredients-slice';
 import { useInView } from 'react-intersection-observer';
 
-const BurgerIngredients = () => {
+const BurgerIngredients : FC = () => {
   const ingredients = useSelector(fetchedIngredients);
   const {main__tabs, 
         main__block, 
@@ -18,9 +18,9 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState('buns');
 
-  const bunsHeader = useRef();
-  const saucesHeader = useRef();
-  const mainsHeader = useRef();
+  const bunsHeader = useRef(null);
+  const saucesHeader = useRef(null);
+  const mainsHeader = useRef(null);
 
   const [buns, inViewBuns] = useInView({threshold:0.3})
   const [sauces, inViewSauces] = useInView({threshold:1})
@@ -34,12 +34,15 @@ const BurgerIngredients = () => {
 
   const scrollToNode = (e) => {
     if (e === 'buns') {
+      // @ts-ignore
       bunsHeader.current.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('buns')
     } else if (e === 'sauces') {
+      // @ts-ignore
       saucesHeader.current.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('sauces')
     } else {
+      // @ts-ignore
       mainsHeader.current.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('mains')
     }
