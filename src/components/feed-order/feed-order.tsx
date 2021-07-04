@@ -7,6 +7,8 @@ import { TOrderObject } from '../../utils/types';
 
 interface IFeedOrder {
   order: TOrderObject;
+  status?: string;
+  key?: number;
 }
 
 const FeedOrder : FC<IFeedOrder> = ({ order }) => {

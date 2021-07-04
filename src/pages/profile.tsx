@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import Form from '../components/form/form';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileNav from '../components/profile-nav/profile-nav';
 import { user, updateUserData, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { TAuthorizationForm } from '../utils/types';
 
-const Profile = () => {
+const Profile : FC = () => {
   const description = 'В этом разделе вы можете изменить свои персональные данные';
   const authorizationStatus = useSelector(userStatus);
   const currentUser = useSelector(user);
   const dispatch = useDispatch();
-  const [profileData, getProfileData] = React.useState({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
-  const [visible, getVisible] = React.useState(false);
+  const [profileData, getProfileData] = React.useState<TAuthorizationForm>({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
+  const [visible, getVisible] = React.useState<boolean>(false);
 
   const cancelButtonStyle = {
     color: '#4C4CFF',
@@ -46,6 +47,7 @@ const Profile = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(updateUserData({'name': profileData.name, 'email': profileData.email, 'password': profileData.password}));
     getVisible(false);
   }
@@ -54,14 +56,14 @@ const Profile = () => {
     <section style={{display: 'flex'}}>
       <ProfileNav description={description}/>
       <Form submitHandler={submitHandler}>
-        <Input placeholder={'Имя'} value={profileData.name} name='name' onChange={changeHandler} icon='EditIcon' />
-        <Input placeholder={'Логин'} value={profileData.email} name='email' onChange={changeHandler} icon='EditIcon' />
-        <Input placeholder={'Пароль'} value={profileData.password} name='password' onChange={changeHandler} icon='EditIcon' />
+        <Input placeholder={'Имя'} value={profileData.name || ''} name='name' onChange={changeHandler} icon='EditIcon' />
+        <Input placeholder={'Логин'} value={profileData.email || ''} name='email' onChange={changeHandler} icon='EditIcon' />
+        <Input placeholder={'Пароль'} value={profileData.password || ''} name='password' onChange={changeHandler} icon='EditIcon' />
         {visible && <div style={{display: 'flex', marginLeft: 'auto', paddingRight: '20px', width: '251px'}}>
-          <div type='button' onClick={cancelChangesHandler} style={cancelButtonStyle}>Отмена</div>
-          <div type='submit'>
+          <div onClick={cancelChangesHandler} style={cancelButtonStyle}>Отмена</div>
+          <button type='submit'>
             <Button type='primary' size='medium'>Сохранить</Button>
-          </div>
+          </button>
         </div>}
       </Form>
     </section>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, FC } from "react";
 import FeedOrder from "../components/feed-order/feed-order"
 import { useSelector, useDispatch } from 'react-redux';
 import { feedOrders, setFeedOrders } from '../services/redux/order-slice/order-slice';
@@ -8,9 +8,10 @@ import { socketStatus, message } from "../services/redux/ws-slice/ws-slice";
 import { fetchedIngredients } from "../services/redux/ingredients-slice/ingredients-slice";
 import { wsInit, wsClose } from "../store";
 import { filterData } from "../utils/common";
+import { TOrderObject } from "../utils/types";
 
 
-const Feed = () => {
+const Feed : FC = () => {
 
   const wsStatus = useSelector(socketStatus);
   const ingredients = useSelector(fetchedIngredients);
@@ -39,7 +40,7 @@ const Feed = () => {
     ordersData = filterData(orders, ingredients);  
   }
 
-  const ordersDone = ordersData.map((order) => {
+  const ordersDone = ordersData.map((order : TOrderObject) => {
     return <li className='text text_type_digits-default mb-2' key={order.number}>{`${order.number}`}</li>
   })
 
@@ -59,7 +60,7 @@ const Feed = () => {
               </div>
             </div>
           )}
-          {ordersData.map((order) => (<FeedOrder order={order} key={order.number}/>))}
+          {ordersData.map((order : TOrderObject) => (<FeedOrder order={order} key={order.number}/>))}
         </section>
         <section className={styles.stats}>
           <section className={styles.specific}>

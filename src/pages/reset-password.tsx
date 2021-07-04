@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Form from '../components/form/form';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { resetPassword, recoveryCodeStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { TAuthorizationForm } from '../utils/types';
 
-const ResetPassword = () => {
-  const [resetData, getResetData] = React.useState({'password': '', 'code': ''});
+const ResetPassword : FC = () => {
+  const [resetData, getResetData] = React.useState<TAuthorizationForm>({'password': '', 'code': ''});
   const recoveryStatus = useSelector(recoveryCodeStatus);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -16,11 +17,11 @@ const ResetPassword = () => {
       ...resetData,
       [e.target.name]: e.target.value,
     })
-    console.log(recoveryStatus);
   }
 
   const submitHandler = (e) => {
     e.preventDefault()
+    // @ts-ignore
     dispatch(resetPassword({'password': resetData.password, 'token': resetData.code}))
     history.replace({pathname: '/login'});
   }
@@ -40,9 +41,10 @@ const ResetPassword = () => {
   }
 
   return (
+    // @ts-ignore
   <Form title={'Восстановление пароля'} description={description()} submitHandler={submitHandler}>
-    <Input type={'password'} placeholder={'Введите новый пароль'} value={resetData.password} name='password' onChange={changeHandler}/>
-    <Input placeholder={'Введите код из письма'} value={resetData.code} name='code' onChange={changeHandler}/>
+    <Input type={'password'} placeholder={'Введите новый пароль'} value={resetData.password || ''} name='password' onChange={changeHandler}/>
+    <Input placeholder={'Введите код из письма'} value={resetData.code || ''} name='code' onChange={changeHandler}/>
     <Button>Сохранить</Button>
   </Form>
   )

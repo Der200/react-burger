@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import Form from '../components/form/form';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { login, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { TAuthorizationForm } from '../utils/types';
 
-const Login = () => {
-  const [loginData, getLoginData] = useState({});
+const Login : FC = () => {
+  const [loginData, getLoginData] = useState<TAuthorizationForm>({});
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Login = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
     
   }  
@@ -48,6 +50,7 @@ const Login = () => {
   }
 
   return (
+    // @ts-ignore
   <Form title={'Вход'} description={description()} submitHandler={submitHandler}>
     <EmailInput value={loginData.email || ''} name='email' onChange={changeHandler}/>
     <PasswordInput value={loginData.password || ''} name='password' onChange={changeHandler}/>

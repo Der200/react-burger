@@ -21,4 +21,30 @@ export type TOrderObject = {
   price: number;
 }
 
+export type TAuthorizationForm = {
+  email?: string;
+  name?: string;
+  password?: string;
+  token?: string;
+  code?: string;
+}
+
+export type TWsOrderObject = {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TWsMessageObject = {
+  success: boolean;
+  total: number;
+  totalToday: number;
+  orders: Array<TWsOrderObject>
+}
+
+
+
 export default TIngredientObject ;

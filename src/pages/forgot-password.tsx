@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Form from '../components/form/form';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { forgotPassword } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
+import { TAuthorizationForm } from '../utils/types';
 
 
-const ForgotPassword = () => {
-  const [email, getEmail] = React.useState('')
+const ForgotPassword : FC = () => {
+  const [forgotData, getForgotData] = React.useState<TAuthorizationForm>({'email': ''});
   const dispatch = useDispatch();
   const history = useHistory();
 
   const changeHandler = (e) => {
-    getEmail(e.target.value)
+    getForgotData({...forgotData, [e.target.name]: e.target.value})
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(forgotPassword({'email': email}));
     history.replace({ pathname: '/reset-password' })
   }
@@ -32,8 +34,9 @@ const ForgotPassword = () => {
   }
 
   return (
+    // @ts-ignore
   <Form title={'Восстановление пароля'} description={description()} submitHandler={submitHandler}>
-    <Input placeholder={'Укажите e-mail'} value={email} name="email" onChange={changeHandler}/>
+    <Input placeholder={'Укажите e-mail'} value={forgotData.email || ''} name="email" onChange={changeHandler}/>
     <Button>Восстановить</Button>
   </Form>
   )
