@@ -41,7 +41,7 @@ const Feed : FC = () => {
   }
 
   const ordersDone = ordersData.map((order : TOrderObject) => {
-    return <li className='text text_type_digits-default mb-2' key={order.number}>{`${order.number}`}</li>
+    return <li className='text text_type_digits-default mb-2' key={order.number + (Math.random() * (200 - 10) + 10)} >{`${order.number}`}</li>
   })
 
   // const ordersCooking = orderss.map((order) => {
@@ -60,7 +60,17 @@ const Feed : FC = () => {
               </div>
             </div>
           )}
-          {ordersData.map((order : TOrderObject) => (<FeedOrder order={order} key={order.number}/>))}
+          {ordersData.map((order : TOrderObject) => (<FeedOrder order={order} key={order.number + (Math.random() * (200 - 10) + 10)}/>)).sort((a, b) => {
+            // @ts-ignore
+            if (Date.parse(a.updatedAt) > Date.parse(b.updatedAt)) {
+              return 1
+            }
+            // @ts-ignore
+            if (Date.parse(a.updatedAt) < Date.parse(b.updatedAt)) {
+              return -1
+            }
+            return 0
+          })}
         </section>
         <section className={styles.stats}>
           <section className={styles.specific}>

@@ -19,6 +19,7 @@ export type TOrderObject = {
   name: string;
   ingredients: Array<TIngredientObject>;
   price: number;
+  createdAt: string;
 }
 
 export type TAuthorizationForm = {

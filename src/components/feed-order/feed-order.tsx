@@ -4,6 +4,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import styles from './feed-order.module.css'
 import { Link } from 'react-router-dom';
 import { TOrderObject } from '../../utils/types';
+import { dateDay } from '../../utils/common';
 
 interface IFeedOrder {
   order: TOrderObject;
@@ -13,7 +14,7 @@ interface IFeedOrder {
 
 const FeedOrder : FC<IFeedOrder> = ({ order }) => {
   const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
-  const { ingredients, number, price, name, status } = order;
+  const { ingredients, number, price, name, status, createdAt } = order;
 
   let remainingOrder = ingredients.length - 5;
   
@@ -39,7 +40,7 @@ const FeedOrder : FC<IFeedOrder> = ({ order }) => {
     <section className={`${styles.container} p-6 mt-4`} onClick={clickHandler}>
       <div className={`${styles.header} mb-6`}>
         <span className="text text_type_digits-default">{`#${number}`}</span>
-        <span className="text text_type_main-default text_color_inactive">Сегодня, 00:00 i-GMT+3</span>
+        <span className="text text_type_main-default text_color_inactive">{dateDay(createdAt)} i-GMT+3</span>
       </div>
       <div className={`mb-6`}>
         {name}
