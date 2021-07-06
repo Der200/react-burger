@@ -7,6 +7,7 @@ import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-co
 import styles from './burger-constructor.module.css';
 
 import OrderItem from '../order-item/order-item';
+import Preloader from "../preloader/preloader";
 
 import { orderIngredients, 
          orderCost, 
@@ -14,7 +15,8 @@ import { orderIngredients,
          orderIngredientsId, 
          deleteIngredient, 
          showOrder, 
-         mainIngredients } from '../../services/redux/order-slice/order-slice';
+         mainIngredients, 
+         orderFetchStatus} from '../../services/redux/order-slice/order-slice';
 
 
 interface IBurgerConstructor {
@@ -23,6 +25,8 @@ interface IBurgerConstructor {
 
 const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
   const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer} = styles;
+
+  const orderStatus = useSelector(orderFetchStatus);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -50,6 +54,12 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
       dispatch(placeAnOrder(orderDetails));
       dispatch(showOrder());
     }
+  }
+
+  if (orderStatus === 'loading') {
+    return (
+      <Preloader />
+    )
   }
   
   return (

@@ -5,15 +5,17 @@ import styles from './order-details.module.css';
 import successImage from '../../images/success.gif';
 
 import Modal from '../modal/modal';
+import Preloader from '../preloader/preloader';
 
-import { orderDetails } from '../../services/redux/order-slice/order-slice';
+import { orderDetails, orderFetchStatus } from '../../services/redux/order-slice/order-slice';
 
 interface IOrderDetails {
   handleClickOrder: (target: any) => void;
 }
 
 const OrderDetails : FC<IOrderDetails> = ({ handleClickOrder }) => {
-  const order = useSelector(orderDetails)
+  const order = useSelector(orderDetails);
+
   // @ts-ignore: Unreachable code error
   const handleClick = target => {
     // @ts-ignore: Unreachable code error

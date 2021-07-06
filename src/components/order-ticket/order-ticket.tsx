@@ -53,7 +53,7 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
 
   return (
       <section className={`${styles.container} ${type === 'modal' ? styles.modal : ''}`}>
-        {type !== 'modal' && <h2 className='text text_type_digits-default mb-10'>#0{currentOrder.number}</h2>}
+        {type !== 'modal' && <h2 className='text text_type_digits-default mb-10'>#{currentOrder.number}</h2>}
         <div className={`mb-10`}>
           <h3 className={`text text_type_main-medium mb-3`}>{currentOrder.name}</h3>
           <span className={`${styles.status} mb-15`}>{status ? status : 'Выполнен'}</span>

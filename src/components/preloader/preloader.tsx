@@ -3,7 +3,7 @@ import { FC } from "react"
 const Preloader : FC = () => {
 
   return (
-    <section>Данные загружаются...</section>
+    <section style={{margin: '0 auto', marginTop: '125px'}}>Данные загружаются...</section>
   )
 }
 

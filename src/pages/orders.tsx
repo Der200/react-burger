@@ -45,7 +45,7 @@ const Orders : FC = () => {
     <section style={{display: 'flex'}}>
       <ProfileNav description={description}/>
       <section style={{marginTop: '40px', marginLeft: `10px`, height: '868px', overflowY: 'auto'}}>
-        {userOrdersData.map((order) => <FeedOrder order={order} status={order.status} key={order.number}/>)}
+        {userOrdersData.map((order) => <FeedOrder order={order} status={order.status} key={order.number}/>).reverse()}
       </section>
     </section>
   )

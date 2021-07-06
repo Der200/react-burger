@@ -31,6 +31,7 @@ export const wsSlice = createSlice({
     },
     WS_CONNECTION_AUTH_SUCCESS: (state, action) => {
       state.wsAuthConnected = true;
+      state.wsUsed = true;
     },
     WS_CONNECTION_AUTH_ERROR: (state, action) => {
       state.wsAuthConnected = false;

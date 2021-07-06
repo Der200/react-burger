@@ -67,17 +67,7 @@ const Feed : FC = () => {
               </div>
             </div>
           )}
-          {ordersData.map((order : TOrderObject) => (<FeedOrder order={order} key={order.number + (Math.random() * (200 - 10) + 10)}/>)).sort((a, b) => {
-            // @ts-ignore
-            if (Date.parse(a.updatedAt) > Date.parse(b.updatedAt)) {
-              return 1
-            }
-            // @ts-ignore
-            if (Date.parse(a.updatedAt) < Date.parse(b.updatedAt)) {
-              return -1
-            }
-            return 0
-          })}
+          {ordersData.map((order : TOrderObject) => (<FeedOrder order={order} key={order.number + (Math.random() * (200 - 10) + 10)}/>))}
         </section>
         <section className={styles.stats}>
           <section className={styles.specific}>

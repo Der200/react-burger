@@ -34,6 +34,7 @@ import { ingredientsFetchStatus,
          fetchIngredients, 
          closeIngredientDetails, 
          modalViewIngredient } from '../../services/redux/ingredients-slice/ingredients-slice';
+import { socketFlag } from '../../services/redux/ws-slice/ws-slice';
 
 
 
@@ -44,6 +45,7 @@ const App : FC = () => {
 
   const ingredientWindow = useSelector(modalViewIngredient);
   const orderWindow = useSelector(modalViewOrder);
+  const currentOrderWindow = useSelector(socketFlag)
 
   const ingredientsStatus = useSelector(ingredientsFetchStatus);
   const orderStatus = useSelector(orderFetchStatus);
@@ -143,16 +145,21 @@ const App : FC = () => {
           handleClickOrder={handleClickModal}
         />
       )}
+
+      {currentOrderWindow && 
       <Route exact path="/feed/:id">
         <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
-      </Route>
+      </Route> 
+      }
+      {currentOrderWindow && 
       <ProtectedRoute exact path="/profile/orders/:id">
         <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </ProtectedRoute>
+      }
     </>
   );
 }
