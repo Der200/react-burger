@@ -137,6 +137,7 @@ export const orderSlice = createSlice({
       state.status = 'succeeded';
       state.orderDetails.name = action.payload.name;
       state.orderDetails.number = action.payload.order.number;
+      state.ingredientsID = [];
       // state.feedOrders = state.feedOrders.concat([{id: action.payload.order.number,
                                                   //  name: action.payload.name,
                                                   //  cost: state.orderCost, 
