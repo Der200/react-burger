@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -64,10 +63,6 @@ const IngredientDetails : FC<IIngredientDetails> = ({handleClickIngredient, type
         </div>
       </div>
   )
-}
-
-IngredientDetails.propTypes = {
-  handleClickIngredient: PropTypes.func.isRequired
 }
 
 export default IngredientDetails;
