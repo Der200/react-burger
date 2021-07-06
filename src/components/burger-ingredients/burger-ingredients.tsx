@@ -9,9 +9,11 @@ import Ingredient from '../ingredient/ingredient';
 
 import { fetchedIngredients, setIngredientDetails, showIngredientDetails } from '../../services/redux/ingredients-slice/ingredients-slice';
 
+import TIngredientObject from '../../utils/types';
+
 
 const BurgerIngredients : FC = () => {
-  const ingredients = useSelector(fetchedIngredients);
+  const ingredients: TIngredientObject[] = useSelector(fetchedIngredients);
   const {main__tabs, 
         main__block, 
         main__ingredients,

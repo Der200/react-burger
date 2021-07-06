@@ -9,11 +9,10 @@ import Preloader from '../preloader/preloader';
 import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 
 interface IIngredientDetails {
-  handleClickIngredient: (target: any) => void;
   type?: string;
 }
 
-const IngredientDetails : FC<IIngredientDetails> = ({handleClickIngredient, type}) => {
+const IngredientDetails : FC<IIngredientDetails> = ({type}) => {
   let ingredient = useSelector(selectedIngredient);
   const ingredients = useSelector(fetchedIngredients);
   const { id } = useParams();

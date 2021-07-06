@@ -11,7 +11,7 @@ const {modal, active, modal__header, modal__close} = styles;
 
 interface IModal {
   title?: string;
-  handleClickModal: (target: any) => void;
+  handleClickModal?: (target: any) => void;
 }
 
 const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
