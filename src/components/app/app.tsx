@@ -1,3 +1,4 @@
+// librarys
 import React, { useCallback, FC } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -6,6 +7,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
 
+// components
 import AppHeader from '../app-header/app-header'; 
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -14,13 +16,9 @@ import OrderDetails from '../order-details/order-details';
 import Preloader from '../preloader/preloader';
 import ProtectedRoute from '../protected-route/protected-route';
 import Modal from '../modal/modal';
+import OrderTicket from '../order-ticket/order-ticket';
 
-import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder, order } from '../../services/redux/order-slice/order-slice';
-import { ingredientsFetchStatus, 
-         fetchedIngredients, 
-         fetchIngredients, 
-         closeIngredientDetails, 
-         modalViewIngredient } from '../../services/redux/ingredients-slice/ingredients-slice';
+// pages
 import Login from '../../pages/login';
 import Register from '../../pages/register';
 import ForgotPassword from '../../pages/forgot-password';
@@ -28,8 +26,15 @@ import ResetPassword from '../../pages/reset-password';
 import Profile from '../../pages/profile';
 import Orders from '../../pages/orders';
 import Feed from '../../pages/feed';
-import OrderTicket from '../order-ticket/order-ticket';
-import { createAction } from '@reduxjs/toolkit';
+
+// redux
+import { addIngredient, orderFetchStatus, closeOrder, modalViewOrder, order } from '../../services/redux/order-slice/order-slice';
+import { ingredientsFetchStatus, 
+         fetchedIngredients, 
+         fetchIngredients, 
+         closeIngredientDetails, 
+         modalViewIngredient } from '../../services/redux/ingredients-slice/ingredients-slice';
+
 
 
 const App : FC = () => {

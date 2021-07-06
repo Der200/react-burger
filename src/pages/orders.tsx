@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import FeedOrder from '../components/feed-order/feed-order';
 import ProfileNav from '../components/profile-nav/profile-nav';
+
 import { feedOrders, setFeedOrders } from '../services/redux/order-slice/order-slice';
-import { useSelector, useDispatch } from 'react-redux';
 import { socketAuthStatus, authMessage } from '../services/redux/ws-slice/ws-slice';
 import { fetchedIngredients } from "../services/redux/ingredients-slice/ingredients-slice";
 import { wsAuthInit, wsAuthClose } from '../store';
+
 import { filterData } from '../utils/common';
 
 const Orders : FC = () => {

@@ -1,8 +1,10 @@
 import { FC } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom'
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from './feed-order.module.css'
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import styles from './feed-order.module.css'
+
 import { TOrderObject } from '../../utils/types';
 import { dateDay } from '../../utils/common';
 

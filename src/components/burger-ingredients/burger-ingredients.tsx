@@ -1,10 +1,14 @@
 import { useRef, useState, FC } from 'react';
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
-import styles from './burger-ingredients.module.css';
-import Ingredient from '../ingredient/ingredient';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchedIngredients, setIngredientDetails, showIngredientDetails } from '../../services/redux/ingredients-slice/ingredients-slice';
 import { useInView } from 'react-intersection-observer';
+import { useDispatch, useSelector } from 'react-redux';
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
+
+import styles from './burger-ingredients.module.css';
+
+import Ingredient from '../ingredient/ingredient';
+
+import { fetchedIngredients, setIngredientDetails, showIngredientDetails } from '../../services/redux/ingredients-slice/ingredients-slice';
+
 
 const BurgerIngredients : FC = () => {
   const ingredients = useSelector(fetchedIngredients);

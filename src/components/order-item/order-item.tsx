@@ -1,9 +1,12 @@
-import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/index.js';
-import styles from './order-item.module.css';
-import { sortingIngredients } from '../../services/redux/order-slice/order-slice';
+import { useRef, FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop} from 'react-dnd';
-import { useRef, FC } from 'react';
+import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/index.js';
+
+import styles from './order-item.module.css';
+
+import { sortingIngredients } from '../../services/redux/order-slice/order-slice';
+
 import  TIngredientObject  from '../../utils/types'
 
 interface IOrderItem {

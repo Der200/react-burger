@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import PropTypes from 'prop-types';
-import styles from './ingredient-details.module.css';
-import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
+import styles from './ingredient-details.module.css';
+
 import Preloader from '../preloader/preloader';
+
+import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 
 interface IIngredientDetails {
   handleClickIngredient: (target: any) => void;

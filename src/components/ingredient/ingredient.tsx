@@ -1,10 +1,13 @@
 import React, { useEffect, useState, FC } from 'react';
-import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
-import styles from './ingredient.module.css';
+import { useHistory } from 'react-router-dom';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
+import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
+
+import styles from './ingredient.module.css';
+
 import { orderIngredients } from '../../services/redux/order-slice/order-slice';
-import { useHistory } from 'react-router-dom';
+
 import TIngredientObject from '../../utils/types';
 
 interface IIngredient {

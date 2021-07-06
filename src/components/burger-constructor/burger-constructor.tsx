@@ -1,7 +1,13 @@
 import { useEffect, FC } from "react";
-import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
-import styles from './burger-constructor.module.css';
+import { useDrop } from 'react-dnd';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
+
+import styles from './burger-constructor.module.css';
+
+import OrderItem from '../order-item/order-item';
+
 import { orderIngredients, 
          orderCost, 
          placeAnOrder, 
@@ -9,9 +15,7 @@ import { orderIngredients,
          deleteIngredient, 
          showOrder, 
          mainIngredients } from '../../services/redux/order-slice/order-slice';
-import { useDrop } from 'react-dnd';
-import { useHistory } from 'react-router-dom';
-import OrderItem from '../order-item/order-item';
+
 
 interface IBurgerConstructor {
   dropHandler: (itemId: unknown) => void;

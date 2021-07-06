@@ -1,14 +1,17 @@
-import styles from './order-ticket.module.css'
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentOrder, order, setFeedOrders, getOrderData, orderData, orderStatus, feedOrders } from '../../services/redux/order-slice/order-slice'; 
-import { useParams } from 'react-router-dom';
 import { useEffect, FC } from 'react';
-import { dateDay, filterData } from '../../utils/common';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+
+import styles from './order-ticket.module.css'
+
 import Preloader from '../preloader/preloader';
+
+import { setCurrentOrder, order, setFeedOrders, getOrderData, orderData, orderStatus, feedOrders } from '../../services/redux/order-slice/order-slice'; 
 import { socketFlag } from '../../services/redux/ws-slice/ws-slice';
 import { fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 
+import { dateDay, filterData } from '../../utils/common';
 
 interface IOrderTicket {
   status?: string;

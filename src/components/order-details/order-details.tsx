@@ -1,8 +1,11 @@
 import { FC } from 'react';
-import Modal from '../modal/modal';
-import successImage from '../../images/success.gif';
-import styles from './order-details.module.css';
 import { useSelector } from 'react-redux';
+
+import styles from './order-details.module.css';
+import successImage from '../../images/success.gif';
+
+import Modal from '../modal/modal';
+
 import { orderDetails } from '../../services/redux/order-slice/order-slice';
 
 interface IOrderDetails {

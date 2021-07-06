@@ -1,9 +1,12 @@
 import React, { useState, FC } from 'react';
-import Form from '../components/form/form';
-import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { login, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import Form from '../components/form/form';
+
+import { login, userStatus } from '../services/redux/authorization-slice/authorization-slice';
+
 import { TAuthorizationForm } from '../utils/types';
 
 const Login : FC = () => {

@@ -1,9 +1,12 @@
 import React, { FC } from 'react';
-import Form from '../components/form/form';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { forgotPassword } from '../services/redux/authorization-slice/authorization-slice';
 import { useDispatch } from 'react-redux';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import Form from '../components/form/form';
+
+import { forgotPassword } from '../services/redux/authorization-slice/authorization-slice';
+
 import { TAuthorizationForm } from '../utils/types';
 
 

@@ -1,8 +1,10 @@
 import { useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
-import { user, getUserData, userStatus } from '../../services/redux/authorization-slice/authorization-slice';
+
 import Preloader from '../preloader/preloader';
+
+import { user, getUserData, userStatus } from '../../services/redux/authorization-slice/authorization-slice';
 
 const ProtectedRoute : FC<RouteProps> = ({ children, ...rest }) => {
   const currentUser = useSelector(user);

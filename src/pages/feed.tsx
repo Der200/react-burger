@@ -1,12 +1,16 @@
 import { useEffect, FC } from "react";
-import FeedOrder from "../components/feed-order/feed-order"
-import { useSelector, useDispatch } from 'react-redux';
-import { feedOrders, setFeedOrders } from '../services/redux/order-slice/order-slice';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 import styles from './feed.module.css';
+
+import FeedOrder from "../components/feed-order/feed-order";
+
+import { setFeedOrders } from '../services/redux/order-slice/order-slice';
 import { socketStatus, message } from "../services/redux/ws-slice/ws-slice";
 import { fetchedIngredients } from "../services/redux/ingredients-slice/ingredients-slice";
 import { wsInit, wsClose } from "../store";
+
 import { filterData } from "../utils/common";
 import { TOrderObject } from "../utils/types";
 
