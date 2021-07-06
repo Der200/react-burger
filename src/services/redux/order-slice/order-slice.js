@@ -21,7 +21,27 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
     }
 
     const orderData = await res.json();
-    console.log(orderData)
+    return orderData
+        
+  } catch(e) {
+    alert(`Что-то пошло не так. Ошибка: ${e}`)
+  }
+})
+
+export const getOrderData = createAsyncThunk('order/getOrderData', async (number) => {
+  try {
+    const res = await fetch(`${orderApiUrl}/${number}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    if(!res.ok) {
+      throw new Error('сервер не смог обработать наш запрос')
+    }
+
+    const orderData = await res.json();
     return orderData
         
   } catch(e) {
@@ -43,6 +63,8 @@ const initialState = {
   isShowOrder: false,
   isShowOrderDetails: false,
   currentOrder: null,
+  orderStatus: `idle`,
+  orderData: [],
 }
 
 export const orderSlice = createSlice({
@@ -123,10 +145,22 @@ export const orderSlice = createSlice({
     },
     [placeAnOrder.rejected]: (state, action) => {
       state.status = 'failed';
+    },
+    [getOrderData.pending]: (state, action) => {
+      state.orderStatus = 'loading';
+    },
+    [getOrderData.fulfilled]: (state, action) => {
+      state.orderStatus = 'succeeded';
+      state.orderData = action.payload.orders;
+    },
+    [getOrderData.rejected]: (state, action) => {
+      state.orderStatus = 'failed';
     }
   }
 })
 
+export const orderStatus = state => state.orderSlice.orderStatus;
+export const orderData = state => state.orderSlice.orderData;
 export const order = state => state.orderSlice.currentOrder;
 export const orderFetchStatus = state => state.orderSlice.status;
 export const orderDetails = state => state.orderSlice.orderDetails;

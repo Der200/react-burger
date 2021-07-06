@@ -40,8 +40,11 @@ const Feed : FC = () => {
     ordersData = filterData(orders, ingredients);  
   }
 
-  const ordersDone = ordersData.map((order : TOrderObject) => {
-    return <li className='text text_type_digits-default mb-2' key={order.number + (Math.random() * (200 - 10) + 10)} >{`${order.number}`}</li>
+  const ordersDone = ordersData.map((order : TOrderObject, index: number) : JSX.Element | undefined => {
+    if (index < 50) {
+      return (<li className='text text_type_digits-default mb-2' key={order.number + (Math.random() * (200 - 10) + 10)} >{`${order.number}`}</li>)
+    }
+    return undefined
   })
 
   // const ordersCooking = orderss.map((order) => {

@@ -1,10 +1,14 @@
 import styles from './order-ticket.module.css'
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentOrder, order } from '../../services/redux/order-slice/order-slice'; 
+import { setCurrentOrder, order, setFeedOrders, getOrderData, orderData, orderStatus, feedOrders } from '../../services/redux/order-slice/order-slice'; 
 import { useParams } from 'react-router-dom';
 import { useEffect, FC } from 'react';
+import { dateDay, filterData } from '../../utils/common';
 import Preloader from '../preloader/preloader';
+import { socketFlag } from '../../services/redux/ws-slice/ws-slice';
+import { fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
+
 
 interface IOrderTicket {
   status?: string;
@@ -15,10 +19,29 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
   const dispatch = useDispatch();
   // const history = useHistory();
   const { id } = useParams();
+  const usedSockedFlag = useSelector(socketFlag);
+  const ingredients = useSelector(fetchedIngredients);
+  const loadedOrder = useSelector(orderData);
+  const statusLoading = useSelector(orderStatus);
+  const feedOrdersArray = useSelector(feedOrders);
 
   useEffect(() => {
-    dispatch(setCurrentOrder(Number(id)));
+    if (!usedSockedFlag && statusLoading === `idle`) {
+      // @ts-ignore
+      dispatch(getOrderData(Number(id)))
+    }
   }, [])
+
+  useEffect(() => {
+    if (statusLoading === 'succeeded' && !feedOrdersArray.length) {
+      // @ts-ignore
+      dispatch(setFeedOrders(filterData(loadedOrder, ingredients)))
+    }
+    if (feedOrdersArray.length) {
+      dispatch(setCurrentOrder(Number(id)));
+    }
+  }, [statusLoading, feedOrdersArray.length])
+
   const currentOrder = useSelector(order);
 
   if (!currentOrder) {
@@ -49,7 +72,7 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
           </div>
         </div>
         <div className={`${styles.general__info}`}>
-          <span className="text text_type_main-default text_color_inactive">Сегодня, 00:00 i - GMT+3</span>
+          <span className="text text_type_main-default text_color_inactive">{dateDay(currentOrder.createdAt)} - GMT+3</span>
           <span className={styles.total__cost}>{currentOrder.price} <CurrencyIcon type={"primary"}/></span>
         </div>
       </section>

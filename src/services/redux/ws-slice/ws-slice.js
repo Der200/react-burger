@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   wsConnected: false,
+  wsUsed: false,
   wsAuthConnected: false,
   wsError: null,
   wsAuthError: null,
@@ -15,6 +16,7 @@ export const wsSlice = createSlice({
   reducers: {
     WS_CONNECTION_SUCCESS: (state, action) => {
       state.wsConnected = true;
+      state.wsUsed = true;
     },
     WS_CONNECTION_ERROR: (state, action) => {
       state.wsConnected = false;
@@ -25,7 +27,6 @@ export const wsSlice = createSlice({
       state.wsError = null;
     },
     WS_GET_MESSAGE: (state, action) => {
-      console.log(`FEED_MESSAGE: ${action.payload}`)
       state.wsMessage = action.payload;
     },
     WS_CONNECTION_AUTH_SUCCESS: (state, action) => {
@@ -47,6 +48,7 @@ export const wsSlice = createSlice({
 })
 
 export const socketAuthStatus = state => state.wsSlice.wsAuthConnected;
+export const socketFlag = state => state.wsSlice.wsUsed;
 export const socketStatus = state => state.wsSlice.wsConnected;
 export const authMessage = state => state.wsSlice.wsAuthMessage;
 export const message = state => state.wsSlice.wsMessage;

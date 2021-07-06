@@ -40,7 +40,7 @@ const FeedOrder : FC<IFeedOrder> = ({ order }) => {
     <section className={`${styles.container} p-6 mt-4`} onClick={clickHandler}>
       <div className={`${styles.header} mb-6`}>
         <span className="text text_type_digits-default">{`#${number}`}</span>
-        <span className="text text_type_main-default text_color_inactive">{dateDay(createdAt)} i-GMT+3</span>
+        <span className="text text_type_main-default text_color_inactive">{dateDay(createdAt)} - GMT+3</span>
       </div>
       <div className={`mb-6`}>
         {name}
