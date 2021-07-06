@@ -27,7 +27,7 @@ const AppHeader : FC = () => {
             </li>
           </ul>
           <li className={navlist__logo}>
-            <Logo/>
+            <NavLink to={'/'}><Logo/></NavLink>
           </li>
           <li className={[navlist__buttonitem, navlist__kabinet].join(' ')}>
             <NavLink to={'/profile'} className={nav__item} activeClassName={active__item}>

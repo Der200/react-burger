@@ -123,7 +123,7 @@ const App : FC = () => {
           <Route exact path="/feed" component={Feed} />
           <Route exact path="/feed/:id" component={OrderTicket} />
           <Route exact path="/ingredient/:id">
-            <IngredientDetails type='url' handleClickIngredient={handleClickModal} />
+            <IngredientDetails type='url' />
           </Route>
           <Route exact path="/">
             <BurgerIngredients />
@@ -136,7 +136,7 @@ const App : FC = () => {
       
       {ingredientWindow && (
           <Modal title='Детали ингредиента' handleClickModal={handleClickModal}>
-            <IngredientDetails handleClickIngredient={handleClickModal} />
+            <IngredientDetails />
           </Modal>
       )}
 
