@@ -11,7 +11,7 @@ import { setCurrentOrder, order, setFeedOrders, getOrderData, orderData, orderSt
 import { socketFlag } from '../../services/redux/ws-slice/ws-slice';
 import { fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
 
-import { dateDay, filterData } from '../../utils/common';
+import { dateDay, filterData, useAppDispatch, useAppSelector } from '../../utils/common';
 
 interface IOrderTicket {
   status?: string;
@@ -19,14 +19,14 @@ interface IOrderTicket {
 }
 
 const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // const history = useHistory();
   const { id } = useParams();
-  const usedSockedFlag = useSelector(socketFlag);
-  const ingredients = useSelector(fetchedIngredients);
-  const loadedOrder = useSelector(orderData);
-  const statusLoading = useSelector(orderStatus);
-  const feedOrdersArray = useSelector(feedOrders);
+  const usedSockedFlag = useAppSelector(socketFlag);
+  const ingredients = useAppSelector(fetchedIngredients);
+  const loadedOrder = useAppSelector(orderData);
+  const statusLoading = useAppSelector(orderStatus);
+  const feedOrdersArray = useAppSelector(feedOrders);
 
   useEffect(() => {
     if (!usedSockedFlag && statusLoading === `idle`) {
@@ -45,7 +45,7 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
     }
   }, [statusLoading, feedOrdersArray.length])
 
-  const currentOrder = useSelector(order);
+  const currentOrder = useAppSelector(order);
 
   if (!currentOrder) {
     return <Preloader />

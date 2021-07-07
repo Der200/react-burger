@@ -8,6 +8,7 @@ import styles from './order-item.module.css';
 import { sortingIngredients } from '../../services/redux/order-slice/order-slice';
 
 import  TIngredientObject  from '../../utils/types'
+import { useAppDispatch } from '../../utils/common';
 
 interface IOrderItem {
   ingredient: TIngredientObject;
@@ -18,17 +19,9 @@ interface IOrderItem {
 }
 
 const OrderItem : FC<IOrderItem> = ({ingredient, position, index, isLocked, handleClose}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   
-  const handleDrop =(item, monitor) => {
-    if(item.ingredient.type === 'bun') return
-    if(item.index !== index) {
-      console.log(`'indexFrom:' ${item.index}, 'indexTo:' ${index}`)
-      dispatch(sortingIngredients({indexFrom: item.index, indexTo: index}))
-    }
-  }
-
-  const ref = useRef<HTMLLIElement>(null);
+  const ref = useRef<HTMLLIElement>();
 
   const [{ isDrag } , drag] = useDrag({
     type: 'orderElement',
@@ -71,17 +64,10 @@ const OrderItem : FC<IOrderItem> = ({ingredient, position, index, isLocked, hand
     }
   })
 
-  // const [, drop] = useDrop({
-  //   accept: 'orderElement',
-  //   drop(item, monitor) {
-  //     handleDrop(item, monitor)
-  //   },
-  // });
-
   const opacity: number = isDrag ? 0 : 1
 
   return (
-    // @ts-ignore: Unreachable code error
+    //@ts-ignore
     <li className="text text_type_main-default pb-4" ref={drag(drop(ref))} style={{opacity: opacity}}>
       <section className={styles.section}>
       {ingredient.type === 'bun' ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}

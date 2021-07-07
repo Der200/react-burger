@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import styles from './profile-nav.module.css';
 
 import { logout } from '../../services/redux/authorization-slice/authorization-slice';
+import { useAppDispatch } from '../../utils/common';
 
 
 interface IProfileNav {
@@ -12,11 +13,11 @@ interface IProfileNav {
 }
 
 const ProfileNav : FC<IProfileNav> = ({description}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   
-  const token = localStorage.getItem('refreshToken');
+  const token: string | null = localStorage.getItem('refreshToken');
   
-  const submitHandler = (e) => {
+  const submitHandler: MouseEventHandler = (e): void => {
     e.preventDefault();
     // @ts-ignore: Unreachable code error
     dispatch(logout({token})); 

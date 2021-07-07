@@ -7,17 +7,16 @@ import successImage from '../../images/success.gif';
 import Modal from '../modal/modal';
 
 import { orderDetails } from '../../services/redux/order-slice/order-slice';
+import { useAppSelector } from '../../utils/common';
 
 interface IOrderDetails {
-  handleClickOrder: (target: any) => void;
+  handleClickOrder?: (target: any) => void;
 }
 
 const OrderDetails : FC<IOrderDetails> = ({ handleClickOrder }) => {
-  const order = useSelector(orderDetails);
+  const order = useAppSelector(orderDetails);
 
-  // @ts-ignore: Unreachable code error
-  const handleClick = target => {
-    // @ts-ignore: Unreachable code error
+  const handleClick = (target: any): void => {
     handleClickOrder && handleClickOrder(target)
   }
 

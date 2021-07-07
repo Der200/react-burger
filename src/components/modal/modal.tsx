@@ -18,8 +18,7 @@ const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
   const history = useHistory()
   
   const modalRoot = document.getElementById('app-modals');
-  const handleClick = element => {
-    // @ts-ignore: Unreachable code error
+  const handleClick = (element: any): void => {
     handleClickModal && handleClickModal(element.target);
     history.replace(`/`);
   }

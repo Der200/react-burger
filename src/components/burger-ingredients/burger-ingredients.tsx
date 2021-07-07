@@ -1,4 +1,4 @@
-import { useRef, useState, FC } from 'react';
+import { useRef, useState, FC, SyntheticEvent } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
@@ -10,10 +10,11 @@ import Ingredient from '../ingredient/ingredient';
 import { fetchedIngredients, setIngredientDetails, showIngredientDetails } from '../../services/redux/ingredients-slice/ingredients-slice';
 
 import TIngredientObject from '../../utils/types';
+import { useAppDispatch, useAppSelector } from '../../utils/common';
 
 
 const BurgerIngredients : FC = () => {
-  const ingredients: TIngredientObject[] = useSelector(fetchedIngredients);
+  const ingredients: TIngredientObject[] = useAppSelector(fetchedIngredients);
   const {main__tabs, 
         main__block, 
         main__ingredients,
@@ -21,8 +22,8 @@ const BurgerIngredients : FC = () => {
         assembly__box
   } = styles;
 
-  const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState('buns');
+  const dispatch = useAppDispatch();
+  const [currentTab, setCurrentTab] = useState<string>('buns');
 
   const bunsHeader = useRef<HTMLHeadingElement>(null);
   const saucesHeader = useRef<HTMLHeadingElement>(null);
@@ -32,13 +33,13 @@ const BurgerIngredients : FC = () => {
   const [sauces, inViewSauces] = useInView({threshold:1})
   const [mains, inViewMain] = useInView({threshold:0.4})
 
-  const handleScrollIngredients = () => {
+  const handleScrollIngredients = (): void => {
     inViewBuns && setCurrentTab('buns')
     inViewSauces && setCurrentTab('sauces')
     inViewMain && setCurrentTab('mains')
   }
 
-  const scrollToNode = (e) => {
+  const scrollToNode = (e: any): void => {
     if (e === 'buns') {
       bunsHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('buns')
@@ -53,7 +54,7 @@ const BurgerIngredients : FC = () => {
   }
 
 
-  const handleClickIngredient = ingredient => {    
+  const handleClickIngredient = (ingredient: TIngredientObject): void => {    
     dispatch(setIngredientDetails(ingredient))
     dispatch(showIngredientDetails())
   }

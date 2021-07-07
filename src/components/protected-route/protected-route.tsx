@@ -5,16 +5,18 @@ import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
 
 import { user, getUserData, userStatus } from '../../services/redux/authorization-slice/authorization-slice';
+import { useAppDispatch, useAppSelector } from '../../utils/common';
 
 const ProtectedRoute : FC<RouteProps> = ({ children, ...rest }) => {
-  const currentUser = useSelector(user);
-  const authorizationStatus = useSelector(userStatus);
+  const currentUser = useAppSelector(user);
+  const authorizationStatus = useAppSelector(userStatus);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   useEffect(() => {
     if (localStorage.getItem('refreshToken') !== null) {
+      //@ts-ignore
       dispatch(getUserData());
     }
   }, [])

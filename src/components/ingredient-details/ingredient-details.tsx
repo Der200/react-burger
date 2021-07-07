@@ -7,18 +7,20 @@ import styles from './ingredient-details.module.css';
 import Preloader from '../preloader/preloader';
 
 import { selectedIngredient, fetchedIngredients } from '../../services/redux/ingredients-slice/ingredients-slice';
+import { useAppSelector } from '../../utils/common';
+import TIngredientObject from '../../utils/types';
 
 interface IIngredientDetails {
   type?: string;
 }
 
 const IngredientDetails : FC<IIngredientDetails> = ({type}) => {
-  let ingredient = useSelector(selectedIngredient);
-  const ingredients = useSelector(fetchedIngredients);
+  let ingredient = useAppSelector(selectedIngredient);
+  const ingredients = useAppSelector(fetchedIngredients);
   const { id } = useParams();
 
   if (ingredient === null && ingredients !== null) {
-    ingredient = ingredients.find((ingredient) => ingredient._id.toString() === id);
+    ingredient = ingredients.find((ingredient: TIngredientObject) => ingredient._id.toString() === id);
   }
   
   if (ingredient === null) {

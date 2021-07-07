@@ -15,10 +15,10 @@ interface IFeedOrder {
 }
 
 const FeedOrder : FC<IFeedOrder> = ({ order }) => {
-  const bigOrderImage = "https://code.s3.yandex.net/react/code/cheese.png";
+  const bigOrderImage: string = "https://code.s3.yandex.net/react/code/cheese.png";
   const { ingredients, number, price, name, status, createdAt } = order;
 
-  let remainingOrder = ingredients.length - 5;
+  let remainingOrder: number = ingredients.length - 5;
   
   const history = useHistory()
   const { path } = useRouteMatch()

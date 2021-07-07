@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC, MouseEventHandler } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import styles from './ingredient.module.css';
 import { orderIngredients } from '../../services/redux/order-slice/order-slice';
 
 import TIngredientObject from '../../utils/types';
+import { useAppSelector } from '../../utils/common';
 
 interface IIngredient {
   ingredient: TIngredientObject;
@@ -18,8 +19,8 @@ interface IIngredient {
 
 const Ingredient : FC<IIngredient> = ({ingredient, handleClickIngredient, testIndex}) => {
   const {image, price, name, _id} = ingredient;
-  const selectedIngredients = useSelector(orderIngredients);
-  const [count, setCount] = useState(0);
+  const selectedIngredients = useAppSelector(orderIngredients);
+  const [count, setCount] = useState<number>(0);
 
   const history = useHistory();
 
@@ -34,7 +35,7 @@ const Ingredient : FC<IIngredient> = ({ingredient, handleClickIngredient, testIn
     item: {_id}
   });
 
-  const handleClick = () => {
+  const handleClick: MouseEventHandler = (): void => {
     handleClickIngredient(ingredient)
     history.push('/')
     history.replace(`/ingredient/${_id}`)
