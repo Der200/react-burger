@@ -1,6 +1,6 @@
 import { useRef, FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { useDrag, useDrop} from 'react-dnd';
+import { useDrag, useDrop, DropTargetMonitor} from 'react-dnd';
 import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components/dist/index.js';
 
 import styles from './order-item.module.css';
@@ -13,7 +13,7 @@ interface IOrderItem {
   ingredient: TIngredientObject;
   position: "top" | "bottom" | undefined;
   isLocked: boolean;
-  index?: number;
+  index: number;
   handleClose?: () => void;
 }
 
@@ -30,21 +30,59 @@ const OrderItem : FC<IOrderItem> = ({ingredient, position, index, isLocked, hand
 
   const ref = useRef<HTMLLIElement>(null);
 
-  const [, drag] = useDrag({
+  const [{ isDrag } , drag] = useDrag({
     type: 'orderElement',
     item: {index, ingredient},
+    collect(monitor) {
+      return {
+        isDrag: monitor.isDragging()
+      }
+    }
   });
 
   const [, drop] = useDrop({
     accept: 'orderElement',
-    drop(item, monitor) {
-      handleDrop(item, monitor)
-    },
-  });
+    hover(item:{index: any, ingredient: TIngredientObject}, monitor: DropTargetMonitor) {
+      if (!ref.current) {
+        return
+      }
+
+      if (item.index === undefined) return
+      if (item.ingredient.type === 'bun') return
+      const dragIndex = item?.index
+      const hoverIndex = index
+      if (dragIndex === hoverIndex) {
+        return
+      }
+      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      const clientOffset = monitor.getClientOffset()
+      const hoverClientY = clientOffset!.y - hoverBoundingRect.top
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+      
+      dispatch(sortingIngredients({indexFrom: item.index, indexTo: index}))
+      item.index = hoverIndex
+    }
+  })
+
+  // const [, drop] = useDrop({
+  //   accept: 'orderElement',
+  //   drop(item, monitor) {
+  //     handleDrop(item, monitor)
+  //   },
+  // });
+
+  const opacity: number = isDrag ? 0 : 1
 
   return (
     // @ts-ignore: Unreachable code error
-    <li className="text text_type_main-default pb-4" ref={drag(drop(ref))}>
+    <li className="text text_type_main-default pb-4" ref={drag(drop(ref))} style={{opacity: opacity}}>
       <section className={styles.section}>
       {ingredient.type === 'bun' ? <span className="pl-6"></span> : <div className={styles.dragicon}><DragIcon type="primary"/></div>}
         <ConstructorElement 

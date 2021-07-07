@@ -120,7 +120,7 @@ export const orderSlice = createSlice({
         state.orderCost += (action.payload.price * 2);
       } else {
         state.ingredientsID = [...state.ingredientsID, action.payload._id];
-        state.mainIngredients = state.mainIngredients.concat(action.payload);
+        state.mainIngredients = state.mainIngredients.concat({...action.payload, key: (Math.random() * (200 - 10) + 10)});
         state.orderCost += action.payload.price;
       }
         state.orderIngredients = state.mainIngredients.concat(state.bunIngredient);

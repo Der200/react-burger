@@ -11,6 +11,7 @@ type TIngredientObject = {
   image_large: string;
   image_mobile: string;
   __v: number;
+  key?: number;
 }
 
 export type TOrderObject = {

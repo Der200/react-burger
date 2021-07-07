@@ -66,8 +66,8 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
     <section className={[main__block, set__box].join(" ")}>
       <section ref={dropTarget} data-cy="dropTarget">
       <ul className={`${top__ingredient} mt-25 pl-5`}>
-        {selectedIngredients.filter(ingredient => ingredient.type === 'bun').map((ingredient) => {
-          return <OrderItem ingredient={ingredient} position={'top'} isLocked={true} key={ingredient._id}/>
+        {selectedIngredients.filter(ingredient => ingredient.type === 'bun').map((ingredient, index) => {
+          return <OrderItem ingredient={ingredient} index={index} position={'top'} isLocked={true} key={ingredient._id}/>
       })}
       </ul>
       <ul className={order__container}>
@@ -78,13 +78,13 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
                   position={undefined} 
                   isLocked={false}
                   handleClose={() => dispatch(deleteIngredient(ingredient))}
-                  key={ingredient._id + (Math.random() * (200 - 10) + 10)}
+                  key={ingredient.key}
                   />);
         })}
       </ul>
       <ul className={`${bottom__ingredient} pl-5`}>
-        {selectedIngredients.filter(ingredient => ingredient.type === 'bun').map((ingredient) => {
-          return <OrderItem ingredient={ingredient} position={'bottom'} isLocked={true} key={ingredient._id}/>
+        {selectedIngredients.filter(ingredient => ingredient.type === 'bun').map((ingredient, index) => {
+          return <OrderItem ingredient={ingredient} index={index} position={'bottom'} isLocked={true} key={ingredient._id}/>
         })}
       </ul>
       </section>

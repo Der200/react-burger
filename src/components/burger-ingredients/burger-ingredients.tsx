@@ -24,9 +24,9 @@ const BurgerIngredients : FC = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState('buns');
 
-  const bunsHeader = useRef(null);
-  const saucesHeader = useRef(null);
-  const mainsHeader = useRef(null);
+  const bunsHeader = useRef<HTMLHeadingElement>(null);
+  const saucesHeader = useRef<HTMLHeadingElement>(null);
+  const mainsHeader = useRef<HTMLHeadingElement>(null);
 
   const [buns, inViewBuns] = useInView({threshold:0.3})
   const [sauces, inViewSauces] = useInView({threshold:1})
@@ -40,16 +40,13 @@ const BurgerIngredients : FC = () => {
 
   const scrollToNode = (e) => {
     if (e === 'buns') {
-      // @ts-ignore
-      bunsHeader.current.scrollIntoView({behavior: 'smooth'});
+      bunsHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('buns')
     } else if (e === 'sauces') {
-      // @ts-ignore
-      saucesHeader.current.scrollIntoView({behavior: 'smooth'});
+      saucesHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('sauces')
     } else {
-      // @ts-ignore
-      mainsHeader.current.scrollIntoView({behavior: 'smooth'});
+      mainsHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('mains')
     }
 

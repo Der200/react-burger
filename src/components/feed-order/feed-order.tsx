@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -23,7 +23,7 @@ const FeedOrder : FC<IFeedOrder> = ({ order }) => {
   const history = useHistory()
   const { path } = useRouteMatch()
 
-  const clickHandler = () => {
+  const clickHandler: MouseEventHandler = (): void => {
     history.push(path);
     history.replace(`${path}/${order.number}`)
   }

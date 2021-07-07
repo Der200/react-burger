@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from 'react';
+import React, { useEffect, FC, FormEventHandler, MouseEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,6 +8,7 @@ import ProfileNav from '../components/profile-nav/profile-nav';
 import { user, updateUserData, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { ChangeEventHandler } from 'react';
 
 const Profile : FC = () => {
   const description = 'В этом разделе вы можете изменить свои персональные данные';
@@ -28,7 +29,7 @@ const Profile : FC = () => {
     marginTop: '13px',
   }
 
-  const changeHandler = (e) => {
+  const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {
     getVisible(true);
     getProfileData({
       ...profileData,
@@ -36,7 +37,7 @@ const Profile : FC = () => {
     });
   }
 
-  const cancelChangesHandler = (e) => {
+  const cancelChangesHandler: MouseEventHandler = (e): void => {
     e.preventDefault();
     getVisible(false);
     getProfileData({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
@@ -48,7 +49,7 @@ const Profile : FC = () => {
     }
   }, [authorizationStatus])
 
-  const submitHandler = (e) => {
+  const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
     // @ts-ignore
     dispatch(updateUserData({'name': profileData.name, 'email': profileData.email, 'password': profileData.password}));
@@ -63,10 +64,8 @@ const Profile : FC = () => {
         <Input placeholder={'Логин'} value={profileData.email || ''} name='email' onChange={changeHandler} icon='EditIcon' />
         <Input placeholder={'Пароль'} value={profileData.password || ''} name='password' onChange={changeHandler} icon='EditIcon' />
         {visible && <div style={{display: 'flex', marginLeft: 'auto', paddingRight: '20px', width: '251px'}}>
-          <div onClick={cancelChangesHandler} style={cancelButtonStyle}>Отмена</div>
-          <button type='submit'>
-            <Button type='primary' size='medium'>Сохранить</Button>
-          </button>
+        <div onClick={cancelChangesHandler} style={cancelButtonStyle}>Отмена</div>
+          <Button type='primary' size='medium'>Сохранить</Button>
         </div>}
       </Form>
     </section>
