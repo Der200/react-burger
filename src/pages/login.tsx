@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, ChangeEventHandler, FormEventHandler } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -25,38 +25,30 @@ const Login : FC = () => {
     }
   }, [status])
 
-  const changeHandler = (e) => {
+  const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {
     getLoginData({
       ...loginData,
       [e.target.name]: e.target.value,
     })
   }
 
-  const submitHandler = (e) => {
+  const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
     // @ts-ignore
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
     
   }  
 
-  const description = () => {
-    return (
-      <>
-      <p>Вы - новый пользователь? <Link to={'/register'}>Зарегистрироваться</Link></p>
-      <p>Забыли пароль? <Link to={'/forgot-password'}>Восстановить пароль</Link></p>
-      </>
-    )
-  };
-
   if (localStorage.getItem('refreshToken') !== null) {
     return <Redirect to='/profile'/>
   }
 
   return (
-    // @ts-ignore
-  <Form title={'Вход'} description={description()} submitHandler={submitHandler}>
+  <Form title={'Вход'} submitHandler={submitHandler}>
     <EmailInput value={loginData.email || ''} name='email' onChange={changeHandler}/>
     <PasswordInput value={loginData.password || ''} name='password' onChange={changeHandler}/>
+    <p>Вы - новый пользователь? <Link to={'/register'}>Зарегистрироваться</Link></p>
+    <p>Забыли пароль? <Link to={'/forgot-password'}>Восстановить пароль</Link></p>
     <Button>Войти</Button>
   </Form>
   )

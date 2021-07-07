@@ -4,16 +4,14 @@ import styles from './form.module.css';
 
 interface IForm {
   title?: string;
-  description?: () => JSX.Element;
   submitHandler: (e: any) => void;
 }
 
-const Form : FC<IForm> = ({children, title, description, submitHandler}) => {
+const Form : FC<IForm> = ({children, title, submitHandler}) => {
   return (
     <form className={styles.container} onSubmit={submitHandler}>
       {title && <h2 className={styles.title}>{title}</h2>}
       {children}
-      {description && <div className={styles.description}>{description}</div>}
     </form>
   )
 }

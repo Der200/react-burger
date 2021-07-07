@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, FormEventHandler, ChangeEventHandler } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -15,31 +15,25 @@ const ForgotPassword : FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const changeHandler = (e) => {
+  const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {
     getForgotData({...forgotData, [e.target.name]: e.target.value})
   }
 
-  const submitHandler = (e) => {
+  const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
     // @ts-ignore
     dispatch(forgotPassword({'email': email}));
     history.replace({ pathname: '/reset-password' })
   }
 
-  const description = () => {
-    return (
-      <p>Вспомнили пароль? <Link to='/login'>Войти</Link></p>
-    )
-  };
-
   if (localStorage.getItem('refreshToken') !== null) {
     return <Redirect to='/profile'/>
   }
 
   return (
-    // @ts-ignore
-  <Form title={'Восстановление пароля'} description={description()} submitHandler={submitHandler}>
+  <Form title={'Восстановление пароля'} submitHandler={submitHandler}>
     <Input placeholder={'Укажите e-mail'} value={forgotData.email || ''} name="email" onChange={changeHandler}/>
+    <p>Вспомнили пароль? <Link to='/login'>Войти</Link></p>
     <Button>Восстановить</Button>
   </Form>
   )

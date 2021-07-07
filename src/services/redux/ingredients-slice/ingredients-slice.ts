@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, AnyAction } from '@reduxjs/toolkit';
 import TIngredientObject from '../../../utils/types';
 
 const ingredientsApiUrl = 'https://norma.nomoreparties.space/api/ingredients';

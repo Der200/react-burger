@@ -25,7 +25,7 @@ const Ingredient : FC<IIngredient> = ({ingredient, handleClickIngredient, testIn
 
   useEffect(() => {
     setCount(
-      selectedIngredients.filter(orderIngredient => orderIngredient === ingredient).length
+      selectedIngredients.filter(orderIngredient => orderIngredient._id === ingredient._id).length
     )
   }, [selectedIngredients, ingredient])
 

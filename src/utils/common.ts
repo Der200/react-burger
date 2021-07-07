@@ -1,4 +1,6 @@
 import TIngredientObject, { TWsOrderObject } from "./types";
+import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
+import { RootState, AppDispatch } from "../store";
 
 export const filterData = (wsOrders: Array<TWsOrderObject>, ingredientsArrow: TIngredientObject) : any => {
   const templateOrders = [];
@@ -25,3 +27,6 @@ export const dateDay = (orderDate: string) : string => {
     return `${orderDate.slice(0, 10)}, ${orderDate.slice(11, 16)}`
   }
 }
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

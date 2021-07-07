@@ -1,4 +1,4 @@
-import React, { useEffect, FC, FormEventHandler, MouseEventHandler } from 'react';
+import React, { useEffect, FC, FormEventHandler, MouseEventHandler, ChangeEventHandler } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,7 +8,6 @@ import ProfileNav from '../components/profile-nav/profile-nav';
 import { user, updateUserData, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
-import { ChangeEventHandler } from 'react';
 
 const Profile : FC = () => {
   const description = 'В этом разделе вы можете изменить свои персональные данные';

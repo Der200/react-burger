@@ -1,4 +1,4 @@
-import { useEffect, FC } from "react";
+import { useEffect, FC, MouseEventHandler } from "react";
 import { useDrop } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ import { orderIngredients,
          showOrder, 
          mainIngredients, 
          orderFetchStatus} from '../../services/redux/order-slice/order-slice';
+import { useAppDispatch, useAppSelector } from "../../utils/common";
 
 
 interface IBurgerConstructor {
@@ -26,11 +27,11 @@ interface IBurgerConstructor {
 const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
   const {main__block, top__ingredient, bottom__ingredient, order__container, set__box, order__footer} = styles;
 
-  const orderStatus = useSelector(orderFetchStatus);
+  const orderStatus = useAppSelector(orderFetchStatus);
 
   const history = useHistory();
-  const dispatch = useDispatch();
-  const orderDetails = useSelector(orderIngredientsId);
+  const dispatch = useAppDispatch();
+  const orderDetails = useAppSelector(orderIngredientsId);
 
   const [, dropTarget] = useDrop({
     accept: 'ingredient',
@@ -39,11 +40,11 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
     }
   });
 
-  const totalPrice = useSelector(orderCost);
-  const selectedIngredients = useSelector(orderIngredients);
-  const selectedMainIngredients = useSelector(mainIngredients);
+  const totalPrice = useAppSelector(orderCost);
+  const selectedIngredients = useAppSelector(orderIngredients);
+  const selectedMainIngredients = useAppSelector(mainIngredients);
   
-  const handleClickButton = () => {
+  const handleClickButton: MouseEventHandler = (): void => {
     if (selectedIngredients.length === 0) {
       return
     }

@@ -6,6 +6,7 @@ import { WS_GET_MESSAGE, WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_CONNECTI
 import { createAction } from '@reduxjs/toolkit';
 
 export type RootState = ReturnType<typeof rootReducer>
+export type AppDispatch = typeof store.dispatch
 
 export const wsInit = createAction('WS_CONNECTION_START');
 export const wsAuthInit = createAction('WS_CONNECTION_AUTH_START');

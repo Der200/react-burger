@@ -18,7 +18,6 @@ const Orders : FC = () => {
   const ingredients = useSelector(fetchedIngredients);
   const { orders } = wsAuthMessage;
   console.log(orders)
-  // let userOrdersData = [];
 
   React.useEffect(() => {
     if (!wsAuthStatus) {
@@ -35,11 +34,7 @@ const Orders : FC = () => {
     }
   }, [wsAuthMessage.length, wsAuthStatus])
 
-  // if(wsAuthStatus) {
-  //   userOrdersData = filterData(orders, ingredients);  
-  // }
-
-  const description = 'В этом разделе вы можете просмотреть свою историю заказов';
+  const description: string = 'В этом разделе вы можете просмотреть свою историю заказов';
   const userOrdersData = useSelector(feedOrders);
   return (
     <section style={{display: 'flex'}}>

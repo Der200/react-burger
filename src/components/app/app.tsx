@@ -35,24 +35,25 @@ import { ingredientsFetchStatus,
          closeIngredientDetails, 
          modalViewIngredient } from '../../services/redux/ingredients-slice/ingredients-slice';
 import { socketFlag } from '../../services/redux/ws-slice/ws-slice';
+import { useAppSelector, useAppDispatch } from '../../utils/common';
 
 
 
 const App : FC = () => {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const ingredientWindow = useSelector(modalViewIngredient);
-  const orderWindow = useSelector(modalViewOrder);
-  const currentOrderWindow = useSelector(socketFlag)
+  const ingredientWindow = useAppSelector(modalViewIngredient);
+  const orderWindow = useAppSelector(modalViewOrder);
+  const currentOrderWindow = useAppSelector(socketFlag)
 
-  const ingredientsStatus = useSelector(ingredientsFetchStatus);
-  const orderStatus = useSelector(orderFetchStatus);
+  const ingredientsStatus = useAppSelector(ingredientsFetchStatus);
+  const orderStatus = useAppSelector(orderFetchStatus);
 
-  const currentOrder = useSelector(order);
+  const currentOrder = useAppSelector(order);
   
-  const ingredients = useSelector(fetchedIngredients);
+  const ingredients = useAppSelector(fetchedIngredients);
 
   const dropHandler = (itemId) => {
     const selectedIngredient = ingredients.filter(ingredient => ingredient._id === itemId._id);
@@ -72,6 +73,7 @@ const App : FC = () => {
 
   React.useEffect(() => {
     if (ingredientsStatus === 'idle') {
+      // @ts-ignore
       dispatch(fetchIngredients())
     }
     
