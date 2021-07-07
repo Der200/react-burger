@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { TSetCookieProps, TUserData } from '../../../utils/types';
 
 const registerApiUrl = 'https://norma.nomoreparties.space/api/auth/register';
 const forgotApiUrl = 'https://norma.nomoreparties.space/api/password-reset';
@@ -28,7 +29,7 @@ export const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
-  } catch(err) {
+  } catch(err: any) {
     if (err.message === 'jwt expired') {
       const refreshData = await refreshToken();
       localStorage.setItem('refreshToken', refreshData.refreshToken);
@@ -42,19 +43,21 @@ export const fetchWithRefresh = async (url, options) => {
   }
 }
 
-export function setCookie(name, value, props = {}) {
+export function setCookie(name: string, value: string | boolean | number, props?: TSetCookieProps) {
   props = {
     path: '/',
     ...props
   };
   let exp = props.expires;
+  const d = new Date();
+
   if (typeof exp == 'number' && exp) {
-    const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
-    exp = props.expires = d;
+    Number(d)
+    props.expires = exp;
   }
-  if (exp && exp.toUTCString) {
-    props.expires = exp.toUTCString();
+  if (exp && d.toUTCString) {
+    props.expires = d.toUTCString();
   }
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
@@ -68,15 +71,15 @@ export function setCookie(name, value, props = {}) {
   document.cookie = updatedCookie;
 } 
 
-export function getCookie(name) {
+export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)') //eslint-disable-line
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 } 
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name: string) {
+  setCookie(name, false, { expires: -1 });
 }
 
 export const register = createAsyncThunk('authorization/register', async (data) => {
@@ -96,7 +99,7 @@ export const register = createAsyncThunk('authorization/register', async (data) 
     const registerData = await res.json();
     return registerData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
@@ -118,7 +121,7 @@ export const forgotPassword = createAsyncThunk('authorization/forgotPassword', a
     const forgotData = await res.json();
     return forgotData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
@@ -140,7 +143,7 @@ export const resetPassword = createAsyncThunk('authorization/resetPassword', asy
     const resetData = await res.json();
     return resetData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
@@ -180,7 +183,7 @@ export const logout = createAsyncThunk('authorization/logout', async (data) => {
     const logoutData = await res.json();
     return logoutData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
@@ -206,7 +209,14 @@ export const getUserData = createAsyncThunk('authorization/getUserData', async (
   });
 })
 
-const initialState = {
+type TAuthorizationState = {
+  user: null | TUserData;
+  authorizationStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+  otherFetchsStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+  recoveryCodeSent: boolean;
+}
+
+const initialState: Readonly<TAuthorizationState> = {
   user: null,
   authorizationStatus: `idle`,
   otherFetchsStatus: 'idle',
@@ -217,95 +227,88 @@ export const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
   reducers: {
-    // changeUserData: (state, action) => {
-    //   state.user[action.payload.name] = action.payload.value;
-    // },
-    // changeResetTemplate: (state, action) => {
-    //   state.resetTemplate[action.payload.name] = action.payload.value;
-    // }
   },
-  extraReducers: {
-    [register.pending]: (state) => {
+  extraReducers: (builder) => {
+    builder.addCase(register.pending, (state) => {
       state.authorizationStatus = 'loading';
-    },
-    [register.fulfilled]: (state, action) => {
+    })
+    builder.addCase(register.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
       state.user = action.payload.user;
       localStorage.setItem('refreshToken', action.payload.refreshToken);
       setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
-    },
-    [register.rejected]: (state) => {
+    })
+    builder.addCase(register.rejected, (state) => {
       state.authorizationStatus = 'failed';
-    },
-    [forgotPassword.pending]: (state) => {
+    })
+    builder.addCase(forgotPassword.pending, (state) => {
       state.otherFetchsStatus = 'loading';
-    },
-    [forgotPassword.fulfilled]: (state) => {
+    })
+    builder.addCase(forgotPassword.fulfilled, (state) => {
       state.otherFetchsStatus = 'succeeded';
       state.recoveryCodeSent = true;
-    },
-    [forgotPassword.rejected]: (state) => {
+    })
+    builder.addCase(forgotPassword.rejected, (state) => {
       state.otherFetchsStatus = 'failed';
-    },
-    [resetPassword.pending]: (state) => {
+    })
+    builder.addCase(resetPassword.pending, (state) => {
       state.otherFetchsStatus = 'loading';
-    },
-    [resetPassword.fulfilled]: (state) => {
+    })
+    builder.addCase(resetPassword.fulfilled, (state) => {
       state.otherFetchsStatus = 'succeeded';
       state.recoveryCodeSent = false;
-    },
-    [resetPassword.rejected]: (state, action) => {
+    })
+    builder.addCase(resetPassword.rejected, (state, action) => {
       state.otherFetchsStatus = 'failed';
-    },
-    [login.pending]: (state) => {
+    })
+    builder.addCase(login.pending, (state) => {
       state.authorizationStatus = 'loading';
-    },
-    [login.fulfilled]: (state, action) => {
+    })
+    builder.addCase(login.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
       state.user = action.payload.user;
       localStorage.setItem('refreshToken', action.payload.refreshToken);
       setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
-    },
-    [login.rejected]: (state, action) => {
+    })
+    builder.addCase(login.rejected, (state, action) => {
       state.authorizationStatus = 'failed';
-    },
-    [logout.pending]: (state) => {
+    })
+    builder.addCase(logout.pending, (state) => {
       state.otherFetchsStatus = 'loading';
-    },
-    [logout.fulfilled]: (state) => {
+    })
+    builder.addCase(logout.fulfilled, (state) => {
       state.otherFetchsStatus = 'succeeded';
       state.user = null;
       localStorage.removeItem('refreshToken');
       deleteCookie('accessToken');
-    },
-    [logout.rejected]: (state) => {
+    })
+    builder.addCase(logout.rejected, (state) => {
       state.otherFetchsStatus = 'failed';
-    },
-    [updateUserData.pending]: (state) => {
+    })
+    builder.addCase(updateUserData.pending, (state) => {
       state.authorizationStatus = 'loading';
-    },
-    [updateUserData.fulfilled]: (state, action) => {
+    })
+    builder.addCase(updateUserData.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
       state.user = action.payload.user;
-    },
-    [updateUserData.rejected]: (state, action) => {
+    })
+    builder.addCase(updateUserData.rejected, (state, action) => {
       state.authorizationStatus = 'failed';
-    },
-    [getUserData.pending]: (state) => {
+    })
+    builder.addCase(getUserData.pending, (state) => {
       state.authorizationStatus = 'loading';
-    },
-    [getUserData.fulfilled]: (state, action) => {
+    })
+    builder.addCase(getUserData.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
       state.user = action.payload.user;
-    },
-    [getUserData.rejected]: (state, action) => {
+    })
+    builder.addCase(getUserData.rejected, (state, action) => {
       state.authorizationStatus = 'failed';
-    },
-  }
+    })
+  },
 })
 
 export const recoveryCodeStatus = state => state.authorizationSlice.recoveryCodeSent;
 export const userStatus = state => state.authorizationSlice.authorizationStatus;
 export const user = state => state.authorizationSlice.user;
-// export const { changeResetTemplate } = authorizationSlice.actions
 export default authorizationSlice.reducer

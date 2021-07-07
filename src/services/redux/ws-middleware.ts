@@ -1,17 +1,18 @@
+import { AnyAction, MiddlewareAPI } from "redux";
+import { IWsActions } from "../../store";
 import { getCookie } from "./authorization-slice/authorization-slice";
 
-export const socketMiddleware = (wsUrl, wsActions, authFlag) => {
-  return store => {
-    let socket = null;
+export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, authFlag: boolean) => {
+  return (store: MiddlewareAPI) => {
+    let socket: WebSocket | null = null;
 
-    return next => action => {
+    return (next: (a: AnyAction) => void) => (action: AnyAction) => {
       const { dispatch } = store;
       const { type, payload } = action;
       const { onInit, onOpen, onClose, onError, onMessage, wsClose } = wsActions;
       const token = authFlag ? getCookie('accessToken') : null;
 
       if (type === onInit.toString()) {
-            // объект класса WebSocket
         socket = token ? new WebSocket(`${wsUrl}?token=${token}`) : new WebSocket(wsUrl);
       }
       
@@ -37,8 +38,9 @@ export const socketMiddleware = (wsUrl, wsActions, authFlag) => {
 
         socket.onclose = event => {
           dispatch({ type: onClose, payload: event });
-          socket.close()
-          
+          if (socket !== null) {
+            socket.close()
+          }
         };
 
         if (type === 'WS_SEND_MESSAGE') {

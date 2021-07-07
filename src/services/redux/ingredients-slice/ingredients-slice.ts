@@ -1,24 +1,37 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import TIngredientObject from '../../../utils/types';
 
 const ingredientsApiUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
-export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async () => {
+type TFetchIngredientsResponse = {
+  success: boolean;
+  data: Array<TIngredientObject>;
+}
+
+export const fetchIngredients = createAsyncThunk('ingredients/fetchIngredients', async (): Promise<TFetchIngredientsResponse | undefined> => {
   try {
     const res = await fetch(ingredientsApiUrl);
     
     if(!res.ok) {
       throw new Error('сервер не смог обработать наш запрос')
     }
-    const ingredients = await res.json();
+    const ingredients: TFetchIngredientsResponse = await res.json();
 
-    return ingredients.data
+    return ingredients
             
-  } catch(e) {
+  } catch(e: any) {
       alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
 
-const initialState = {
+type TIngredientState = {
+  ingredientsData: Array<TIngredientObject>;
+  selectedIngredientDetails: null | TIngredientObject;
+  isShowIngredient: boolean;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
+
+const initialState: Readonly<TIngredientState> = {
   ingredientsData: [],
   selectedIngredientDetails: null,
   isShowIngredient: false,
@@ -29,7 +42,7 @@ export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
-    setIngredientDetails: (state, action) => {
+    setIngredientDetails: (state, action: PayloadAction<TIngredientObject>) => {
       state.selectedIngredientDetails = action.payload;      
     },
     showIngredientDetails: state => {
@@ -40,21 +53,21 @@ export const ingredientsSlice = createSlice({
       state.selectedIngredientDetails = null;
     }
   },
-  extraReducers: {
-    [fetchIngredients.pending]: (state, action) => {
+  extraReducers: (builder) => {
+    builder.addCase(fetchIngredients.pending, (state, action) => {
       state.status = 'loading'
-    },
-    [fetchIngredients.fulfilled]: (state, action) => {
+    })
+    builder.addCase(fetchIngredients.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      if (state.ingredientsData.length === 0) {
-        state.ingredientsData = state.ingredientsData.concat(action.payload);
+      if (state.ingredientsData.length === 0 && action.payload !== undefined) {
+        state.ingredientsData = state.ingredientsData.concat(action.payload.data);
       }
       
-    },
-    [fetchIngredients.rejected]: (state, action) => {
+    })
+    builder.addCase(fetchIngredients.rejected, (state, action) => {
       state.status = 'failed';
-    }
-  }
+    })
+  },
 })
 
 export const ingredientsFetchStatus = state => state.ingredientsSlice.status;

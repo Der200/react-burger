@@ -46,6 +46,18 @@ export type TWsMessageObject = {
   orders: Array<TWsOrderObject>
 }
 
+export type TSetCookieProps = {
+  path?: string;
+  expires?: string | number;
+} & { 
+  [extraAttribute: string]: string | number | boolean;
+}
+
+export type TUserData = {
+  email: string;
+  name: string;
+}
+
 
 
 export default TIngredientObject ;

@@ -42,7 +42,6 @@ export const wsSlice = createSlice({
       state.wsAuthError = null;
     },
     WS_GET_AUTH_MESSAGE: (state, action) => {
-      console.log(`PROFILE_MESSAGE: ${action.payload}`)
       state.wsAuthMessage = action.payload;
     }
   }

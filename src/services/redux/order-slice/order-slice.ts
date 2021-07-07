@@ -1,9 +1,20 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import TIngredientObject, { TOrderObject, TWsOrderObject } from '../../../utils/types';
 import { getCookie } from '../authorization-slice/authorization-slice';
 
 const orderApiUrl = 'https://norma.nomoreparties.space/api/orders';
 
-export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order) => {
+type TPlaceAnOrderRequest = {
+  ingredients: string[];
+}
+
+type TPlaceAnOrderResponse = {
+  name: string;
+  order: TWsOrderObject;
+  success: boolean;
+}
+
+export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order: TPlaceAnOrderRequest): Promise<TPlaceAnOrderResponse | undefined> => {
   try {
     const res = await fetch(orderApiUrl, {
       method: 'POST',
@@ -20,15 +31,24 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order)
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const orderData = await res.json();
+    const orderData: TPlaceAnOrderResponse = await res.json();
     return orderData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
 
-export const getOrderData = createAsyncThunk('order/getOrderData', async (number) => {
+type TGetOrderDataRequest = {
+  number: number;
+}
+
+type TGetOrderDataResponse = {
+  success: boolean;
+  orders: Array<TWsOrderObject>;
+}
+
+export const getOrderData = createAsyncThunk('order/getOrderData', async (number: TGetOrderDataRequest): Promise<TGetOrderDataResponse | undefined> => {
   try {
     const res = await fetch(`${orderApiUrl}/${number}`, {
       method: 'GET',
@@ -41,17 +61,34 @@ export const getOrderData = createAsyncThunk('order/getOrderData', async (number
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const orderData = await res.json();
+    const orderData: TGetOrderDataResponse = await res.json();
     return orderData
         
-  } catch(e) {
+  } catch(e: any) {
     alert(`Что-то пошло не так. Ошибка: ${e}`)
   }
 })
 
-const initialState = {
+type TOrderSliceState = {
+  orderIngredients: Array<TIngredientObject>;
+  mainIngredients: Array<TIngredientObject>;
+  bunIngredient: Array<TIngredientObject>;
+  feedOrders: Array<TOrderObject>;
+  ingredientsID: string[];
+  orderCost: number;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  orderDetails: {name: string, number: string | number};
+  isShowOrder: boolean;
+  isShowOrderDetails: boolean;
+  currentOrder: null | TOrderObject | undefined;
+  orderStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+  orderData: Array<TWsOrderObject>;
+}
+
+const initialState: Readonly<TOrderSliceState> = {
   orderIngredients: [],
   mainIngredients: [],
+  bunIngredient: [],
   feedOrders: [],
   ingredientsID: [],
   orderCost: 0,
@@ -71,40 +108,38 @@ export const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    addIngredient: (state, action) => {
-      if (action.payload.type === 'bun' && state.orderIngredients.find(ingredient => ingredient.type === 'bun') ) {
-        state.orderCost = state.orderCost - (state.orderIngredients.find(ingredient => ingredient.type === 'bun').price * 2);
-        state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== state.orderIngredients.find(ingredient => ingredient.type === 'bun')._id);
+    addIngredient: (state, action: PayloadAction<TIngredientObject>) => {
+      if(action.payload.type === 'bun' && state.bunIngredient.length) {
+        state.orderCost = state.orderCost - (state.bunIngredient[0].price * 2) + (action.payload.price * 2);
+        state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== state.bunIngredient[0]._id);
         state.ingredientsID = [...state.ingredientsID, action.payload._id];
-        state.orderIngredients = state.orderIngredients.filter(ingredient => ingredient.type !== 'bun');
-        state.orderIngredients = state.orderIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + (action.payload.price * 2);
-
+        state.bunIngredient = [action.payload];
       } else if (action.payload.type === 'bun') {
         state.ingredientsID = [...state.ingredientsID, action.payload._id];
-        state.orderIngredients = state.orderIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + (action.payload.price * 2);
-
+        state.bunIngredient = [action.payload];
+        state.orderCost += (action.payload.price * 2);
       } else {
         state.ingredientsID = [...state.ingredientsID, action.payload._id];
-        state.orderIngredients = state.orderIngredients.concat(action.payload);
         state.mainIngredients = state.mainIngredients.concat(action.payload);
-        state.orderCost = state.orderCost + action.payload.price;
+        state.orderCost += action.payload.price;
       }
+        state.orderIngredients = state.mainIngredients.concat(state.bunIngredient);
     },
-    deleteIngredient: (state, action) => {
-      const indexSelectingIngredient = state.orderIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
-      state.orderIngredients.splice(indexSelectingIngredient, 1);
-      const indexMainIngredient = state.mainIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
-      state.mainIngredients.splice(indexMainIngredient, 1);
+    deleteIngredient: (state, action: PayloadAction<TIngredientObject>) => {
+      const indexSelectingIngredient = state.mainIngredients.findIndex(ingredient => ingredient._id === action.payload._id);
+      state.mainIngredients.splice(indexSelectingIngredient, 1);
       state.orderCost = state.orderCost - action.payload.price;
       state.ingredientsID = state.ingredientsID.filter(ingredient => ingredient !== action.payload._id);
+      state.orderIngredients = state.mainIngredients.concat(state.bunIngredient);
     },
-    sortingIngredients: (state, action) => {
+    sortingIngredients: (state, action: PayloadAction<{indexFrom: number | undefined, indexTo: number | undefined}>) => {
       const {indexFrom, indexTo} = action.payload;
       const newArray = [...state.mainIngredients];
-      newArray.splice(indexTo, 0, newArray.splice(indexFrom, 1)[0]);
-      state.mainIngredients = newArray;
+      if (indexTo !== undefined && indexFrom !== undefined) {
+        newArray.splice(indexTo, 0, newArray.splice(indexFrom, 1)[0]);
+        state.mainIngredients = newArray;
+      }
+
     },
     showOrder: state => {
       state.isShowOrder = true;
@@ -122,42 +157,43 @@ export const orderSlice = createSlice({
     showOrderDetails: state => {
       state.isShowOrderDetails = true;
     },
-    setCurrentOrder: (state, action) => {
+    setCurrentOrder: (state, action: PayloadAction<number>) => {
       state.currentOrder = state.feedOrders.find((order) => order.number === action.payload); 
     },
-    setFeedOrders: (state, action) => {
+    setFeedOrders: (state, action: PayloadAction<Array<TOrderObject>>) => {
       state.feedOrders = action.payload;
     }
   },
-  extraReducers: {
-    [placeAnOrder.pending]: (state, action) => {
+  extraReducers: (builder) => {
+    builder.addCase(placeAnOrder.pending, (state) => {
       state.status = 'loading';
-    },
-    [placeAnOrder.fulfilled]: (state, action) => {
+    })
+    builder.addCase(placeAnOrder.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      state.orderDetails.name = action.payload.name;
-      state.orderDetails.number = action.payload.order.number;
+      if (action.payload !== undefined) {
+        state.orderDetails.name = action.payload.name;
+        state.orderDetails.number = action.payload.order.number;
+      }
       state.ingredientsID = [];
-      // state.feedOrders = state.feedOrders.concat([{id: action.payload.order.number,
-                                                  //  name: action.payload.name,
-                                                  //  cost: state.orderCost, 
-                                                  //  ingredients: state.orderIngredients}]);
-
-    },
-    [placeAnOrder.rejected]: (state, action) => {
+      state.bunIngredient = [];
+      state.mainIngredients = [];
+    })
+    builder.addCase(placeAnOrder.rejected, (state) => {
       state.status = 'failed';
-    },
-    [getOrderData.pending]: (state, action) => {
+    })
+    builder.addCase(getOrderData.pending, (state) => {
       state.orderStatus = 'loading';
-    },
-    [getOrderData.fulfilled]: (state, action) => {
+    })
+    builder.addCase(getOrderData.fulfilled, (state, action) => {
       state.orderStatus = 'succeeded';
-      state.orderData = action.payload.orders;
-    },
-    [getOrderData.rejected]: (state, action) => {
+      if (action.payload !== undefined) {
+        state.orderData = action.payload.orders;
+      }
+    })
+    builder.addCase(getOrderData.rejected, (state) => {
       state.orderStatus = 'failed';
-    }
-  }
+    })
+  },
 })
 
 export const orderStatus = state => state.orderSlice.orderStatus;

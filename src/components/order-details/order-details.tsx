@@ -5,9 +5,8 @@ import styles from './order-details.module.css';
 import successImage from '../../images/success.gif';
 
 import Modal from '../modal/modal';
-import Preloader from '../preloader/preloader';
 
-import { orderDetails, orderFetchStatus } from '../../services/redux/order-slice/order-slice';
+import { orderDetails } from '../../services/redux/order-slice/order-slice';
 
 interface IOrderDetails {
   handleClickOrder: (target: any) => void;
