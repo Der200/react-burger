@@ -19,7 +19,6 @@ interface IOrderTicket {
 
 const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
   const dispatch = useAppDispatch();
-  // const history = useHistory();
   const { id } = useParams<{ id: string }>();
   const usedSockedFlag = useAppSelector(socketFlag);
   const ingredients = useAppSelector(fetchedIngredients);

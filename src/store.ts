@@ -1,7 +1,6 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {Middleware, AnyAction} from 'redux';
 import {ThunkMiddleware} from 'redux-thunk';
-import logger from 'redux-logger';
 import rootReducer from './services/redux/index'
 import { socketMiddleware } from './services/redux/ws-middleware';
 import { WS_GET_MESSAGE, WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_CONNECTION_CLOSED, WS_GET_AUTH_MESSAGE, WS_CONNECTION_AUTH_SUCCESS, WS_CONNECTION_AUTH_CLOSED, WS_CONNECTION_AUTH_ERROR } from './services/redux/ws-slice/ws-slice';
@@ -43,7 +42,6 @@ const wsAuthActions : IWsActions = {
 }
 
 const middleware: Array<Middleware<{}, RootState> | ThunkMiddleware<RootState, AnyAction>> = [
-  logger,
   socketMiddleware('wss://norma.nomoreparties.space/orders/all', wsActions, false),
   socketMiddleware('wss://norma.nomoreparties.space/orders', wsAuthActions, true),
   ...getDefaultMiddleware<RootState>()

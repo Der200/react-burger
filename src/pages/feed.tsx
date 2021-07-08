@@ -21,7 +21,6 @@ const Feed : FC = () => {
   const ingredients = useAppSelector(fetchedIngredients);
   const dispatch = useAppDispatch();
   const wsMessage = useAppSelector(message);
-  // const { orders = [], total, totalToday} = wsMessage;
   let ordersData = []
   
   useEffect(() => {

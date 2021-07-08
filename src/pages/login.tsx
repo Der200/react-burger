@@ -12,13 +12,10 @@ import { useAppDispatch, useAppSelector } from '../utils/common';
 const Login : FC = () => {
   const [loginData, getLoginData] = useState<TAuthorizationForm>({});
 
-  type TLocationState = {
-    state: {forward}
-  }
-
-  const history = useHistory();
+  const history = useHistory<History>();
   const dispatch = useAppDispatch();
   
+  // @ts-ignore
   const forwardLink = history.location.state ? history.location.state.forward.pathname : '';
   const hasToken = localStorage.getItem('refreshToken');
   const status = useAppSelector(userStatus);
