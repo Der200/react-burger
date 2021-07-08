@@ -9,3 +9,8 @@
 .section svg {
   vertical-align: top;
 }
+
+.section p {
+  color: white !important;
+  font-size: 24px !important;
+}
