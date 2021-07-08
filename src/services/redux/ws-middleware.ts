@@ -21,12 +21,12 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, authFlag:
       }
       if (socket) {
 
-        socket.onopen = event => {
-          dispatch({ type: onOpen, payload: event });
+        socket.onopen = () => {
+          dispatch({ type: onOpen});
         };
 
-        socket.onerror = event => {
-          dispatch({ type: onError, payload: event });
+        socket.onerror = () => {
+          dispatch({ type: onError});
         };
 
         socket.onmessage = event => {
@@ -36,8 +36,8 @@ export const socketMiddleware = (wsUrl: string, wsActions: IWsActions, authFlag:
           dispatch({ type: onMessage, payload: restParsedData });
         };
 
-        socket.onclose = event => {
-          dispatch({ type: onClose, payload: event });
+        socket.onclose = () => {
+          dispatch({ type: onClose});
           if (socket !== null) {
             socket.close()
           }

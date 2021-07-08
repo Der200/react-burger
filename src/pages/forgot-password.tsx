@@ -1,5 +1,4 @@
 import React, { FC, FormEventHandler, ChangeEventHandler } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,11 +7,12 @@ import Form from '../components/form/form';
 import { forgotPassword } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { useAppDispatch } from '../utils/common';
 
 
 const ForgotPassword : FC = () => {
   const [forgotData, getForgotData] = React.useState<TAuthorizationForm>({'email': ''});
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {

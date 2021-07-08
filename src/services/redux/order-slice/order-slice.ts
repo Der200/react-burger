@@ -39,7 +39,7 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order:
   }
 })
 
-type TGetOrderDataRequest = {
+export type TGetOrderDataRequest = {
   number: number;
 }
 

@@ -2,7 +2,6 @@
 import React, { useCallback, FC } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, useHistory } from 'react-router-dom';
 
 import styles from './app.module.css';
@@ -73,7 +72,6 @@ const App : FC = () => {
 
   React.useEffect(() => {
     if (ingredientsStatus === 'idle') {
-      // @ts-ignore
       dispatch(fetchIngredients())
     }
     

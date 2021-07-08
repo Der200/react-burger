@@ -1,5 +1,4 @@
 import { useEffect, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Route, Redirect, useLocation, RouteProps } from 'react-router-dom';
 
 import Preloader from '../preloader/preloader';
@@ -16,7 +15,6 @@ const ProtectedRoute : FC<RouteProps> = ({ children, ...rest }) => {
 
   useEffect(() => {
     if (localStorage.getItem('refreshToken') !== null) {
-      //@ts-ignore
       dispatch(getUserData());
     }
   }, [])

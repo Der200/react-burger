@@ -19,7 +19,7 @@ const ProfileNav : FC<IProfileNav> = ({description}) => {
   
   const submitHandler: MouseEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore: Unreachable code error
+    // @ts-ignore
     dispatch(logout({token})); 
   }
 

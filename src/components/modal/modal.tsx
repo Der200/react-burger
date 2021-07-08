@@ -17,7 +17,9 @@ interface IModal {
 const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
   const history = useHistory()
   
-  const modalRoot = document.getElementById('app-modals');
+  const modalRoot: any = document.getElementById('app-modals');
+  
+  
   const handleClick = (element: any): void => {
     handleClickModal && handleClickModal(element.target);
     history.replace(`/`);
@@ -37,7 +39,6 @@ const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
         {children}
       </div>
     </ModalOverlay>,
-    // @ts-ignore: Unreachable code error
     modalRoot
   )
 

@@ -1,6 +1,5 @@
 import React, { useState, FC, ChangeEventHandler, FormEventHandler } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import Form from '../components/form/form';
@@ -8,16 +7,17 @@ import Form from '../components/form/form';
 import { login, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { useAppDispatch, useAppSelector } from '../utils/common';
 
 const Login : FC = () => {
   const [loginData, getLoginData] = useState<TAuthorizationForm>({});
 
   const history = useHistory();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   
   const forwardLink = history.location.state ? history.location.state.forward.pathname : '';
   const hasToken = localStorage.getItem('refreshToken');
-  const status = useSelector(userStatus);
+  const status = useAppSelector(userStatus);
 
   React.useEffect(() => {
     if (status === 'succeeded' && hasToken) {

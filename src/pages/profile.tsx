@@ -1,5 +1,4 @@
 import React, { useEffect, FC, FormEventHandler, MouseEventHandler, ChangeEventHandler } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import Form from '../components/form/form';
@@ -8,12 +7,13 @@ import ProfileNav from '../components/profile-nav/profile-nav';
 import { user, updateUserData, userStatus } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { useAppDispatch, useAppSelector } from '../utils/common';
 
 const Profile : FC = () => {
   const description = 'В этом разделе вы можете изменить свои персональные данные';
-  const authorizationStatus = useSelector(userStatus);
-  const currentUser = useSelector(user);
-  const dispatch = useDispatch();
+  const authorizationStatus = useAppSelector(userStatus);
+  const currentUser = useAppSelector(user);
+  const dispatch = useAppDispatch();
   const [profileData, getProfileData] = React.useState<TAuthorizationForm>({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
   const [visible, getVisible] = React.useState<boolean>(false);
 

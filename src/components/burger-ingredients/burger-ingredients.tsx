@@ -1,6 +1,5 @@
-import { useRef, useState, FC, SyntheticEvent } from 'react';
+import { useRef, useState, FC } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 
 import styles from './burger-ingredients.module.css';

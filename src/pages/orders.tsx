@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import FeedOrder from '../components/feed-order/feed-order';
 import ProfileNav from '../components/profile-nav/profile-nav';
@@ -9,15 +8,14 @@ import { socketAuthStatus, authMessage } from '../services/redux/ws-slice/ws-sli
 import { fetchedIngredients } from "../services/redux/ingredients-slice/ingredients-slice";
 import { wsAuthInit, wsAuthClose } from '../store';
 
-import { filterData } from '../utils/common';
+import { filterData, useAppDispatch, useAppSelector } from '../utils/common';
 
 const Orders : FC = () => {
-  const dispatch = useDispatch();
-  const wsAuthStatus = useSelector(socketAuthStatus);
-  const wsAuthMessage = useSelector(authMessage)
-  const ingredients = useSelector(fetchedIngredients);
+  const dispatch = useAppDispatch();
+  const wsAuthStatus = useAppSelector(socketAuthStatus);
+  const wsAuthMessage = useAppSelector(authMessage)
+  const ingredients = useAppSelector(fetchedIngredients);
   const { orders } = wsAuthMessage;
-  console.log(orders)
 
   React.useEffect(() => {
     if (!wsAuthStatus) {
@@ -35,7 +33,7 @@ const Orders : FC = () => {
   }, [wsAuthMessage.length, wsAuthStatus])
 
   const description: string = 'В этом разделе вы можете просмотреть свою историю заказов';
-  const userOrdersData = useSelector(feedOrders);
+  const userOrdersData = useAppSelector(feedOrders);
   return (
     <section style={{display: 'flex'}}>
       <ProfileNav description={description}/>

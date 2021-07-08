@@ -1,7 +1,6 @@
-import { useEffect, FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler } from "react";
 import { useDrop } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
 
 import styles from './burger-constructor.module.css';
@@ -51,7 +50,6 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
     if (localStorage.getItem('refreshToken') === null) {
       history.replace({ pathname: '/login' });
     } else {
-      // @ts-ignore
       dispatch(placeAnOrder(orderDetails));
       dispatch(showOrder());
     }

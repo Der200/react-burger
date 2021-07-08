@@ -1,6 +1,5 @@
 import React, { FC, FormEventHandler, ChangeEventHandler } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import Form from '../components/form/form';
@@ -8,11 +7,12 @@ import Form from '../components/form/form';
 import { resetPassword, recoveryCodeStatus } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { useAppDispatch, useAppSelector } from '../utils/common';
 
 const ResetPassword : FC = () => {
   const [resetData, getResetData] = React.useState<TAuthorizationForm>({'password': '', 'code': ''});
-  const recoveryStatus = useSelector(recoveryCodeStatus);
-  const dispatch = useDispatch();
+  const recoveryStatus = useAppSelector(recoveryCodeStatus);
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {

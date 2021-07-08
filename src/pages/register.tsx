@@ -1,6 +1,5 @@
 import React, { FC, ChangeEventHandler, FormEventHandler } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Redirect,useHistory } from 'react-router-dom';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -9,10 +8,11 @@ import Form from '../components/form/form';
 import { register } from '../services/redux/authorization-slice/authorization-slice';
 
 import { TAuthorizationForm } from '../utils/types';
+import { useAppDispatch } from '../utils/common';
 
 const Register : FC = () => {
   const [registerData, getRegisterData] = React.useState<TAuthorizationForm>({});
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {

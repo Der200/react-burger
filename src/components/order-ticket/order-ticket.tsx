@@ -1,6 +1,5 @@
 import { useEffect, FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 import styles from './order-ticket.module.css'
@@ -30,14 +29,13 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
 
   useEffect(() => {
     if (!usedSockedFlag && statusLoading === `idle`) {
-      // @ts-ignore
-      dispatch(getOrderData(Number(id)))
+      const number: any = Number(id);
+      dispatch(getOrderData(number))
     }
   }, [])
 
   useEffect(() => {
     if (statusLoading === 'succeeded' && !feedOrdersArray.length) {
-      // @ts-ignore
       dispatch(setFeedOrders(filterData(loadedOrder, ingredients)))
     }
     if (feedOrdersArray.length) {

@@ -1,6 +1,5 @@
 import { useEffect, FC } from "react";
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 
 import styles from './feed.module.css';
 
@@ -11,16 +10,16 @@ import { socketStatus, message } from "../services/redux/ws-slice/ws-slice";
 import { fetchedIngredients } from "../services/redux/ingredients-slice/ingredients-slice";
 import { wsInit, wsClose } from "../store";
 
-import { filterData } from "../utils/common";
+import { filterData, useAppDispatch, useAppSelector } from "../utils/common";
 import { TOrderObject } from "../utils/types";
 
 
 const Feed : FC = () => {
 
-  const wsStatus = useSelector(socketStatus);
-  const ingredients = useSelector(fetchedIngredients);
-  const dispatch = useDispatch();
-  const wsMessage = useSelector(message);
+  const wsStatus = useAppSelector(socketStatus);
+  const ingredients = useAppSelector(fetchedIngredients);
+  const dispatch = useAppDispatch();
+  const wsMessage = useAppSelector(message);
   const { orders = [], total, totalToday} = wsMessage;
   let ordersData = []
   
