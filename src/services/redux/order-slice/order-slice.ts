@@ -201,6 +201,7 @@ export const orderData = state => state.orderSlice.orderData;
 export const order = state => state.orderSlice.currentOrder;
 export const orderFetchStatus = state => state.orderSlice.status;
 export const orderDetails = state => state.orderSlice.orderDetails;
+export const bun = state => state.orderSlice.bunIngredient;
 export const orderIngredientsId = state => state.orderSlice.ingredientsID;
 export const orderCost = state => state.orderSlice.orderCost;
 export const feedOrders = state => state.orderSlice.feedOrders;

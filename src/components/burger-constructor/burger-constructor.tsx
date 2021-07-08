@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useDrop } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
@@ -15,7 +15,8 @@ import { orderIngredients,
          deleteIngredient, 
          showOrder, 
          mainIngredients, 
-         orderFetchStatus} from '../../services/redux/order-slice/order-slice';
+         orderFetchStatus,
+         bun} from '../../services/redux/order-slice/order-slice';
 import { useAppDispatch, useAppSelector } from "../../utils/common";
 
 
@@ -42,6 +43,10 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
   const totalPrice = useAppSelector(orderCost);
   const selectedIngredients = useAppSelector(orderIngredients);
   const selectedMainIngredients = useAppSelector(mainIngredients);
+  const bunIngredient = useAppSelector(bun);
+
+  const [bunFlag, setBunFlag] = useState<boolean>(false);
+
   
   const handleClickButton: MouseEventHandler = (): void => {
     if (selectedIngredients.length === 0) {
@@ -50,8 +55,13 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
     if (localStorage.getItem('refreshToken') === null) {
       history.replace({ pathname: '/login' });
     } else {
+      if (bunIngredient.length === 0) {
+        setBunFlag(true);
+        return
+      }
       dispatch(placeAnOrder(orderDetails));
       dispatch(showOrder());
+      setBunFlag(false);
     }
   }
 
@@ -95,6 +105,7 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
         <div onClick={handleClickButton}>
           <Button>Оформить заказ</Button>
         </div>
+        {bunFlag && <p>Пожалуйста, добавьте в заказ булку</p>}
       </section>
     </section>
   )
