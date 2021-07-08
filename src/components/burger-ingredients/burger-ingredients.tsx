@@ -49,9 +49,7 @@ const BurgerIngredients : FC = () => {
       mainsHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('mains')
     }
-
   }
-
 
   const handleClickIngredient = (ingredient: TIngredientObject): void => {    
     dispatch(setIngredientDetails(ingredient))

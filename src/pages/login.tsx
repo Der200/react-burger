@@ -12,6 +12,10 @@ import { useAppDispatch, useAppSelector } from '../utils/common';
 const Login : FC = () => {
   const [loginData, getLoginData] = useState<TAuthorizationForm>({});
 
+  type TLocationState = {
+    state: {forward}
+  }
+
   const history = useHistory();
   const dispatch = useAppDispatch();
   
@@ -23,6 +27,7 @@ const Login : FC = () => {
     if (status === 'succeeded' && hasToken) {
       history.replace(forwardLink);
     }
+    // eslint-disable-next-line
   }, [status])
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {
@@ -34,7 +39,6 @@ const Login : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
     
   }  

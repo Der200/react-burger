@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
 import TIngredientObject, { TOrderObject, TWsOrderObject } from '../../../utils/types';
 import { getCookie } from '../authorization-slice/authorization-slice';
 
@@ -22,9 +23,7 @@ export const placeAnOrder = createAsyncThunk('order/placeAnOrder', async (order:
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + getCookie('accessToken'),
       },
-      body: JSON.stringify({ 
-        "ingredients": order
-      })
+      body: JSON.stringify(order)
     });
     
     if(!res.ok) {
@@ -196,17 +195,17 @@ export const orderSlice = createSlice({
   },
 })
 
-export const orderStatus = state => state.orderSlice.orderStatus;
-export const orderData = state => state.orderSlice.orderData;
-export const order = state => state.orderSlice.currentOrder;
-export const orderFetchStatus = state => state.orderSlice.status;
-export const orderDetails = state => state.orderSlice.orderDetails;
-export const bun = state => state.orderSlice.bunIngredient;
-export const orderIngredientsId = state => state.orderSlice.ingredientsID;
-export const orderCost = state => state.orderSlice.orderCost;
-export const feedOrders = state => state.orderSlice.feedOrders;
-export const orderIngredients = state => state.orderSlice.orderIngredients;
-export const mainIngredients = state => state.orderSlice.mainIngredients;
-export const modalViewOrder = state => state.orderSlice.isShowOrder;
+export const orderStatus = (state: RootState) => state.orderSlice.orderStatus;
+export const orderData = (state: RootState) => state.orderSlice.orderData;
+export const order = (state: RootState) => state.orderSlice.currentOrder;
+export const orderFetchStatus = (state: RootState) => state.orderSlice.status;
+export const orderDetails = (state: RootState) => state.orderSlice.orderDetails;
+export const bun = (state: RootState) => state.orderSlice.bunIngredient;
+export const orderIngredientsId = (state: RootState) => state.orderSlice.ingredientsID;
+export const orderCost = (state: RootState) => state.orderSlice.orderCost;
+export const feedOrders = (state: RootState) => state.orderSlice.feedOrders;
+export const orderIngredients = (state: RootState) => state.orderSlice.orderIngredients;
+export const mainIngredients = (state: RootState) => state.orderSlice.mainIngredients;
+export const modalViewOrder = (state: RootState) => state.orderSlice.isShowOrder;
 export const { addIngredient, deleteIngredient, sortingIngredients, showOrder, closeOrder, setCurrentOrder, setFeedOrders } = orderSlice.actions
 export default orderSlice.reducer

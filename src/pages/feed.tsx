@@ -12,6 +12,7 @@ import { wsInit, wsClose } from "../store";
 
 import { filterData, useAppDispatch, useAppSelector } from "../utils/common";
 import { TOrderObject } from "../utils/types";
+import Preloader from "../components/preloader/preloader";
 
 
 const Feed : FC = () => {
@@ -20,7 +21,7 @@ const Feed : FC = () => {
   const ingredients = useAppSelector(fetchedIngredients);
   const dispatch = useAppDispatch();
   const wsMessage = useAppSelector(message);
-  const { orders = [], total, totalToday} = wsMessage;
+  // const { orders = [], total, totalToday} = wsMessage;
   let ordersData = []
   
   useEffect(() => {
@@ -31,16 +32,23 @@ const Feed : FC = () => {
     return () => {
       dispatch(wsClose())
     }
+    // eslint-disable-next-line
   }, [dispatch])
 
   useEffect(() => {
     if (wsMessage) {
-      dispatch(setFeedOrders(filterData(orders, ingredients)))
+      dispatch(setFeedOrders(filterData(wsMessage!.orders, ingredients)))
     }
+    // eslint-disable-next-line
   }, [wsMessage])
 
-  if(wsStatus) {
-    ordersData = filterData(orders, ingredients);  
+
+  if(wsMessage) {
+    ordersData = filterData(wsMessage!.orders, ingredients);  
+  }
+
+  if(!wsMessage) {
+    return <Preloader />
   }
 
   const ordersDone = ordersData.map((order : TOrderObject, index: number) : JSX.Element | undefined => {
@@ -86,11 +94,11 @@ const Feed : FC = () => {
           <section className={styles.total__stats}>
             <div className={styles.total__done}>
               <h3 className='className="text text_type_main-medium'>Выполнено за всё время:</h3>
-              <span className='text text_type_digits-large'>{total}</span>
+              <span className='text text_type_digits-large'>{wsMessage!.total}</span>
             </div>
             <div className={styles.day__done}>
               <h3 className='className="text text_type_main-medium'>Выполнено за сегодня:</h3>
-              <span className='text text_type_digits-large'>{totalToday}</span>
+              <span className='text text_type_digits-large'>{wsMessage!.totalToday}</span>
             </div>
           </section>
         </section>

@@ -1,5 +1,6 @@
 import { TWsMessageObject } from './../../../utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
 
 type TWsSliceState = {
   wsConnected: boolean;
@@ -7,8 +8,8 @@ type TWsSliceState = {
   wsAuthConnected: boolean;
   wsError: string | null;
   wsAuthError: string | null;
-  wsMessage: Array<TWsMessageObject> | {};
-  wsAuthMessage: Array<TWsMessageObject> | {};
+  wsMessage: TWsMessageObject | null;
+  wsAuthMessage: TWsMessageObject | null;
 }
 
 const initialState: Readonly<TWsSliceState> = {
@@ -17,8 +18,8 @@ const initialState: Readonly<TWsSliceState> = {
   wsAuthConnected: false,
   wsError: null,
   wsAuthError: null,
-  wsMessage: {},
-  wsAuthMessage: {}
+  wsMessage: null,
+  wsAuthMessage: null
 }
 
 export const wsSlice = createSlice({
@@ -58,10 +59,10 @@ export const wsSlice = createSlice({
   }
 })
 
-export const socketAuthStatus = state => state.wsSlice.wsAuthConnected;
-export const socketFlag = state => state.wsSlice.wsUsed;
-export const socketStatus = state => state.wsSlice.wsConnected;
-export const authMessage = state => state.wsSlice.wsAuthMessage;
-export const message = state => state.wsSlice.wsMessage;
+export const socketAuthStatus = (state: RootState) => state.wsSlice.wsAuthConnected;
+export const socketFlag = (state: RootState) => state.wsSlice.wsUsed;
+export const socketStatus = (state: RootState) => state.wsSlice.wsConnected;
+export const authMessage = (state: RootState) => state.wsSlice.wsAuthMessage;
+export const message = (state: RootState) => state.wsSlice.wsMessage;
 export const { WS_CONNECTION_SUCCESS, WS_CONNECTION_ERROR, WS_CONNECTION_CLOSED, WS_GET_MESSAGE, WS_GET_AUTH_MESSAGE, WS_CONNECTION_AUTH_SUCCESS, WS_CONNECTION_AUTH_ERROR, WS_CONNECTION_AUTH_CLOSED } = wsSlice.actions;
 export default wsSlice.reducer

@@ -15,7 +15,6 @@ const Orders : FC = () => {
   const wsAuthStatus = useAppSelector(socketAuthStatus);
   const wsAuthMessage = useAppSelector(authMessage)
   const ingredients = useAppSelector(fetchedIngredients);
-  const { orders } = wsAuthMessage;
 
   React.useEffect(() => {
     if (!wsAuthStatus) {
@@ -24,13 +23,15 @@ const Orders : FC = () => {
     return () => {
       dispatch(wsAuthClose());
     }
+    // eslint-disable-next-line
   }, [dispatch])
 
   React.useEffect(() => {
-    if (wsAuthStatus && orders) {
-      dispatch(setFeedOrders(filterData(orders, ingredients)))
+    if (wsAuthStatus && wsAuthMessage) {
+      dispatch(setFeedOrders(filterData(wsAuthMessage!.orders, ingredients)))
     }
-  }, [wsAuthMessage.length, wsAuthStatus])
+    // eslint-disable-next-line
+  }, [wsAuthMessage, wsAuthStatus])
 
   const description: string = 'В этом разделе вы можете просмотреть свою историю заказов';
   const userOrdersData = useAppSelector(feedOrders);

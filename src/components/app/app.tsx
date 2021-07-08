@@ -68,6 +68,7 @@ const App : FC = () => {
     } else {
       return history.goBack();
     }
+    // eslint-disable-next-line
   }, [ingredientWindow, orderWindow, dispatch])
 
   React.useEffect(() => {
@@ -148,14 +149,14 @@ const App : FC = () => {
 
       {currentOrderWindow && 
       <Route exact path="/feed/:id">
-        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder!.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </Route> 
       }
       {currentOrderWindow && 
       <ProtectedRoute exact path="/profile/orders/:id">
-        <Modal title={`#${currentOrder !== null ? currentOrder.number : ''}`} handleClickModal={handleClickModal}>
+        <Modal title={`#${currentOrder !== null ? currentOrder!.number : ''}`} handleClickModal={handleClickModal}>
           <OrderTicket type='modal'/>
         </Modal>
       </ProtectedRoute>

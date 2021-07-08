@@ -20,7 +20,7 @@ interface IOrderTicket {
 const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
   const dispatch = useAppDispatch();
   // const history = useHistory();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const usedSockedFlag = useAppSelector(socketFlag);
   const ingredients = useAppSelector(fetchedIngredients);
   const loadedOrder = useAppSelector(orderData);
@@ -32,6 +32,7 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
       const number: any = Number(id);
       dispatch(getOrderData(number))
     }
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -41,6 +42,7 @@ const OrderTicket : FC<IOrderTicket> = ({status, type}) => {
     if (feedOrdersArray.length) {
       dispatch(setCurrentOrder(Number(id)));
     }
+    // eslint-disable-next-line
   }, [statusLoading, feedOrdersArray.length])
 
   const currentOrder = useAppSelector(order);

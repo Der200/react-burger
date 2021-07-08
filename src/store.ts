@@ -1,4 +1,4 @@
-import { configureStore, ActionCreatorWithPayload, ActionCreatorWithoutPayload, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {Middleware, AnyAction} from 'redux';
 import {ThunkMiddleware} from 'redux-thunk';
 import logger from 'redux-logger';
