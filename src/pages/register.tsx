@@ -24,7 +24,6 @@ const Register : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault()
-    // @ts-ignore
     dispatch(register({'email': registerData.email, 'password': registerData.password, 'name': registerData.name}))
     history.replace({ pathname: '/' })
   }

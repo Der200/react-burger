@@ -1,6 +1,5 @@
 import { FC, MouseEventHandler } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import styles from './profile-nav.module.css';
 
@@ -19,7 +18,6 @@ const ProfileNav : FC<IProfileNav> = ({description}) => {
   
   const submitHandler: MouseEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(logout({token})); 
   }
 

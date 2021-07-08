@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction, AnyAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import TIngredientObject from '../../../utils/types';
 
 const ingredientsApiUrl = 'https://norma.nomoreparties.space/api/ingredients';
@@ -54,7 +54,7 @@ export const ingredientsSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchIngredients.pending, (state, action) => {
+    builder.addCase(fetchIngredients.pending, (state) => {
       state.status = 'loading'
     })
     builder.addCase(fetchIngredients.fulfilled, (state, action) => {
@@ -64,7 +64,7 @@ export const ingredientsSlice = createSlice({
       }
       
     })
-    builder.addCase(fetchIngredients.rejected, (state, action) => {
+    builder.addCase(fetchIngredients.rejected, (state) => {
       state.status = 'failed';
     })
   },

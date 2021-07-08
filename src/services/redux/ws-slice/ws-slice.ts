@@ -1,5 +1,5 @@
 import { TWsMessageObject } from './../../../utils/types';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type TWsSliceState = {
   wsConnected: boolean;
@@ -7,8 +7,8 @@ type TWsSliceState = {
   wsAuthConnected: boolean;
   wsError: string | null;
   wsAuthError: string | null;
-  wsMessage: Array<TWsMessageObject>;
-  wsAuthMessage: Array<TWsMessageObject>;
+  wsMessage: Array<TWsMessageObject> | {};
+  wsAuthMessage: Array<TWsMessageObject> | {};
 }
 
 const initialState: Readonly<TWsSliceState> = {
@@ -17,42 +17,42 @@ const initialState: Readonly<TWsSliceState> = {
   wsAuthConnected: false,
   wsError: null,
   wsAuthError: null,
-  wsMessage: [],
-  wsAuthMessage: []
+  wsMessage: {},
+  wsAuthMessage: {}
 }
 
 export const wsSlice = createSlice({
   name: 'ws',
   initialState,
   reducers: {
-    WS_CONNECTION_SUCCESS: (state, action) => {
+    WS_CONNECTION_SUCCESS: (state) => {
       state.wsConnected = true;
       state.wsUsed = true;
     },
-    WS_CONNECTION_ERROR: (state, action) => {
+    WS_CONNECTION_ERROR: (state, action: PayloadAction<string>) => {
       state.wsConnected = false;
       state.wsError = action.payload;
     },
-    WS_CONNECTION_CLOSED: (state, action) => {
+    WS_CONNECTION_CLOSED: (state) => {
       state.wsConnected = false;
       state.wsError = null;
     },
-    WS_GET_MESSAGE: (state, action) => {
+    WS_GET_MESSAGE: (state, action: PayloadAction<TWsMessageObject>) => {
       state.wsMessage = action.payload;
     },
-    WS_CONNECTION_AUTH_SUCCESS: (state, action) => {
+    WS_CONNECTION_AUTH_SUCCESS: (state) => {
       state.wsAuthConnected = true;
       state.wsUsed = true;
     },
-    WS_CONNECTION_AUTH_ERROR: (state, action) => {
+    WS_CONNECTION_AUTH_ERROR: (state, action: PayloadAction<string>) => {
       state.wsAuthConnected = false;
       state.wsAuthError = action.payload;
     },
-    WS_CONNECTION_AUTH_CLOSED: (state, action) => {
+    WS_CONNECTION_AUTH_CLOSED: (state) => {
       state.wsAuthConnected = false;
       state.wsAuthError = null;
     },
-    WS_GET_AUTH_MESSAGE: (state, action) => {
+    WS_GET_AUTH_MESSAGE: (state, action: PayloadAction<TWsMessageObject>) => {
       state.wsAuthMessage = action.payload;
     }
   }

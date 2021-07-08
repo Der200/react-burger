@@ -24,7 +24,6 @@ const ResetPassword : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault()
-    // @ts-ignore
     dispatch(resetPassword({'password': resetData.password, 'token': resetData.code}))
     history.replace({pathname: '/login'});
   }

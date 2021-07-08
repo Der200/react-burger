@@ -82,7 +82,20 @@ export function deleteCookie(name: string) {
   setCookie(name, false, { expires: -1 });
 }
 
-export const register = createAsyncThunk('authorization/register', async (data) => {
+type TRegisterRequest = {
+  email: string | undefined;
+  password: string | undefined;
+  name: string | undefined;
+}
+
+type TRegisterResponse = {
+  success: boolean;
+  user: TUserData;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const register = createAsyncThunk('authorization/register', async (data: TRegisterRequest): Promise<TRegisterResponse | undefined> => {
   try {
     const res = await fetch(registerApiUrl, {
       method: 'POST',
@@ -96,7 +109,7 @@ export const register = createAsyncThunk('authorization/register', async (data) 
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const registerData = await res.json();
+    const registerData: TRegisterResponse = await res.json();
     return registerData
         
   } catch(e: any) {
@@ -104,7 +117,16 @@ export const register = createAsyncThunk('authorization/register', async (data) 
   }
 })
 
-export const forgotPassword = createAsyncThunk('authorization/forgotPassword', async (data) => {
+type TForgotPasswordRequest = {
+  email: string | undefined;
+}
+
+type TForgotPasswordResponse = {
+  success: boolean;
+  message: string;
+}
+
+export const forgotPassword = createAsyncThunk('authorization/forgotPassword', async (data: TForgotPasswordRequest): Promise<TForgotPasswordResponse | undefined> => {
   try {
     const res = await fetch(forgotApiUrl, {
       method: 'POST',
@@ -118,7 +140,7 @@ export const forgotPassword = createAsyncThunk('authorization/forgotPassword', a
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const forgotData = await res.json();
+    const forgotData: TForgotPasswordResponse = await res.json();
     return forgotData
         
   } catch(e: any) {
@@ -126,7 +148,17 @@ export const forgotPassword = createAsyncThunk('authorization/forgotPassword', a
   }
 })
 
-export const resetPassword = createAsyncThunk('authorization/resetPassword', async (data) => {
+type TResetPasswordRequest = {
+  password: string | undefined;
+  token: string | undefined;
+}
+
+type TResetPasswordResponse = {
+  success: boolean;
+  message: string;
+}
+
+export const resetPassword = createAsyncThunk('authorization/resetPassword', async (data: TResetPasswordRequest): Promise<TResetPasswordResponse | undefined> => {
   try {
     const res = await fetch(resetApiUrl, {
       method: 'POST',
@@ -140,7 +172,7 @@ export const resetPassword = createAsyncThunk('authorization/resetPassword', asy
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const resetData = await res.json();
+    const resetData: TResetPasswordResponse = await res.json();
     return resetData
         
   } catch(e: any) {
@@ -148,7 +180,19 @@ export const resetPassword = createAsyncThunk('authorization/resetPassword', asy
   }
 })
 
-export const login = createAsyncThunk('authorization/login', async (data) => {
+type TLoginRequest = {
+  email: string | undefined;
+  password: string | undefined;
+}
+
+type TLoginResponse = {
+  success: boolean;
+  user: TUserData;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const login = createAsyncThunk('authorization/login', async (data: TLoginRequest): Promise<TLoginResponse | undefined> => {
     const res = await fetch(loginApiUrl, {
       method: 'POST',
       headers: {
@@ -162,11 +206,20 @@ export const login = createAsyncThunk('authorization/login', async (data) => {
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const loginData = await res.json();
+    const loginData: TLoginResponse = await res.json();
     return loginData
 })
 
-export const logout = createAsyncThunk('authorization/logout', async (data) => {
+type TLogoutRequest = {
+  token: string | null;
+}
+
+type TLogoutResponse = {
+  success: boolean;
+  message: string;
+}
+
+export const logout = createAsyncThunk('authorization/logout', async (data: TLogoutRequest): Promise<TLogoutResponse | undefined> => {
   try {
     const res = await fetch(logoutApiUrl, {
       method: 'POST',
@@ -180,7 +233,7 @@ export const logout = createAsyncThunk('authorization/logout', async (data) => {
       throw new Error('сервер не смог обработать наш запрос')
     }
 
-    const logoutData = await res.json();
+    const logoutData: TLogoutResponse = await res.json();
     return logoutData
         
   } catch(e: any) {
@@ -188,7 +241,18 @@ export const logout = createAsyncThunk('authorization/logout', async (data) => {
   }
 })
 
-export const updateUserData = createAsyncThunk('authorization/updateUserData', async (data) => {
+type TUpdateUserRequest = {
+  email?: string | undefined;
+  password?: string | undefined;
+  name?: string | undefined;
+}
+
+type TUpdateUserResponse = {
+  success: boolean;
+  user: TUserData;
+}
+
+export const updateUserData = createAsyncThunk('authorization/updateUserData', async (data: TUpdateUserRequest): Promise<TUpdateUserResponse> => {
   return await fetchWithRefresh(updateUserDataApiUrl, {
     method: 'PATCH',
     headers: {
@@ -199,7 +263,12 @@ export const updateUserData = createAsyncThunk('authorization/updateUserData', a
   })
 })
 
-export const getUserData = createAsyncThunk('authorization/getUserData', async () => {
+type TGetUserResponse = {
+  success: boolean;
+  user: TUserData;
+}
+
+export const getUserData = createAsyncThunk('authorization/getUserData', async (): Promise<TGetUserResponse> => {
   return await fetchWithRefresh(updateUserDataApiUrl, {
     method: 'GET',
     headers: {
@@ -234,9 +303,11 @@ export const authorizationSlice = createSlice({
     })
     builder.addCase(register.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
-      state.user = action.payload.user;
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
-      setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
+      if (action.payload !== undefined) {
+        state.user = action.payload.user;
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
+      }
     })
     builder.addCase(register.rejected, (state) => {
       state.authorizationStatus = 'failed';
@@ -266,9 +337,11 @@ export const authorizationSlice = createSlice({
     })
     builder.addCase(login.fulfilled, (state, action) => {
       state.authorizationStatus = 'succeeded';
-      state.user = action.payload.user;
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
-      setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
+      if (action.payload !== undefined) {
+        state.user = action.payload.user;
+        localStorage.setItem('refreshToken', action.payload.refreshToken);
+        setCookie('accessToken', action.payload.accessToken.split('Bearer ')[1]);
+      }
     })
     builder.addCase(login.rejected, (state, action) => {
       state.authorizationStatus = 'failed';

@@ -50,7 +50,6 @@ const Profile : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(updateUserData({'name': profileData.name, 'email': profileData.email, 'password': profileData.password}));
     getVisible(false);
   }

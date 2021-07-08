@@ -21,8 +21,7 @@ const ForgotPassword : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore
-    dispatch(forgotPassword({'email': email}));
+    dispatch(forgotPassword({'email': forgotData.email}));
     history.replace({ pathname: '/reset-password' })
   }
 
