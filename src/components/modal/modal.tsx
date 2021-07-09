@@ -17,7 +17,7 @@ interface IModal {
 const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
   const history = useHistory()
   
-  const modalRoot: any = document.getElementById('app-modals');
+  const modalRoot: HTMLElement | null = document.getElementById('app-modals');
   
   
   const handleClick = (element: any): void => {
@@ -25,7 +25,7 @@ const Modal : FC<IModal> = ({title, children, handleClickModal}) => {
     history.replace(`/`);
   }
 
-  return ReactDOM.createPortal(
+  return modalRoot && ReactDOM.createPortal(
     <ModalOverlay handleClickOverlay={handleClick}>
       <div className={`${modal} pt-5 pl-5 pr-5`}>
         <div className={`${modal__header} mt-10 mr-10 ml-10`}>
