@@ -28,7 +28,7 @@ TypeScript, React.js (Сборка CRA), JS (ES6), Git (+Conventional Commits li
 1. Клонируйте данный репозиторий к себе;
 2. Установите пакеты через команду `npm i`;
 3. Запустите проект в режиме: development `npm start` или production `npm run build`.
--
+---
 * JEST-тесты запускаются через `npm run test`.
 * Cypress-тесты через `npm run cypress:open`.
 * Проект запускается в браузере по адресу: `http://localhost:3000`.
