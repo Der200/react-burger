@@ -1,48 +1,34 @@
 # STELLAR BURGERS
+SPA приложение, позволяющее вам собрать и заказать свой межгалактический бургер.
 
-LANG: `RU`
+### Технологии: 
+TypeScript, React.js (Сборка CRA), JS (ES6), Git (+Conventional Commits lite); HTML5, CSS3 (CSS Modules), Jest, Cypress.
 
-Get a cosmic sensation from our burgers before taking over the galaxy
+Управление стором: Redux (Redux Toolkit).
+Тестирование: Jest (Unit), Cypress (E2E).
+Вёртка: семантическая, pixel perfect, с использованием UI библиотеки Яндекс.Практикума.
+Отладка: React Developer Tools, Redux DevTools.
+Дополнительно: использование localStorage и Cookie; код ревью через ротацию профессиональных разработчиков; работа с дизайном через Figma.
 
-This project was created as part of the ["React Developer" intensive](https://praktikum.yandex.ru/react/) from Yandex Praktikum
+### Функционал
+* Регистрация\авторизация пользователя; 
+* восстановление и сброс пароля; 
+* добавление ингредиентов бургера в конструктор с помощью DND; 
+* сортировка\удаление ингредиентов из конструктора; 
+* отправка на сервер информации о собранном бургере и получение данных о заказе; 
+* получение и обновление пользовательской информации через сервер; 
+* навигация по страницам через react router dom.
 
-## Available Scripts
+### О проекте
+Приложение разрабатывалось в рамках интенсива ["React Developer"](https://praktikum.yandex.ru/react/) от Яндекс.Практикума. 
+Обучение было разбито на 4 спринта (2-3 недели каждый), в результате которых готовился проект. В каждом спринте было своё техническое задание, защита которого осуществлялась через код-ревью, где обозначались моменты для исправления\улучшения кода. В каждом этапе предусматривалось по 2-3 попытки на защиту, через ротацию ревьюеров из опытных разработчиков. 
+Кодовая база полностью аутентичная. 
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Support
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Запуск проекта [npm]
+1. Клонируйте данный репозиторий к себе;
+2. Установите пакеты через команду `npm i`;
+3. Запустите проект в режиме: development `npm start` или production `npm run build`.
+-
+* JEST-тесты запускаются через `npm run test`.
+* Cypress-тесты через `npm run cypress:open`.
+* Проект запускается в браузере по адресу: `http://localhost:3000`.
