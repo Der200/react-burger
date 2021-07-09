@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 
 import styles from './order-details.module.css';
 import successImage from '../../images/success.gif';

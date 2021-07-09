@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
 import { TSetCookieProps, TUserData } from '../../../utils/types';
 
 const registerApiUrl = 'https://norma.nomoreparties.space/api/auth/register';
@@ -381,7 +382,7 @@ export const authorizationSlice = createSlice({
   },
 })
 
-export const recoveryCodeStatus = state => state.authorizationSlice.recoveryCodeSent;
-export const userStatus = state => state.authorizationSlice.authorizationStatus;
-export const user = state => state.authorizationSlice.user;
+export const recoveryCodeStatus = (state: RootState) => state.authorizationSlice.recoveryCodeSent;
+export const userStatus = (state: RootState) => state.authorizationSlice.authorizationStatus;
+export const user = (state: RootState) => state.authorizationSlice.user;
 export default authorizationSlice.reducer

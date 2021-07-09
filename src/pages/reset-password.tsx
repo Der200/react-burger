@@ -44,7 +44,6 @@ const ResetPassword : FC = () => {
     <Button>Сохранить</Button>
   </Form>
   )
-
 }
 
 export default ResetPassword;

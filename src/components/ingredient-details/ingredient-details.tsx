@@ -16,9 +16,10 @@ interface IIngredientDetails {
 const IngredientDetails : FC<IIngredientDetails> = ({type}) => {
   let ingredient = useAppSelector(selectedIngredient);
   const ingredients = useAppSelector(fetchedIngredients);
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   if (ingredient === null && ingredients !== null) {
+    // @ts-ignore
     ingredient = ingredients.find((ingredient: TIngredientObject) => ingredient._id.toString() === id);
   }
   

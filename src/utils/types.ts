@@ -34,6 +34,7 @@ export type TAuthorizationForm = {
 export type TWsOrderObject = {
   ingredients: string[];
   _id: string;
+  name: string;
   status: string;
   number: number;
   createdAt: string;

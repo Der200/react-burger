@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../../store';
 import TIngredientObject from '../../../utils/types';
 
 const ingredientsApiUrl = 'https://norma.nomoreparties.space/api/ingredients';
@@ -70,9 +71,9 @@ export const ingredientsSlice = createSlice({
   },
 })
 
-export const ingredientsFetchStatus = state => state.ingredientsSlice.status;
-export const fetchedIngredients = state => state.ingredientsSlice.ingredientsData;
-export const selectedIngredient = state => state.ingredientsSlice.selectedIngredientDetails;
-export const modalViewIngredient = state => state.ingredientsSlice.isShowIngredient;
+export const ingredientsFetchStatus = (state: RootState) => state.ingredientsSlice.status;
+export const fetchedIngredients = (state: RootState) => state.ingredientsSlice.ingredientsData;
+export const selectedIngredient = (state: RootState) => state.ingredientsSlice.selectedIngredientDetails;
+export const modalViewIngredient = (state: RootState) => state.ingredientsSlice.isShowIngredient;
 export const { setIngredientDetails, showIngredientDetails, closeIngredientDetails } = ingredientsSlice.actions
 export default ingredientsSlice.reducer

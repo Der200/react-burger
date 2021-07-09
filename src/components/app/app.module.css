@@ -9,7 +9,7 @@ ul {
 }
 
 ::-webkit-scrollbar {
-  height: 664px;
+  /* height: 664px; */
   width: 8px;
 }
 

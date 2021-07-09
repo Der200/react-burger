@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/common';
 
 
 const BurgerIngredients : FC = () => {
-  const ingredients: TIngredientObject[] = useAppSelector(fetchedIngredients);
+  const ingredients = useAppSelector(fetchedIngredients);
   const {main__tabs, 
         main__block, 
         main__ingredients,
@@ -49,9 +49,7 @@ const BurgerIngredients : FC = () => {
       mainsHeader.current!.scrollIntoView({behavior: 'smooth'});
       setCurrentTab('mains')
     }
-
   }
-
 
   const handleClickIngredient = (ingredient: TIngredientObject): void => {    
     dispatch(setIngredientDetails(ingredient))

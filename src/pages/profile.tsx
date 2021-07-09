@@ -14,7 +14,7 @@ const Profile : FC = () => {
   const authorizationStatus = useAppSelector(userStatus);
   const currentUser = useAppSelector(user);
   const dispatch = useAppDispatch();
-  const [profileData, getProfileData] = React.useState<TAuthorizationForm>({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
+  const [profileData, getProfileData] = React.useState<TAuthorizationForm>({'name': currentUser!.name, 'email': currentUser!.email, 'password': ''});
   const [visible, getVisible] = React.useState<boolean>(false);
 
   const cancelButtonStyle = {
@@ -39,13 +39,14 @@ const Profile : FC = () => {
   const cancelChangesHandler: MouseEventHandler = (e): void => {
     e.preventDefault();
     getVisible(false);
-    getProfileData({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
+    getProfileData({'name': currentUser!.name, 'email': currentUser!.email, 'password': ''});
   }
 
   useEffect(() => {
     if(authorizationStatus === 'succeeded') {
-      getProfileData({'name': currentUser.name, 'email': currentUser.email, 'password': ''});
+      getProfileData({'name': currentUser!.name, 'email': currentUser!.email, 'password': ''});
     }
+    // eslint-disable-next-line
   }, [authorizationStatus])
 
   const submitHandler: FormEventHandler = (e): void => {

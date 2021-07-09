@@ -17,6 +17,7 @@ const ProtectedRoute : FC<RouteProps> = ({ children, ...rest }) => {
     if (localStorage.getItem('refreshToken') !== null) {
       dispatch(getUserData());
     }
+    // eslint-disable-next-line
   }, [])
 
   if (authorizationStatus !== 'succeeded' && currentUser === null && localStorage.getItem('refreshToken') !== null) {

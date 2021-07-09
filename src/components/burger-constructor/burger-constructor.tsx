@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useEffect, useState } from "react";
+import { FC, MouseEventHandler, useState } from "react";
 import { useDrop } from 'react-dnd';
 import { useHistory } from 'react-router-dom';
 import { Button, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components/dist/index.js";
@@ -59,7 +59,7 @@ const BurgerConstructor : FC<IBurgerConstructor> = ({dropHandler}) => {
         setBunFlag(true);
         return
       }
-      dispatch(placeAnOrder(orderDetails));
+      dispatch(placeAnOrder({ingredients: orderDetails}));
       dispatch(showOrder());
       setBunFlag(false);
     }

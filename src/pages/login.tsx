@@ -12,9 +12,10 @@ import { useAppDispatch, useAppSelector } from '../utils/common';
 const Login : FC = () => {
   const [loginData, getLoginData] = useState<TAuthorizationForm>({});
 
-  const history = useHistory();
+  const history = useHistory<History>();
   const dispatch = useAppDispatch();
   
+  // @ts-ignore
   const forwardLink = history.location.state ? history.location.state.forward.pathname : '';
   const hasToken = localStorage.getItem('refreshToken');
   const status = useAppSelector(userStatus);
@@ -23,6 +24,7 @@ const Login : FC = () => {
     if (status === 'succeeded' && hasToken) {
       history.replace(forwardLink);
     }
+    // eslint-disable-next-line
   }, [status])
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (e): void => {
@@ -34,7 +36,6 @@ const Login : FC = () => {
 
   const submitHandler: FormEventHandler = (e): void => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(login({'email': loginData.email, 'password': loginData.password}));
     
   }  

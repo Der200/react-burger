@@ -41,7 +41,6 @@ const Register : FC = () => {
     <Button>Зарегистрироваться</Button>
   </Form>
   )
-
 }
 
 export default Register;
